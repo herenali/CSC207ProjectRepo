@@ -79,7 +79,6 @@ class GroupChannel {
         GcCreateChannelData gcCreateChannelData = new GcCreateChannelData();
         gcCreateChannelData.name("JAVA-SDK-GROUP");
 
-
         gcCreateChannelData.userIds(userIds);
         gcCreateChannelData.isDistinct(false);
 
@@ -151,11 +150,9 @@ class Message {
         sendMessageData.userId(userId);
         sendMessageData.message(message);
         sendMessageData.messageType(messageType);
-        sendMessageData);
 
         try {
             SendBirdMessageResponse result = apiInstance.sendMessage(channelType, channelUrl).apiToken(apiToken).sendMessageData(sendMessageData).execute();
-            result);
             return  result;
         } catch (ApiException e) {
             System.err.println("Exception when calling MessageApi#sendMessage");
@@ -180,7 +177,8 @@ class Message {
 
         try {
             SendBirdMessageResponse result = apiInstance.sendMessage(channelType, channelUrl).apiToken(apiToken).sendMessageData(sendMessageData).execute();
-            result);
+            return result;
+
         } catch (ApiException e) {
             System.err.println("Exception when calling MessageApi#sendMessage");
             System.err.println("Status code: " + e.getCode());
