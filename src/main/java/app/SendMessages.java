@@ -98,6 +98,22 @@ class GroupChannel {
 
     }
 
+    public OcDeleteChannelByUrl200Response deleteChannelByUrl(String channelUrl){
+
+        try {
+            OcDeleteChannelByUrl200Response result = apiInstance.gcDeleteChannelByUrl(channelUrl).apiToken(apiToken).execute();
+            return result;
+        } catch (ApiException e) {
+            System.err.println("Exception when calling GroupChannelApi#gcViewChannelByUrl");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
 }
 
 
@@ -128,6 +144,19 @@ class User {
         return null;
     }
 
+    public SendBirdUser deleteUserById(String userId){
+
+        try {
+            apiInstance.deleteUserById(userId).apiToken(apiToken).execute();
+        } catch (ApiException e) {
+            System.err.println("Exception when calling UserApi#createUser");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 }
 
