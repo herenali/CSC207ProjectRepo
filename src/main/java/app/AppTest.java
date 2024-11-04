@@ -6,15 +6,15 @@ import org.sendbird.client.Configuration;
 import org.sendbird.client.api.UserApi;
 import org.openapitools.client.model.ListUsersResponse;
 
-
 class AppTest {
     static class User {
-        UserApi apiInstance;
-        public User(ApiClient defaultClient){
+        private final UserApi apiInstance;
+
+        public User(ApiClient defaultClient) {
             apiInstance = new UserApi(defaultClient);
         }
-        public void listUsers(){
 
+        public void listUsers() {
             try {
                 Integer limit = 56;
                 String activeMode = "activated";
