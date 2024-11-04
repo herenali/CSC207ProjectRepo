@@ -28,6 +28,12 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.sendbird</groupId>
+            <artifactId>sendbird-platform-sdk</artifactId>
+            <version>1.0.23</version>
+        </dependency>
+
     </dependencies>
 
 
@@ -37,5 +43,12 @@
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>sendbird</id>
+            <url>https://repo.sendbird.com/public/maven</url>
+        </repository>
+    </repositories>
 
 </project>
