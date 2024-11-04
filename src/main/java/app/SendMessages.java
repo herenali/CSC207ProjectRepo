@@ -234,5 +234,22 @@ class Message {
         return null;
     }
 
+    public void deleteMessage(String channelType, String channelUrl, String messageId) {
+        try {
+            MessageApi.APIdeleteMessageByIdRequest request = apiInstance.deleteMessageById(channelType, channelUrl, messageId).apiToken(apiToken);
+            request.execute();
+            System.out.println("Message deleted successfully.");
+        }
+        catch (ApiException e) {
+            System.err.println("Exception when calling MessageApi#deleteMessage");
+            e.printStackTrace();
+        }
+    }
+
+    public SendBirdMessageResponse editMessage(String channelType, String channelUrl, String messageId, String userId, String newContent, String messageType) {
+        deleteMessage(channelType, channelUrl, messageId);
+        return sendMessage(channelType, channelUrl, userId, newContent, messageType);
+    }
+
 }
 
