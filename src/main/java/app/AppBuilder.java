@@ -37,6 +37,7 @@ import view.LoggedInView;
 import view.LoginView;
 import view.SignupView;
 import view.ViewManager;
+import view.ChatView;
 
 /**
  * The AppBuilder class is responsible for putting together the pieces of
@@ -65,6 +66,7 @@ public class AppBuilder {
     private LoginViewModel loginViewModel;
     private LoggedInViewModel loggedInViewModel;
     private LoggedInView loggedInView;
+    private ChatView chatView;
     private LoginView loginView;
 
     public AppBuilder() {
@@ -101,6 +103,13 @@ public class AppBuilder {
         loggedInViewModel = new LoggedInViewModel();
         loggedInView = new LoggedInView(loggedInViewModel);
         cardPanel.add(loggedInView, loggedInView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addChatView() {
+        loggedInViewModel = new LoggedInViewModel();
+        chatView = new ChatView(loggedInViewModel);
+        cardPanel.add(chatView, chatView.getViewName());
         return this;
     }
 
