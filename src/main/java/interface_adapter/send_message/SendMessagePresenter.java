@@ -40,8 +40,8 @@ public class SendMessagePresenter implements SendMessageOutputBoundary {
 
     @Override
     public void prepareFailView(String error) {
-        final SendMessageState send_messageState = sendMessageViewModel.getState();
-        send_messageState.setSendMessageError(error);
+        final SendMessageState sendMessageState = sendMessageViewModel.getState();
+        sendMessageState.setSendError(error);
         sendMessageViewModel.firePropertyChanged();
     }
 }

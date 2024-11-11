@@ -12,4 +12,6 @@ public interface SendMessageOutputBoundary {
      */
     void prepareSuccessView(SendMessageOutputData sendMessageOutputData);
 
+    void prepareFailView(String error);
+
 }
