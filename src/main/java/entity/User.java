@@ -17,4 +17,9 @@ public interface User {
      */
     String getPassword();
 
+    /**
+     * Returns the user ID of the user.
+     * @return the user ID of the user.
+     */
+    String getUserId();
 }
