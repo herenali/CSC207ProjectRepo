@@ -15,4 +15,8 @@ public class SendMessageOutputData {
     public String getMessage() {
         return message;
     }
+  
+    public boolean isUseCaseFailed() {
+        return useCaseFailed;
+    }
 }
