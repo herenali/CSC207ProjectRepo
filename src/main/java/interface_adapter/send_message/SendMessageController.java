@@ -21,7 +21,7 @@ public class SendMessageController {
     public void execute(String userId, String message) {
         // 1. instantiate the `SendMessageData`, which should contain the username.
         // 2. tell the Interactor to execute.
-        final SendMessageInputData sendMessageInputData = new SendMessageInputData(userId, message);
+        final SendMessageInputData sendMessageInputData = new SendMessageInputData(message);
 
         sendMessageCaseInteractor.execute(sendMessageInputData);
     }
