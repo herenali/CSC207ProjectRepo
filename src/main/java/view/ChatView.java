@@ -1,14 +1,11 @@
 package view;
 
 import app.SendMessages;
-import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.LoggedInState;
 import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.logout.LogoutController;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -22,23 +19,15 @@ import java.util.List;
 public class ChatView extends JPanel implements PropertyChangeListener {
     private final String viewName = "logged in";
     private final LoggedInViewModel loggedInViewModel;
-    private final JLabel passwordErrorField = new JLabel();
-    private ChangePasswordController changePasswordController;
     private LogoutController logoutController;
 
-    //private final JLabel username;
     private final JButton logOutButton;
     private final JButton newChatButton;
     private final JButton profileButton;
-    // private final JButton logOut;
 
     private final JList<String> chatList;
     private final JTextArea chatArea;
 
-    private final JTextField passwordInputField = new JTextField(15);
-    //private final JButton changePassword;
-
-    // private final JButton send message
     private final Map<String, List<String>> chatMessages = new HashMap<>();
     private JTextField messageInputField;
     private JButton sendButton;
@@ -50,19 +39,6 @@ public class ChatView extends JPanel implements PropertyChangeListener {
 
         final JLabel title = new JLabel("Chats");
         title.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-//        final LabelTextPanel passwordInfo = new LabelTextPanel(
-//                new JLabel("Password"), passwordInputField);
-
-//        final JLabel usernameInfo = new JLabel("Currently logged in: ");
-        // username = new JLabel();
-//
-//        final JPanel buttons = new JPanel();
-//        logOut = new JButton("Log Out");
-//        buttons.add(logOut);
-//
-//        changePassword = new JButton("Change Password");
-//        buttons.add(changePassword);
 
         this.setLayout(new BorderLayout());
 
@@ -133,8 +109,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                     }
                 }
         );
-        // TODO: implement this
-        // newChatButton.addActionListener();
+
         newChatButton.addActionListener(evt -> {
             JPanel panel = new JPanel();
             panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -170,10 +145,10 @@ public class ChatView extends JPanel implements PropertyChangeListener {
             JPanel panel = new JPanel();
             panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-            String currentUseername = loggedInViewModel.getState().getUsername();
+            String currentUsername = loggedInViewModel.getState().getUsername();
             String currentPassword = loggedInViewModel.getState().getPassword();
 
-            JTextField userNameField = new JTextField(currentUseername, 15);
+            JTextField userNameField = new JTextField(currentUsername, 15);
             JPasswordField passwordField = new JPasswordField(currentPassword, 15);
             userNameField.setEditable(false);
             passwordField.setEditable(false);
@@ -191,7 +166,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
             panel.add(Box.createVerticalStrut(10));
 
             changeUsernameButton.addActionListener(changeEvt -> {
-                String newUsername = JOptionPane.showInputDialog(null, "Enter new username: ", currentUseername);
+                String newUsername = JOptionPane.showInputDialog(null, "Enter new username: ", currentUsername);
                 if (!newUsername.isEmpty()) {
                     userNameField.setText(newUsername);
                     loggedInViewModel.getState().setUsername(newUsername);
@@ -228,55 +203,6 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         this.logoutController = logoutController;
     }
 
-    //        passwordInputField.getDocument().addDocumentListener(new DocumentListener() {
-//
-//            private void documentListenerHelper() {
-//                final LoggedInState currentState = loggedInViewModel.getState();
-//                currentState.setPassword(passwordInputField.getText());
-//                loggedInViewModel.setState(currentState);
-//            }
-//
-//            @Override
-//            public void insertUpdate(DocumentEvent e) {
-//                documentListenerHelper();
-//            }
-//
-//            @Override
-//            public void removeUpdate(DocumentEvent e) {
-//                documentListenerHelper();
-//            }
-//
-//            @Override
-//            public void changedUpdate(DocumentEvent e) {
-//                documentListenerHelper();
-//            }
-//        });
-//
-//        changePassword.addActionListener(
-//                // This creates an anonymous subclass of ActionListener and instantiates it.
-//                evt -> {
-//                    if (evt.getSource().equals(changePassword)) {
-//                        final LoggedInState currentState = loggedInViewModel.getState();
-//
-//                        this.changePasswordController.execute(
-//                                currentState.getUsername(),
-//                                currentState.getPassword()
-//                        );
-//                    }
-//                }
-//        );
-//
-//
-//
-//        this.add(title);
-//        this.add(usernameInfo);
-//        this.add(username);
-//
-//        this.add(passwordInfo);
-//        this.add(passwordErrorField);
-//        this.add(buttons);
-//    }
-//
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
 //        if (evt.getPropertyName().equals("state")) {
@@ -288,8 +214,4 @@ public class ChatView extends JPanel implements PropertyChangeListener {
 //            JOptionPane.showMessageDialog(null, "password updated for " + state.getUsername());
 //        }
     }
-//
-//    public void setChangePasswordController(ChangePasswordController changePasswordController) {
-//        this.changePasswordController = changePasswordController;
-//    }
 }
