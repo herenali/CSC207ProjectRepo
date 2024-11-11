@@ -1,5 +1,6 @@
 package view;
 
+import app.SendMessages;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.LoggedInState;
 import interface_adapter.change_password.LoggedInViewModel;
@@ -11,6 +12,9 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.List;
 
 /**
  * The View for when the user is logged into the program.
@@ -33,6 +37,12 @@ public class ChatView extends JPanel implements PropertyChangeListener {
 
     private final JTextField passwordInputField = new JTextField(15);
     //private final JButton changePassword;
+
+    // private final JButton send message
+    private final Map<String, List<String>> chatMessages = new HashMap<>();
+    private JTextField messageInputField;
+    private JButton sendButton;
+    private SendMessages sendMessages = new SendMessages();
 
     public ChatView(LoggedInViewModel loggedInViewModel) {
         this.loggedInViewModel = loggedInViewModel;
@@ -65,6 +75,17 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         topPanel.add(newChatButton);
         topPanel.add(profileButton);
         topPanel.add(logOutButton);
+
+        // add panel for sending messages
+        JPanel chatInputPanel = new JPanel();
+        chatInputPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        messageInputField = new JTextField(15);
+        sendButton = new JButton("Send");
+        chatInputPanel.add(messageInputField);
+        chatInputPanel.add(sendButton);
+        this.add(chatInputPanel, BorderLayout.SOUTH);
+
+        // TODO: Implement sendButton.addActionListener(e -> sendMessages.sendMessage());
 
         // left panel for the chats
         JPanel leftPanel = new JPanel();
@@ -105,7 +126,19 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         );
         // TODO: implement this
         // newChatButton.addActionListener();
+        newChatButton.addActionListener(evt -> {
+            String newChatName = JOptionPane.showInputDialog("New Chat: ");
+            if (newChatName != null && !newChatName.trim().isEmpty()){
+                DefaultListModel<String> model = (DefaultListModel<String>) chatList.getModel();
+                model.addElement(newChatName);
+                chatList.setSelectedValue(newChatName, true);
+                chatArea.setText("New chat: " + newChatName);
+            }
+        });
         // profileButton.addActionListener();
+        profileButton.addActionListener(evt -> {
+            JOptionPane.showMessageDialog(this, "Profile: \nUsername: " + loggedInViewModel.getState().getUsername(), "User Profile", JOptionPane.INFORMATION_MESSAGE);
+        });
     }
 
     private void updateChatArea() {
@@ -121,7 +154,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         this.logoutController = logoutController;
     }
 
-//        passwordInputField.getDocument().addDocumentListener(new DocumentListener() {
+    //        passwordInputField.getDocument().addDocumentListener(new DocumentListener() {
 //
 //            private void documentListenerHelper() {
 //                final LoggedInState currentState = loggedInViewModel.getState();
