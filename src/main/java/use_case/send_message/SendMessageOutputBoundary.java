@@ -1,7 +1,5 @@
 package use_case.send_message;
 
-import use_case.login.LoginOutputData;
-
 /**
  * The output boundary for the Send Message Use Case.
  */
@@ -10,7 +8,7 @@ public interface SendMessageOutputBoundary {
      * Prepares the success view for the Login Use Case.
      * @param outputData the output data
      */
-    void prepareSuccessView(SendMessageOutputData sendMessageOutputData);
+    void prepareSuccessView(SendMessageOutputData outputData);
 
     void prepareFailView(String error);
 
