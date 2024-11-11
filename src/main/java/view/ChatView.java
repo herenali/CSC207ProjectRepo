@@ -81,11 +81,20 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         chatInputPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         messageInputField = new JTextField(15);
         sendButton = new JButton("Send");
+
         chatInputPanel.add(messageInputField);
         chatInputPanel.add(sendButton);
         this.add(chatInputPanel, BorderLayout.SOUTH);
 
         // TODO: Implement sendButton.addActionListener(e -> sendMessages.sendMessage());
+        sendButton.addActionListener(evt -> {
+            String messageText = messageInputField.getText().trim();
+            if (!messageText.isEmpty()) {
+                sendMessages.sendMessage();
+                messageInputField.setText("");
+                updateChatArea();
+            }
+        });
 
         // left panel for the chats
         JPanel leftPanel = new JPanel();
@@ -127,17 +136,82 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         // TODO: implement this
         // newChatButton.addActionListener();
         newChatButton.addActionListener(evt -> {
-            String newChatName = JOptionPane.showInputDialog("New Chat: ");
-            if (newChatName != null && !newChatName.trim().isEmpty()){
-                DefaultListModel<String> model = (DefaultListModel<String>) chatList.getModel();
-                model.addElement(newChatName);
-                chatList.setSelectedValue(newChatName, true);
-                chatArea.setText("New chat: " + newChatName);
+            JPanel panel = new JPanel();
+            panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+            JTextField chatNameField = new JTextField(15);
+            JTextField userNameField = new JTextField(15);
+
+            panel.add(new JLabel("New Chat Name: "));
+            panel.add(chatNameField);
+            panel.add(Box.createVerticalStrut(10));
+            panel.add(new JLabel("Enter Username: "));
+            panel.add(userNameField);
+
+            int result = JOptionPane.showConfirmDialog(null, panel, "New Chat", JOptionPane.OK_CANCEL_OPTION);
+
+            if (result == JOptionPane.OK_OPTION) {
+                String newChatName = chatNameField.getText().trim();
+                String newUserName = userNameField.getText().trim();
+
+                if (!newChatName.isEmpty() && !newUserName.isEmpty()) {
+                    DefaultListModel<String> model = (DefaultListModel<String>) chatList.getModel();
+                    String chatEntry = newChatName + " (Chat with: " + newUserName + ")";
+                    model.addElement(newChatName);
+                    chatList.setSelectedValue(chatEntry, true);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error in either chat name or username. ");
+                }
             }
         });
+
         // profileButton.addActionListener();
         profileButton.addActionListener(evt -> {
-            JOptionPane.showMessageDialog(this, "Profile: \nUsername: " + loggedInViewModel.getState().getUsername(), "User Profile", JOptionPane.INFORMATION_MESSAGE);
+            JPanel panel = new JPanel();
+            panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+            String currentUseername = loggedInViewModel.getState().getUsername();
+            String currentPassword = loggedInViewModel.getState().getPassword();
+
+            JTextField userNameField = new JTextField(currentUseername, 15);
+            JPasswordField passwordField = new JPasswordField(currentPassword, 15);
+            userNameField.setEditable(false);
+            passwordField.setEditable(false);
+
+            JButton changeUsernameButton = new JButton("Change");
+            JButton changePasswordButton = new JButton("Change");
+
+            panel.add(new JLabel("Username: "));
+            panel.add(userNameField);
+            panel.add(changeUsernameButton);
+            panel.add(Box.createVerticalStrut(10));
+            panel.add(new JLabel("Password: "));
+            panel.add(passwordField);
+            panel.add(changePasswordButton);
+            panel.add(Box.createVerticalStrut(10));
+
+            changeUsernameButton.addActionListener(changeEvt -> {
+                String newUsername = JOptionPane.showInputDialog(null, "Enter new username: ", currentUseername);
+                if (!newUsername.isEmpty()) {
+                    userNameField.setText(newUsername);
+                    loggedInViewModel.getState().setUsername(newUsername);
+                }
+            });
+
+            changePasswordButton.addActionListener(changeEvt -> {
+                String newPassword = JOptionPane.showInputDialog(null, "Enter new password: ");
+                if (!newPassword.isEmpty()) {
+                    passwordField.setText(newPassword);
+                    loggedInViewModel.getState().setPassword(newPassword);
+                }
+            });
+
+            int result = JOptionPane.showConfirmDialog(null, panel, "Profile", JOptionPane.OK_CANCEL_OPTION);
+
+            if (result == JOptionPane.OK_OPTION) {
+                loggedInViewModel.getState().setUsername(userNameField.getText());
+                loggedInViewModel.getState().setPassword(new String(passwordField.getPassword()));
+            }
         });
     }
 
