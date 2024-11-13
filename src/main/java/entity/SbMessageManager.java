@@ -131,7 +131,8 @@ public class SbMessageManager {
                     .apiToken(apiToken)
                     .updateMessageByIdData(updateMessageByIdData)
                     .execute();
-            System.out.println(updatedMessage);
+            System.out.println("Messaged updated successfully to " + updatedMessage);
+            return updatedMessage;
         } catch (ApiException e) {
             System.err.println("Exception when calling MessageApi#updateMessageById");
             System.err.println("Status code: " + e.getCode());
@@ -139,6 +140,8 @@ public class SbMessageManager {
             System.err.println("Response headers: " + e.getResponseHeaders());
             e.printStackTrace();
         }
+        return null;
+    }
 
     private GcViewNumberOfEachMembersUnreadMessagesResponse getNumberOfUnreadMessages(String channelUrl, String userId) {
         try {

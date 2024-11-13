@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.sendbird.client.ApiClient;
 import org.sendbird.client.Configuration;
 
+import org.openapitools.client.model.*;
+
 import java.math.BigDecimal;
 
 import static org.junit.Assert.assertEquals;
@@ -82,6 +84,20 @@ public class SbMessageManagerTest {
                 "New message",
                 "MESG");
         System.out.println(sbMessageManager.getGroupMessageMapping());
+    }
+
+    @Test
+    public void testEditMessage() {
+        BigDecimal messageId = sbMessageManager.sendMessage("group_channels",
+                groupChannelUrl,
+                userPaulId,
+                "message before editing",
+                "MESG").getMessageId();
+        String newContent = "new message after editing";
+        SendBirdMessageResponse updatedMessage = sbMessageManager.editMessage("group_channels",
+                groupChannelUrl, messageId.intValue(), userPaulId, newContent, "MESG");
+
+        assertEquals(newContent, updatedMessage.getMessage());
     }
 
 }
