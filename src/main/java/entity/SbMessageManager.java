@@ -21,6 +21,7 @@ public class SbMessageManager {
         apiInstance = new MessageApi(defaultClient);
         apiToken = Config.apiToken;
         groupMessageMapping = new HashMap<>();
+        this.defaultClient = defaultClient;
     }
 
     public Map<String, List<BigDecimal>> getGroupMessageMapping() {
@@ -117,10 +118,27 @@ public class SbMessageManager {
         }
     }
 
-    public SendBirdMessageResponse editMessage(String channelType, String channelUrl, String messageId, String userId, String newContent, String messageType) {
-        deleteMessage(channelType, channelUrl, messageId);
-        return sendMessage(channelType, channelUrl, userId, newContent, messageType);
-    }
+    public SendBirdMessageResponse editMessage(String channelType, String channelUrl, int messageId, String userId, String newContent, String messageType) {
+        UpdateMessageByIdData updateMessageByIdData = new UpdateMessageByIdData();
+        updateMessageByIdData.channelType(channelType)
+                .channelUrl(channelUrl)
+                .messageId(messageId)
+                .messageType(messageType)
+                .message(newContent);
+
+        try {
+            SendBirdMessageResponse updatedMessage = apiInstance.updateMessageById(channelType, channelUrl, String.valueOf(messageId))
+                    .apiToken(apiToken)
+                    .updateMessageByIdData(updateMessageByIdData)
+                    .execute();
+            System.out.println(updatedMessage);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling MessageApi#updateMessageById");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
 
     private GcViewNumberOfEachMembersUnreadMessagesResponse getNumberOfUnreadMessages(String channelUrl, String userId) {
         try {
