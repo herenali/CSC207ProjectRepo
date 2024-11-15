@@ -13,11 +13,16 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
 import interface_adapter.change_password.LoggedInViewModel;
+import interface_adapter.choose_group_channel.ChooseGroupChannelController;
+import interface_adapter.choose_group_channel.ChooseGroupChannelPresenter;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
+import interface_adapter.send_message.SendMessageController;
+import interface_adapter.send_message.SendMessagePresenter;
+import interface_adapter.send_message.SendMessageViewModel;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
@@ -26,12 +31,18 @@ import org.sendbird.client.Configuration;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
+import use_case.choose_group_channel.ChooseGroupChannelInputBoundary;
+import use_case.choose_group_channel.ChooseGroupChannelInteractor;
+import use_case.choose_group_channel.ChooseGroupChannelOutputBoundary;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
 import use_case.logout.LogoutInputBoundary;
 import use_case.logout.LogoutInteractor;
 import use_case.logout.LogoutOutputBoundary;
+import use_case.send_message.SendMessageInputBoundary;
+import use_case.send_message.SendMessageInteractor;
+import use_case.send_message.SendMessageOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
@@ -68,6 +79,7 @@ public class AppBuilder {
     private SignupViewModel signupViewModel;
     private LoginViewModel loginViewModel;
     private LoggedInViewModel loggedInViewModel;
+    private SendMessageViewModel sendMessageViewModel;
     private LoggedInView loggedInView;
     private ChatView chatView;
     private LoginView loginView;
@@ -112,6 +124,10 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds the Chat View to the application.
+     * @return this builder
+     */
     public AppBuilder addChatView() {
         loggedInViewModel = new LoggedInViewModel();
         chatView = new ChatView(loggedInViewModel);
@@ -179,6 +195,42 @@ public class AppBuilder {
 
         final LogoutController logoutController = new LogoutController(logoutInteractor);
         loggedInView.setLogoutController(logoutController);
+        chatView.setLogoutController(logoutController);
+        return this;
+    }
+
+    /**
+     * Adds the ChooseGroupChannel Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addChooseGroupChannelUseCase() {
+        final ChooseGroupChannelOutputBoundary chooseGroupChannelOutputBoundary =
+                new ChooseGroupChannelPresenter(viewManagerModel, loggedInViewModel);
+
+        final ChooseGroupChannelInputBoundary chooseGroupChannelInteractor =
+                new ChooseGroupChannelInteractor(chooseGroupChannelOutputBoundary);
+
+        final ChooseGroupChannelController chooseGroupChannelController =
+                new ChooseGroupChannelController(chooseGroupChannelInteractor);
+        chatView.setChooseGroupChannelController(chooseGroupChannelController);
+        return this;
+    }
+
+    /**
+     * Adds the SendMessage Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addSendMessageUseCase() {
+        final SendMessageOutputBoundary sendMessageOutputBoundary =
+                new SendMessagePresenter(viewManagerModel, loggedInViewModel);
+
+        final SendMessageInputBoundary sendMessageInteractor =
+                new SendMessageInteractor(sendMessageOutputBoundary);
+
+        final SendMessageController sendMessageController =
+                new SendMessageController(sendMessageInteractor);
+
+        chatView.setSendMessageController(sendMessageController);
         return this;
     }
 
