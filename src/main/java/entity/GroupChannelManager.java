@@ -5,8 +5,22 @@ import org.openapitools.client.model.SendBirdGroupChannel;
 
 import java.util.List;
 
+/**
+ * Class for managing group channels.
+ */
 public interface GroupChannelManager {
-    public SendBirdGroupChannel createChannel(List userIds, String name);
+    /**
+     * Creates a new group channel.
+     * @param userIds a list of the ids of the users in the group channel
+     * @param name the name of the group channel
+     * @return the group channel
+     */
+    SendBirdGroupChannel createChannel(List userIds, String name);
 
-    public OcDeleteChannelByUrl200Response deleteChannelByUrl(String channelUrl);
+    /**
+     * Deletes a group channel.
+     * @param channelUrl the url of the group channel
+     * @return the user
+     */
+    OcDeleteChannelByUrl200Response deleteChannelByUrl(String channelUrl);
 }
