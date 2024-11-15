@@ -1,5 +1,6 @@
 package entity;
 
+import org.openapitools.client.model.ListMyGroupChannelsResponse;
 import org.openapitools.client.model.SendBirdUser;
 
 /**
@@ -25,4 +26,11 @@ public interface UserManager {
      * Prints out the users of the chat app.
      */
     void listUsers();
+
+    /**
+     * Lists the group channels a user is in.
+     * @param userId the id of the user
+     * @return the group channels the user is in
+     */
+    ListMyGroupChannelsResponse listGroupChannelsByUserId(String userId);
 }

@@ -1,6 +1,7 @@
 package entity;
 
 import app.Config;
+import org.openapitools.client.model.ListMyGroupChannelsResponse;
 import org.openapitools.client.model.ListUsersResponse;
 import org.openapitools.client.model.SendBirdUser;
 import org.openapitools.client.model.UpdateUserByIdData;
@@ -70,5 +71,21 @@ public class SbUserManager implements UserManager {
             System.err.println("Response headers: " + e.getResponseHeaders());
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public ListMyGroupChannelsResponse listGroupChannelsByUserId(String userId) {
+        try {
+            ListMyGroupChannelsResponse result = apiInstance.listMyGroupChannels(userId).execute();
+            return result;
+        }
+        catch (ApiException e) {
+            System.err.println("Exception when calling listUsers");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+        return null;
     }
 }
