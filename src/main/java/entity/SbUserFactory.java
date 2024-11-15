@@ -2,6 +2,9 @@ package entity;
 
 import org.sendbird.client.ApiClient;
 
+/**
+ * Factory for creating users.
+ */
 public class SbUserFactory implements UserFactory {
     private ApiClient apiClient;
 

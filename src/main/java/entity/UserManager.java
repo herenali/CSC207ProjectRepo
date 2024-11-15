@@ -2,10 +2,27 @@ package entity;
 
 import org.openapitools.client.model.SendBirdUser;
 
+/**
+ * Class for managing users.
+ */
 public interface UserManager {
-    public SendBirdUser updateUserById(String userId, String nickname);
+    /**
+     * Updates the nickname of a user.
+     * @param userId the id of the user
+     * @param nickname the new nickname of the user
+     * @return the user
+     */
+    SendBirdUser updateUserById(String userId, String nickname);
 
-    public SendBirdUser deleteUserById(String userId);
+    /**
+     * Deletes a user.
+     * @param userId the id of the user
+     * @return the deleted user
+     */
+    SendBirdUser deleteUserById(String userId);
 
-    public void listUsers();
+    /**
+     * Prints out the users of the chat app.
+     */
+    void listUsers();
 }

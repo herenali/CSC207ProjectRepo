@@ -8,6 +8,9 @@ import org.sendbird.client.ApiClient;
 import org.sendbird.client.ApiException;
 import org.sendbird.client.api.UserApi;
 
+/**
+ * Class for managing users.
+ */
 public class SbUserManager implements UserManager {
     private String apiToken;
     private UserApi apiInstance;
@@ -17,7 +20,8 @@ public class SbUserManager implements UserManager {
         this.apiToken = Config.apiToken;
     }
 
-    public SendBirdUser updateUserById(String userId, String nickname){
+    @Override
+    public SendBirdUser updateUserById(String userId, String nickname) {
         UpdateUserByIdData updateUserByIdData = new UpdateUserByIdData();
         updateUserByIdData.nickname(nickname);
         try {
@@ -34,6 +38,7 @@ public class SbUserManager implements UserManager {
         return null;
     }
 
+    @Override
     public SendBirdUser deleteUserById(String userId) {
         try {
             apiInstance.deleteUserById(userId).apiToken(apiToken).execute();
@@ -48,12 +53,13 @@ public class SbUserManager implements UserManager {
         return null;
     }
 
+    @Override
     public void listUsers() {
         try {
-            Integer limit = 56;
-            String activeMode = "activated";
-            Boolean showBot = true;
-            ListUsersResponse result = apiInstance.listUsers().limit(limit).activeMode(activeMode).execute();
+            final Integer limit = 56;
+            final String activeMode = "activated";
+            final Boolean showBot = true;
+            final ListUsersResponse result = apiInstance.listUsers().limit(limit).activeMode(activeMode).execute();
             System.out.println(result);
 
         }

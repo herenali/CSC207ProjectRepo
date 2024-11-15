@@ -10,8 +10,10 @@ import org.sendbird.client.api.GroupChannelApi;
 
 import java.util.List;
 
+/**
+ * Class for managing group channels.
+ */
 public class SbGroupChannelManager implements GroupChannelManager {
-    ApiClient defaultClient;
     String apiToken;
     GroupChannelApi apiInstance;
 
@@ -20,6 +22,7 @@ public class SbGroupChannelManager implements GroupChannelManager {
         apiToken = Config.apiToken;
     }
 
+    @Override
     public SendBirdGroupChannel createChannel(List userIds, String name) {
         GcCreateChannelData gcCreateChannelData = new GcCreateChannelData();
         gcCreateChannelData.name(name);
@@ -31,7 +34,8 @@ public class SbGroupChannelManager implements GroupChannelManager {
             SendBirdGroupChannel result = apiInstance.gcCreateChannel().apiToken(apiToken).gcCreateChannelData(gcCreateChannelData).execute();
             return result;
 
-        } catch (ApiException e) {
+        }
+        catch (ApiException e) {
             System.err.println("Exception when calling GroupChannelApi#gcCreateChannel");
             System.err.println("Status code: " + e.getCode());
             System.err.println("Reason: " + e.getResponseBody());
@@ -43,6 +47,7 @@ public class SbGroupChannelManager implements GroupChannelManager {
 
     }
 
+    @Override
     public OcDeleteChannelByUrl200Response deleteChannelByUrl(String channelUrl) {
         try {
             final OcDeleteChannelByUrl200Response result = apiInstance.gcDeleteChannelByUrl(channelUrl).apiToken(apiToken).execute();
