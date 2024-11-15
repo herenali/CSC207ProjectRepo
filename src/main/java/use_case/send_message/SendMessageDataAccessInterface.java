@@ -1,7 +1,7 @@
 package use_case.send_message;
 
 /**
- * DAO for the Login Use Case.
+ * DAO for the Send Message Use Case.
  */
 public interface SendMessageDataAccessInterface {
     /**

@@ -5,12 +5,9 @@ import org.sendbird.client.ApiClient;
 import org.sendbird.client.Configuration;
 
 public class SendMessageInteractor implements SendMessageInputBoundary {
-    private final SendMessageDataAccessInterface userDataAccessObject;
     private final SendMessageOutputBoundary sendMessagePresenter;
 
-    public SendMessageInteractor(SendMessageDataAccessInterface userDataAccessObject,
-                                 SendMessageOutputBoundary sendMessagePresenter) {
-        this.userDataAccessObject = userDataAccessObject;
+    public SendMessageInteractor(SendMessageOutputBoundary sendMessagePresenter) {
         this.sendMessagePresenter = sendMessagePresenter;
     }
 
@@ -22,8 +19,11 @@ public class SendMessageInteractor implements SendMessageInputBoundary {
         defaultClient.setBasePath("https://api-" + applicationId + ".sendbird.com");
         final SbMessageManager sbMessageManager = new SbMessageManager(defaultClient);
 
-        final String userId = userDataAccessObject.getCurrentUserId();
-        final String groupChannelUrl = userDataAccessObject.getCurrentGroupChannelUrl();
+        // final String userId = userDataAccessObject.getCurrentUserId();
+        // final String groupChannelUrl = userDataAccessObject.getCurrentGroupChannelUrl();
+
+        final String userId = sendMessageInputData.getUserId();
+        final String groupChannelUrl = sendMessageInputData.getGroupChannelUrl();
         final String message = sendMessageInputData.getMessage();
         sbMessageManager.sendMessage("group_channels",
                 groupChannelUrl,

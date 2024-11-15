@@ -13,16 +13,15 @@ import use_case.send_message.SendMessageOutputData;
  * The Presenter for the Send Message Use Case.
  */
 public class SendMessagePresenter implements SendMessageOutputBoundary {
-    private final SendMessageViewModel sendMessageViewModel;
+//    private final SendMessageViewModel sendMessageViewModel;
     private final LoggedInViewModel loggedInViewModel;
     private final ViewManagerModel viewManagerModel;
 
     public SendMessagePresenter(ViewManagerModel viewManagerModel,
-                                LoggedInViewModel loggedInViewModel,
-                                SendMessageViewModel send_messageViewModel) {
+                                LoggedInViewModel loggedInViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.loggedInViewModel = loggedInViewModel;
-        this.sendMessageViewModel = send_messageViewModel;
+//        this.sendMessageViewModel = send_messageViewModel;
     }
 
     @Override
@@ -40,8 +39,8 @@ public class SendMessagePresenter implements SendMessageOutputBoundary {
 
     @Override
     public void prepareFailView(String error) {
-        final SendMessageState sendMessageState = sendMessageViewModel.getState();
-        sendMessageState.setSendError(error);
-        sendMessageViewModel.firePropertyChanged();
+//        final SendMessageState sendMessageState = sendMessageViewModel.getState();
+//        sendMessageState.setSendError(error);
+//        sendMessageViewModel.firePropertyChanged();
     }
 }

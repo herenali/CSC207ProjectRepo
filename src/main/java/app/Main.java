@@ -21,6 +21,8 @@ public class Main {
                                             .addLoginUseCase()
                                             .addChangePasswordUseCase()
                                             .addLogoutUseCase()
+                                            .addChooseGroupChannelUseCase()
+                                            .addSendMessageUseCase()
                                             .build();
 
         application.pack();
