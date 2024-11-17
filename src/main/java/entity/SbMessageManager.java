@@ -9,13 +9,12 @@ import org.sendbird.client.api.MessageApi;
 import java.math.BigDecimal;
 import java.util.*;
 
+/**
+ * Class for managing messages.
+ */
 public class SbMessageManager {
-    private ApiClient defaultClient;
     private String apiToken;
     private MessageApi apiInstance;
-
-    // mapping of group channel URLs to a list of message IDs
-    private Map<String, List<BigDecimal>> groupMessageMapping;
 
     public SbMessageManager(ApiClient defaultClient) {
         apiInstance = new MessageApi(defaultClient);
@@ -28,6 +27,15 @@ public class SbMessageManager {
         return groupMessageMapping;
     }
 
+    /**
+     * Sends a message.
+     * @param channelType the type of the group channel
+     * @param channelUrl the url of the group channel
+     * @param userId the id of the user
+     * @param message the message
+     * @param messageType the type of the message
+     * @return a response containing the details of the message
+     */
     public SendBirdMessageResponse sendMessage(String channelType, String channelUrl, String userId, String message, String messageType) {
         final SendMessageData sendMessageData = new SendMessageData();
         sendMessageData.channelType(channelType);
@@ -38,15 +46,6 @@ public class SbMessageManager {
 
         try {
             final SendBirdMessageResponse result = apiInstance.sendMessage(channelType, channelUrl).apiToken(apiToken).sendMessageData(sendMessageData).execute();
-            // add messageID to groupMessageMapping
-//            if (groupMessageMapping.containsKey(channelUrl)) {
-//                groupMessageMapping.get(channelUrl).add(result.getMessageId());
-//            }
-//            else {
-//                final List<BigDecimal> messageIds = new ArrayList<>();
-//                messageIds.add(result.getMessageId());
-//                groupMessageMapping.put(channelUrl, messageIds);
-//            }
             return result;
         }
         catch (ApiException e) {
@@ -59,31 +58,11 @@ public class SbMessageManager {
         return null;
     }
 
-    public SendBirdMessageResponse sendFileMessage(String channelType, String channelUrl, String userId, String message, String messageType) {
-        final SendMessageData sendMessageData = new SendMessageData();
-        sendMessageData.channelType(channelType);
-        // try file and url
-        sendMessageData.url("https://assets.vercel.com/image/upload/v1661135356/front/next-conf-2022/og.png");
-        sendMessageData.channelUrl(channelUrl);
-        sendMessageData.userId(userId);
-        sendMessageData.message(message);
-        sendMessageData.messageType(messageType);
-
-        try {
-            SendBirdMessageResponse result = apiInstance.sendMessage(channelType, channelUrl).apiToken(apiToken).sendMessageData(sendMessageData).execute();
-            return result;
-
-        }
-        catch (ApiException e) {
-            System.err.println("Exception when calling MessageApi#sendMessage");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
-        return null;
-    }
-
+    /**
+     * Lists the messages for a given group channel.
+     * @param channelUrl the url of the group channel
+     * @return a response containing the details of the messages
+     */
     public ListMessagesResponse listMessages(String channelUrl) {
         final String channelType = "group_channels";
         final Date now = new Date();
@@ -106,6 +85,12 @@ public class SbMessageManager {
         return null;
     }
 
+    /**
+     * Deletes a message.
+     * @param channelType the type of the group channel
+     * @param channelUrl the url of the group channel
+     * @param messageId the id of the message
+     */
     public void deleteMessage(String channelType, String channelUrl, String messageId) {
         try {
             final MessageApi.APIdeleteMessageByIdRequest request = apiInstance.deleteMessageById(channelType, channelUrl, messageId).apiToken(apiToken);
@@ -117,7 +102,17 @@ public class SbMessageManager {
             e.printStackTrace();
         }
     }
-
+  
+    /**
+     * Edits a message.
+     * @param channelType the type of the group channel
+     * @param channelUrl the url of the group channel
+     * @param messageId the id of the message
+     * @param userId the id of the user
+     * @param newContent the new content of the message
+     * @param messageType the type of the message
+     * @return a response containing the details of the message
+     */
     public SendBirdMessageResponse editMessage(String channelType, String channelUrl, int messageId, String userId, String newContent, String messageType) {
         UpdateMessageByIdData updateMessageByIdData = new UpdateMessageByIdData();
         updateMessageByIdData.channelType(channelType)
@@ -143,24 +138,13 @@ public class SbMessageManager {
         return null;
     }
 
-    private GcViewNumberOfEachMembersUnreadMessagesResponse getNumberOfUnreadMessages(String channelUrl, String userId) {
-        try {
-            final GcViewNumberOfEachMembersUnreadMessagesResponse result = apiInstance.gcViewNumberOfEachMembersUnreadMessages(channelUrl)
-                    .apiToken(apiToken)
-                    .userIds(userId)
-                    .execute();
-            return result;
-        }
-        catch (ApiException e) {
-            System.err.println("Exception when calling MessageApi#gcViewNumberOfEachMembersUnreadMessages");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
-        return null;
-    }
-
+    /**
+     * Retrieves a message by its id.
+     * @param channelType the type of the group channel
+     * @param channelUrl the url of the group channel
+     * @param messageId the id of the message
+     * @return a response containing the details of the message
+     */
     public SendBirdMessageResponse getMessage(String channelType, String channelUrl, String messageId) {
         try {
             final SendBirdMessageResponse result = apiInstance.viewMessageById(channelType, channelUrl, messageId)
@@ -181,61 +165,18 @@ public class SbMessageManager {
         return null;
     }
 
-    private void markAllMessagesAsRead(String channelUrl, String userId) {
-        // Note: this function currently raises an error because of a bug with the API
-        GcMarkAllMessagesAsReadData gcMarkAllMessagesAsReadData = new GcMarkAllMessagesAsReadData();
-        gcMarkAllMessagesAsReadData.setChannelUrl(channelUrl);
-        gcMarkAllMessagesAsReadData.setUserId(userId);
-        gcMarkAllMessagesAsReadData.setTimestamp(0);
-        try {
-            final Object result = apiInstance.gcMarkAllMessagesAsRead(channelUrl)
-                    .apiToken(apiToken)
-                    .gcMarkAllMessagesAsReadData(gcMarkAllMessagesAsReadData)
-                    .execute();
-        }
-        catch (ApiException e) {
-            System.err.println("Exception when calling MessageApi#gcMarkAllMessagesAsRead");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
-    }
-
-    public List<ListMessagesResponseMessagesInner> getUnreadMessages(String channelUrl, String userId) {
-        final List<ListMessagesResponseMessagesInner> unreadMessages = new ArrayList<>();
-
-        final GcViewNumberOfEachMembersUnreadMessagesResponse unreadMessagesResponse = getNumberOfUnreadMessages(channelUrl, userId);
-        final int numUnreadMessages = unreadMessagesResponse.getUnread().get(userId).intValue();
-        final List<ListMessagesResponseMessagesInner> messages = listMessages(channelUrl).getMessages();
-
-        // loop through list of all messages to get unread messages
-        System.out.println(messages.size());
-        System.out.println(numUnreadMessages);
-        int startingIndex;
-        if (numUnreadMessages > messages.size()) {
-            startingIndex = 0;
-        }
-        else {
-            startingIndex = messages.size() - numUnreadMessages;
-        }
-        for (int i = startingIndex; i < messages.size(); i++) {
-            unreadMessages.add(messages.get(i));
-        }
-
-        // mark all messages as read
-        // markAllMessagesAsRead(channelUrl, userId);
-
-        return unreadMessages;
-    }
-
+    /**
+     * Gets all messages from a given channel as a list.
+     * @param channelUrl the url of the group channel
+     * @return a list of responses containing the details of the message
+     */
     public List<ListMessagesResponseMessagesInner> getAllMessages(String channelUrl) {
         final List<ListMessagesResponseMessagesInner> allMessages = new ArrayList<>();
 
         final List<ListMessagesResponseMessagesInner> messages = listMessages(channelUrl).getMessages();
 
-        for (int i = 0; i < messages.size(); i++) {
-            allMessages.add(messages.get(i));
+        for (ListMessagesResponseMessagesInner message : messages) {
+            allMessages.add(message);
         }
         return allMessages;
     }

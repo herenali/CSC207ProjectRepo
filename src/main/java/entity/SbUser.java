@@ -9,8 +9,10 @@ import org.sendbird.client.api.UserApi;
 
 import java.util.UUID;
 
+/**
+ * The representation of a user in our program.
+ */
 public class SbUser implements User {
-    // private ApiClient defaultClient;
     private String apiToken;
     private UserApi apiInstance;
 

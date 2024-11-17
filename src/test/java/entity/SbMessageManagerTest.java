@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 
 import static org.junit.Assert.assertEquals;
 
-public class SbMessageManagerTest {
+class SbMessageManagerTest {
     private static SbMessageManager sbMessageManager;
     private static SbGroupChannelManager sbGroupChannelManager;
     private static SbUserManager sbUserManager;
@@ -52,7 +52,7 @@ public class SbMessageManagerTest {
     }
 
     @Test
-    public void sendMessage() {
+    void sendMessage() {
         BigDecimal messageId = sbMessageManager.sendMessage("group_channels",
                 groupChannelUrl,
                 userPaulId,
@@ -65,7 +65,7 @@ public class SbMessageManagerTest {
     }
 
 //    @Test
-//    public void getUnreadMessages() {
+//    void getUnreadMessages() {
 //        sbMessageManager.sendMessage("group_channels",
 //                groupChannelUrl,
 //                userPaulId,

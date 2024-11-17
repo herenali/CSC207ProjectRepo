@@ -16,12 +16,13 @@ public class SendMessageController {
     /**
      * Executes the Send Message Use Case.
      * @param userId the user ID of the user logging in
+     * @param groupChannelUrl the url of the group channel
      * @param message the message contents to send
      */
-    public void execute(String userId, String message) {
+    public void execute(String userId, String groupChannelUrl, String message) {
         // 1. instantiate the `SendMessageData`, which should contain the username.
         // 2. tell the Interactor to execute.
-        final SendMessageInputData sendMessageInputData = new SendMessageInputData(message);
+        final SendMessageInputData sendMessageInputData = new SendMessageInputData(userId, groupChannelUrl, message);
 
         sendMessageCaseInteractor.execute(sendMessageInputData);
     }
