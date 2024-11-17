@@ -77,6 +77,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
 
         String[] sampleChats = {"Chat 1", "Chat 2", "Chat 3"}; // replace with actual chats
 
+        // fetch chats from sendbird
         final String apiToken = "e4fbd0788231cf40830bf62f866aa001182f9971";
         final String applicationId = "049E2510-3508-4C99-80F9-A3C24ECA7677";
         final ApiClient defaultClient = Configuration.getDefaultApiClient().addDefaultHeader("Api-Token", apiToken);
@@ -235,19 +236,25 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         final String selectedChat = chatList.getSelectedValue();
         chatArea.setText("Display messages for: " + selectedChat);
 
-        final String groupChannelUrl = selectedChat.substring(selectedChat.lastIndexOf(": ") + 1);
-        loggedInViewModel.getState().setGroupChannelUrl(groupChannelUrl);
+        if (selectedChat != null) {
+            final String groupChannelUrl = selectedChat.substring(selectedChat.lastIndexOf(": ") + 1);
+            loggedInViewModel.getState().setGroupChannelUrl(groupChannelUrl);
 
-        chooseGroupChannelController.execute(groupChannelUrl);
-        final List<List<String>> usersAndMessages = loggedInViewModel.getState().getUsersAndMessages();
-        final StringBuilder chatAreaBuilder = new StringBuilder();
-        for (List<String> userAndMessage : usersAndMessages) {
-            chatAreaBuilder.append(userAndMessage.get(0));
-            chatAreaBuilder.append(": ");
-            chatAreaBuilder.append(userAndMessage.get(1));
-            chatAreaBuilder.append("\n");
+            chooseGroupChannelController.execute(groupChannelUrl);
+            final List<List<String>> usersAndMessages = loggedInViewModel.getState().getUsersAndMessages();
+            final StringBuilder chatAreaBuilder = new StringBuilder();
+            for (List<String> userAndMessage : usersAndMessages) {
+                chatAreaBuilder.append(userAndMessage.get(0));
+                chatAreaBuilder.append(": ");
+                chatAreaBuilder.append(userAndMessage.get(1));
+                chatAreaBuilder.append("\n");
+            }
+            chatArea.setText(chatAreaBuilder.toString());
         }
-        chatArea.setText(chatAreaBuilder.toString());
+        else {
+            chatArea.setText("No chat selected.");
+        }
+
     }
 
     public String getViewName() {
