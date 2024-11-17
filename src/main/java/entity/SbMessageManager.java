@@ -19,6 +19,12 @@ public class SbMessageManager {
     public SbMessageManager(ApiClient defaultClient) {
         apiInstance = new MessageApi(defaultClient);
         apiToken = Config.apiToken;
+        groupMessageMapping = new HashMap<>();
+        this.defaultClient = defaultClient;
+    }
+
+    public Map<String, List<BigDecimal>> getGroupMessageMapping() {
+        return groupMessageMapping;
     }
 
     /**
@@ -96,7 +102,7 @@ public class SbMessageManager {
             e.printStackTrace();
         }
     }
-
+  
     /**
      * Edits a message.
      * @param channelType the type of the group channel
@@ -107,9 +113,29 @@ public class SbMessageManager {
      * @param messageType the type of the message
      * @return a response containing the details of the message
      */
-    public SendBirdMessageResponse editMessage(String channelType, String channelUrl, String messageId, String userId, String newContent, String messageType) {
-        deleteMessage(channelType, channelUrl, messageId);
-        return sendMessage(channelType, channelUrl, userId, newContent, messageType);
+    public SendBirdMessageResponse editMessage(String channelType, String channelUrl, int messageId, String userId, String newContent, String messageType) {
+        UpdateMessageByIdData updateMessageByIdData = new UpdateMessageByIdData();
+        updateMessageByIdData.channelType(channelType)
+                .channelUrl(channelUrl)
+                .messageId(messageId)
+                .messageType(messageType)
+                .message(newContent);
+
+        try {
+            SendBirdMessageResponse updatedMessage = apiInstance.updateMessageById(channelType, channelUrl, String.valueOf(messageId))
+                    .apiToken(apiToken)
+                    .updateMessageByIdData(updateMessageByIdData)
+                    .execute();
+            System.out.println("Messaged updated successfully to " + updatedMessage);
+            return updatedMessage;
+        } catch (ApiException e) {
+            System.err.println("Exception when calling MessageApi#updateMessageById");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
