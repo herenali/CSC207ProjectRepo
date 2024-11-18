@@ -64,7 +64,7 @@ class SbMessageManagerTest {
                 sbMessageManager.getMessage("group_channels", groupChannelUrl, messageId.toString())
                         .getMessage());
     }
-    
+
 
     @Test
     public void testEditMessage() {

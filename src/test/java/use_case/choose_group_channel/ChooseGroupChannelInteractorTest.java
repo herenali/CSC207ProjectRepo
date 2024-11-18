@@ -17,9 +17,9 @@ public class ChooseGroupChannelInteractorTest {
             @Override
             public void prepareSuccessView(ChooseGroupChannelOutputData outputData) {
                 List<List<String>> usersAndMessages = outputData.getUsersAndMessages();
-                List<String> lastUserAndMessage = usersAndMessages.get(usersAndMessages.size() - 1);
-                assertEquals(lastUserAndMessage.get(0), "Paul");
-                assertEquals(lastUserAndMessage.get(1), "Hello! This is the first message.");
+                List<String> firstUserAndMessage = usersAndMessages.get(0);
+                assertEquals(firstUserAndMessage.get(0), "Paul");
+                assertEquals(firstUserAndMessage.get(1), "New message");
             }
 
             @Override
