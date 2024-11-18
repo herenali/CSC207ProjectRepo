@@ -155,29 +155,39 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         newChatButton.addActionListener(evt -> {
             JPanel panel = new JPanel();
             panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-
+            String[] options = {"Single Chat", "Group Chat"};
+            int chatType = JOptionPane.showOptionDialog(null, "Select Chat Type:", "New Chat",
+                    JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
             JTextField chatNameField = new JTextField(15);
-            JTextField userNameField = new JTextField(15);
-
-            panel.add(new JLabel("New Chat Name: "));
+            panel.add(new JLabel("Chat Name: "));
             panel.add(chatNameField);
-            panel.add(Box.createVerticalStrut(10));
-            panel.add(new JLabel("Enter Username: "));
-            panel.add(userNameField);
-
-            int result = JOptionPane.showConfirmDialog(null, panel, "New Chat", JOptionPane.OK_CANCEL_OPTION);
-
-            if (result == JOptionPane.OK_OPTION) {
-                String newChatName = chatNameField.getText().trim();
-                String newUserName = userNameField.getText().trim();
-
-                if (!newChatName.isEmpty() && !newUserName.isEmpty()) {
-                    DefaultListModel<String> model = (DefaultListModel<String>) chatList.getModel();
-                    String chatEntry = newChatName + " (Chat with: " + newUserName + ")";
-                    model.addElement(newChatName);
-                    chatList.setSelectedValue(chatEntry, true);
-                } else {
-                    JOptionPane.showMessageDialog(null, "Error in either chat name or username. ");
+            if (chatType == 0) {
+                JTextField userNameField = new JTextField(15);
+                panel.add(new JLabel("Enter Username: "));
+                panel.add(userNameField);
+                int result = JOptionPane.showConfirmDialog(null, panel, "New Single Chat", JOptionPane.OK_CANCEL_OPTION);
+                if (result == JOptionPane.OK_OPTION) {
+                    String chatName = chatNameField.getText().trim();
+                    String targetUser = userNameField.getText().trim();
+                    if (!chatName.isEmpty() && !targetUser.isEmpty()) {
+                        chooseGroupChannelController.createSingleChat(chatName, targetUser);
+                        updateChatArea();
+                    }
+                }
+            }
+            else if (chatType == 1) {
+                JTextField participantsField = new JTextField(20);
+                panel.add(new JLabel("Enter Participants (comma-separated): "));
+                panel.add(participantsField);
+                int result = JOptionPane.showConfirmDialog(null, panel, "New Group Chat", JOptionPane.OK_CANCEL_OPTION);
+                if (result == JOptionPane.OK_OPTION) {
+                    String chatName = chatNameField.getText().trim();
+                    String participantsInput = participantsField.getText().trim();
+                    if (!chatName.isEmpty() && !participantsInput.isEmpty()) {
+                        List<String> participants = List.of(participantsInput.split(","));
+                        chooseGroupChannelController.createGroupChat(chatName, participants);
+                        updateChatArea();
+                    }
                 }
             }
         });
