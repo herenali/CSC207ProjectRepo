@@ -1,13 +1,17 @@
 package view;
 
+import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.*;
-import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+
+import org.openapitools.client.model.SendBirdGroupChannel;
+import org.sendbird.client.ApiClient;
+import org.sendbird.client.Configuration;
 
 import entity.SbUserManager;
 import interface_adapter.change_password.LoggedInState;
@@ -16,10 +20,6 @@ import interface_adapter.choose_group_channel.ChooseGroupChannelController;
 import interface_adapter.create_group_channel.CreateGroupChannelController;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.send_message.SendMessageController;
-import org.openapitools.client.model.SendBirdGroupChannel;
-import org.sendbird.client.ApiClient;
-import org.sendbird.client.Configuration;
-
 
 /**
  * The View for when the user is logged into the program.
@@ -76,7 +76,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         final JPanel leftPanel = new JPanel();
         leftPanel.setLayout(new BorderLayout());
 
-        final String[] sampleChats = {"Chat 1", "Chat 2", "Chat 3"}; // replace with actual chats
+        // final String[] sampleChats = {"Chat 1", "Chat 2", "Chat 3"}; // replace with actual chats
 
         // fetch chats from sendbird
         final String apiToken = "e4fbd0788231cf40830bf62f866aa001182f9971";
