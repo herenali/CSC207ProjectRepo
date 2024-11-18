@@ -5,6 +5,7 @@ import entity.SbUserManager;
 import interface_adapter.change_password.LoggedInState;
 import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.choose_group_channel.ChooseGroupChannelController;
+import interface_adapter.create_group_channel.CreateGroupChannelController;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.send_message.SendMessageController;
 import org.openapitools.client.model.SendBirdGroupChannel;
@@ -15,7 +16,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
@@ -28,6 +28,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
     private final LoggedInViewModel loggedInViewModel;
     private LogoutController logoutController;
     private ChooseGroupChannelController chooseGroupChannelController;
+    private CreateGroupChannelController createGroupChannelController;
     private SendMessageController sendMessageController;
 
     private final JButton logOutButton;
@@ -104,7 +105,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
 
         // chatList = new JList<>(sampleChats);
         chatList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        chatList.setSelectedIndex(0); // first chat
+        chatList.setSelectedIndex(0);
         chatList.addListSelectionListener(e -> updateChatArea());
 
         JScrollPane chatListScrollPane = new JScrollPane(chatList);
@@ -120,11 +121,9 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         this.add(leftPanel, BorderLayout.WEST);
         this.add(chatAreaScrollPane, BorderLayout.CENTER);
 
-        // TODO: Implement sendButton.addActionListener(e -> sendMessages.sendMessage());
         sendButton.addActionListener(evt -> {
             final String messageText = messageInputField.getText().trim();
             if (!messageText.isEmpty()) {
-//                sendMessages.sendMessage();
                 final String groupChannelUrl = loggedInViewModel.getState().getGroupChannelUrl();
                 if (groupChannelUrl != null && !groupChannelUrl.isEmpty()) {
                     sendMessageController.execute(currentUserId, groupChannelUrl, messageText);
@@ -137,7 +136,6 @@ public class ChatView extends JPanel implements PropertyChangeListener {
             }
         });
 
-        // action listeners for buttons
         logOutButton.addActionListener(
                 // This creates an anonymous subclass of ActionListener and instantiates it.
                 evt -> {
@@ -170,7 +168,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                     String chatName = chatNameField.getText().trim();
                     String targetUser = userNameField.getText().trim();
                     if (!chatName.isEmpty() && !targetUser.isEmpty()) {
-                        chooseGroupChannelController.createSingleChat(chatName, targetUser);
+                        createGroupChannelController.createSingleChat(chatName, targetUser);
                         updateChatArea();
                     }
                 }
@@ -189,7 +187,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                             JOptionPane.showMessageDialog(null, "You must enter at least one user.");
                             return;
                         }
-                        chooseGroupChannelController.createGroupChat(chatName, users);
+                        createGroupChannelController.createGroupChat(chatName, users);
                         updateChatArea();
                     }
                     else {
@@ -284,6 +282,10 @@ public class ChatView extends JPanel implements PropertyChangeListener {
 
     public void setChooseGroupChannelController(ChooseGroupChannelController chooseGroupChannelController) {
         this.chooseGroupChannelController = chooseGroupChannelController;
+    }
+
+    public void setCreateGroupChannelController(CreateGroupChannelController createGroupChannelController) {
+        this.createGroupChannelController = createGroupChannelController;
     }
 
     public void setSendMessageController(SendMessageController sendMessageController) {
