@@ -33,15 +33,25 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
     }
 
     @Override
-    public User get(String username) {
-        return users.get(username);
+    public String getPassword(String username) {
+        return "";
     }
 
     @Override
-    public void changePassword(User user) {
-        // Replace the old entry with the new password
-        users.put(user.getName(), user);
+    public String getUserId(String username) {
+        return "";
     }
+
+//    @Override
+//    public User get(String username) {
+//        return users.get(username);
+//    }
+
+//    @Override
+//    public void changePassword(User user) {
+//        // Replace the old entry with the new password
+//        users.put(user.getName(), user);
+//    }
 
     @Override
     public void setCurrentUsername(String name) {
@@ -51,5 +61,10 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
     @Override
     public String getCurrentUsername() {
         return this.currentUsername;
+    }
+
+    @Override
+    public void changePassword(String username, String newPassword) {
+
     }
 }
