@@ -29,11 +29,13 @@ public class ChatViewTest {
                 .addDefaultHeader("Api-Token", apiToken);
         defaultClient.setBasePath("https://api-" + applicationId + ".sendbird.com");
 
+        loggedInViewModel = new LoggedInViewModel();
+        viewManagerModel = new ViewManagerModel();
+
         ChooseGroupChannelPresenter presenter = new ChooseGroupChannelPresenter(viewManagerModel, loggedInViewModel);
         ChooseGroupChannelInteractor interactor = new ChooseGroupChannelInteractor(presenter);
         chooseGroupChannelController = new ChooseGroupChannelController(interactor);
 
-        loggedInViewModel = new LoggedInViewModel();
         chatView = new ChatView(loggedInViewModel);
         chatView.setChooseGroupChannelController(chooseGroupChannelController);
     }
@@ -47,12 +49,11 @@ public class ChatViewTest {
         users.add(userField1.getText());
         users.add(userField2.getText());
         ChooseGroupChannelInputData inputData = ChooseGroupChannelInputData.forGroupChat(chatNameField.getText(), users);
-        chooseGroupChannelController.createGroupChat(chatNameField.getText(), users);
-        String expectedChatName = "Group Chat";
-        assertEquals(expectedChatName, inputData.getChatName());
-        assertEquals(2, inputData.getUsers().size());
-        assertEquals("ABC", inputData.getUsers().get(0));
-        assertEquals("DEF", inputData.getUsers().get(1));
+        chooseGroupChannelController.createGroupChat(chatNameField.getText(), users);;
+        assertEquals("Group Chat", inputData.getChatName());
+        assertEquals(2, users.size());
+        assertEquals("ABC", users.get(0));
+        assertEquals("DEF", users.get(1));
         System.out.println("Group chat created with users: " + inputData.getUsers());
     }
 
