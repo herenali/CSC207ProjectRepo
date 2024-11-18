@@ -37,4 +37,16 @@ public class ChooseGroupChannelInputData {
     String getGroupChannelUrl() {
         return groupChannelUrl;
     }
+
+    public String getChatName() {
+        return chatName;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public List<String> getUsers() {
+        return users;
+    }
 }

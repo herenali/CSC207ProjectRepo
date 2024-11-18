@@ -176,17 +176,24 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                 }
             }
             else if (chatType == 1) {
-                JTextField participantsField = new JTextField(20);
-                panel.add(new JLabel("Enter Participants (comma-separated): "));
-                panel.add(participantsField);
+                JTextField usersField = new JTextField(20);
+                panel.add(new JLabel("Enter Users (comma-separated): "));
+                panel.add(usersField);
                 int result = JOptionPane.showConfirmDialog(null, panel, "New Group Chat", JOptionPane.OK_CANCEL_OPTION);
                 if (result == JOptionPane.OK_OPTION) {
                     String chatName = chatNameField.getText().trim();
-                    String participantsInput = participantsField.getText().trim();
-                    if (!chatName.isEmpty() && !participantsInput.isEmpty()) {
-                        List<String> participants = List.of(participantsInput.split(","));
-                        chooseGroupChannelController.createGroupChat(chatName, participants);
+                    String usersInput = usersField.getText().trim();
+                    if (!chatName.isEmpty() && !usersInput.isEmpty()) {
+                        List<String> users = List.of(usersInput.split(","));
+                        if (users.isEmpty()) {
+                            JOptionPane.showMessageDialog(null, "You must enter at least one user.");
+                            return;
+                        }
+                        chooseGroupChannelController.createGroupChat(chatName, users);
                         updateChatArea();
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(null, "You must enter at least one user.");
                     }
                 }
             }
