@@ -19,12 +19,6 @@ public class SbMessageManager {
     public SbMessageManager(ApiClient defaultClient) {
         apiInstance = new MessageApi(defaultClient);
         apiToken = Config.apiToken;
-        groupMessageMapping = new HashMap<>();
-        this.defaultClient = defaultClient;
-    }
-
-    public Map<String, List<BigDecimal>> getGroupMessageMapping() {
-        return groupMessageMapping;
     }
 
     /**

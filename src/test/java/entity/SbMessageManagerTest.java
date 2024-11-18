@@ -58,33 +58,13 @@ class SbMessageManagerTest {
                 userPaulId,
                 "Hello! This is the first message.",
                 "MESG").getMessageId();
-        System.out.println(sbMessageManager.listMessages(groupChannelUrl));
+//        System.out.println(sbMessageManager.listMessages(groupChannelUrl));
+        System.out.println(sbMessageManager.listMessages(groupChannelUrl).getMessages());
         assertEquals("Hello! This is the first message.",
                 sbMessageManager.getMessage("group_channels", groupChannelUrl, messageId.toString())
                         .getMessage());
     }
-
-//    @Test
-//    void getUnreadMessages() {
-//        sbMessageManager.sendMessage("group_channels",
-//                groupChannelUrl,
-//                userPaulId,
-//                "New message",
-//                "MESG");
-//        List<ListMessagesResponseMessagesInner> unreadMessages = sbMessageManager
-//                .getUnreadMessages(groupChannelUrl, userJonathanId);
-//        System.out.println(unreadMessages);
-//        assertEquals("New Message", unreadMessages.get(unreadMessages.size() - 1).getMessage());
-//    }
-
-    @Test void mapping() {
-        sbMessageManager.sendMessage("group_channels",
-                groupChannelUrl,
-                userPaulId,
-                "New message",
-                "MESG");
-        System.out.println(sbMessageManager.getGroupMessageMapping());
-    }
+    
 
     @Test
     public void testEditMessage() {
