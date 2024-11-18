@@ -22,13 +22,16 @@ public class SbGroupChannelManager implements GroupChannelManager {
         apiToken = Config.apiToken;
     }
 
+    public SendBirdGroupChannel createChannel(String userId, String name) {
+        return createChannel(List.of(userId), name);
+    }
+
     @Override
     public SendBirdGroupChannel createChannel(List userIds, String name) {
         GcCreateChannelData gcCreateChannelData = new GcCreateChannelData();
         gcCreateChannelData.name(name);
-
         gcCreateChannelData.userIds(userIds);
-        gcCreateChannelData.isDistinct(false);
+        gcCreateChannelData.isDistinct(userIds.size() == 1);
 
         try {
             SendBirdGroupChannel result = apiInstance.gcCreateChannel().apiToken(apiToken).gcCreateChannelData(gcCreateChannelData).execute();
