@@ -20,12 +20,26 @@ public interface LoginUserDataAccessInterface {
      */
     void save(User user);
 
+//    /**
+//     * Returns the user with the given username.
+//     * @param username the username to look up
+//     * @return the user with the given username
+//     */
+//    User get(String username);
+
     /**
-     * Returns the user with the given username.
+     * Returns password of the user with the given username.
      * @param username the username to look up
-     * @return the user with the given username
+     * @return the password of the user with the given username
      */
-    User get(String username);
+    String getPassword(String username);
+
+    /**
+     * Returns userId of the user with the given username.
+     * @param username the username to look up
+     * @return the userId of the user with the given username
+     */
+    String getUserId(String username);
 
     /**
      * Returns the username of the curren user of the application.

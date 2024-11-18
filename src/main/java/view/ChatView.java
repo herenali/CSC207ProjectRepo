@@ -114,6 +114,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         chatArea = new JTextArea();
         chatArea.setEditable(false);
         JScrollPane chatAreaScrollPane = new JScrollPane(chatArea);
+        chatArea.setText("No chat selected.");
 
         // add to panel
         this.add(topPanel, BorderLayout.NORTH);
@@ -148,6 +149,9 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                         logoutController.execute(
                                 currentState.getUsername()
                         );
+
+                        // Clear chat area
+                        chatArea.setText("No chat selected.");
                     }
                 }
         );

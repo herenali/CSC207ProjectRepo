@@ -1,11 +1,13 @@
 package app;
 
 import java.awt.CardLayout;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import data_access.FileUserDataAccessObject;
 import data_access.InMemoryUserDataAccessObject;
 import entity.SbUserFactory;
 import entity.UserFactory;
@@ -73,7 +75,8 @@ public class AppBuilder {
     private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
     // thought question: is the hard dependency below a problem?
-    private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
+//    private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
+    private final FileUserDataAccessObject userDataAccessObject;
 
     private SignupView signupView;
     private SignupViewModel signupViewModel;
@@ -85,10 +88,19 @@ public class AppBuilder {
     private LoginView loginView;
 
     public AppBuilder() {
+        FileUserDataAccessObject tempUserDataAccessObject;
         cardPanel.setLayout(cardLayout);
         final ApiClient defaultClient = Configuration.getDefaultApiClient();
         defaultClient.setBasePath("https://api-" + Config.appId + ".sendbird.com");
         userFactory = new SbUserFactory(defaultClient);
+        try {
+            tempUserDataAccessObject = new FileUserDataAccessObject("userDataFile", userFactory);
+        }
+        catch (IOException e) {
+            tempUserDataAccessObject = null;
+            e.printStackTrace();
+        }
+        userDataAccessObject = tempUserDataAccessObject;
     }
 
     /**
