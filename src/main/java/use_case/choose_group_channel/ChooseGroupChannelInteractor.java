@@ -29,11 +29,18 @@ public class ChooseGroupChannelInteractor implements ChooseGroupChannelInputBoun
         final SbMessageManager sbMessageManager = new SbMessageManager(defaultClient);
         final SbGroupChannelManager sbGroupChannelManager = new SbGroupChannelManager(defaultClient);
         try {
-            if (chooseGroupChannelInputData.getGroupChannelUrl() != null) {
+            if (chooseGroupChannelInputData.getUsers() != null && !chooseGroupChannelInputData.getUsers().isEmpty()) {
                 sbGroupChannelManager.createChannel(chooseGroupChannelInputData.getUsers(), chooseGroupChannelInputData.getChatName());
             }
+            else if (chooseGroupChannelInputData.getUser() != null && !chooseGroupChannelInputData.getUser().isEmpty()) {
+                sbGroupChannelManager.createChannel(
+                        chooseGroupChannelInputData.getUser(),
+                        chooseGroupChannelInputData.getChatName()
+                );
+            }
             else {
-                sbGroupChannelManager.createChannel(chooseGroupChannelInputData.getUser(), chooseGroupChannelInputData.getChatName());
+                chooseGroupChannelPresenter.prepareFailView("No valid user or users.");
+                return;
             }
             chooseGroupChannelPresenter.prepareSuccessView(new ChooseGroupChannelOutputData("Chat is created."));
         }
