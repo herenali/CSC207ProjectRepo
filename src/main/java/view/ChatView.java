@@ -36,7 +36,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
     private final JButton newChatButton;
     private final JButton profileButton;
 
-    private final JList<String> chatList;
+    private JList<String> chatList;
     private final JTextArea chatArea;
 
     private final Map<String, List<String>> chatMessages = new HashMap<>();
@@ -127,9 +127,11 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         sendButton.addActionListener(evt -> {
             final String messageText = messageInputField.getText().trim();
             if (!messageText.isEmpty()) {
+//                sendMessages.sendMessage();
+                final String updatedCurrentUserId = loggedInViewModel.getState().getUserId();
                 final String groupChannelUrl = loggedInViewModel.getState().getGroupChannelUrl();
                 if (groupChannelUrl != null && !groupChannelUrl.isEmpty()) {
-                    sendMessageController.execute(currentUserId, groupChannelUrl, messageText);
+                    sendMessageController.execute(updatedCurrentUserId, groupChannelUrl, messageText);
                 }
                 else {
                     chatArea.setText("No group channel selected.");
@@ -257,7 +259,8 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         chatArea.setText("Display messages for: " + selectedChat);
 
         if (selectedChat != null) {
-            final String groupChannelUrl = selectedChat.substring(selectedChat.lastIndexOf(": ") + 1);
+            final String groupChannelUrl = selectedChat.substring(selectedChat.lastIndexOf(": ") + 2);
+            System.out.println(groupChannelUrl);
             loggedInViewModel.getState().setGroupChannelUrl(groupChannelUrl);
 
             chooseGroupChannelController.execute(groupChannelUrl);
@@ -307,5 +310,33 @@ public class ChatView extends JPanel implements PropertyChangeListener {
 //            final LoggedInState state = (LoggedInState) evt.getNewValue();
 //            JOptionPane.showMessageDialog(null, "password updated for " + state.getUsername());
 //        }
+        if (evt.getPropertyName().equals("login")) {
+            // fetch chats from sendbird
+            final String apiToken = "e4fbd0788231cf40830bf62f866aa001182f9971";
+            final String applicationId = "049E2510-3508-4C99-80F9-A3C24ECA7677";
+            final ApiClient defaultClient = Configuration.getDefaultApiClient().addDefaultHeader("Api-Token", apiToken);
+            defaultClient.setBasePath("https://api-" + applicationId + ".sendbird.com");
+            final SbUserManager sbUserManager = new SbUserManager(defaultClient);
+            final String currentUserId = loggedInViewModel.getState().getUserId();
+            DefaultListModel chats = new DefaultListModel();
+
+            if (currentUserId.length() > 0) {
+                final List<SendBirdGroupChannel> groupChannels = sbUserManager
+                        .listGroupChannelsByUserId(loggedInViewModel.getState().getUserId()).getChannels();
+                for (int i = 0; i < groupChannels.size(); i++) {
+                    SendBirdGroupChannel groupChannel = groupChannels.get(i);
+                    StringBuilder chatName = new StringBuilder();
+                    chatName.append(groupChannel.getName());
+                    chatName.append(": ");
+                    chatName.append(groupChannel.getChannelUrl());
+                    chats.add(i, chatName.toString());
+                }
+                chatList.setModel(chats);
+            }
+            else {
+                chatList = new JList<>();
+            }
+
+        }
     }
 }

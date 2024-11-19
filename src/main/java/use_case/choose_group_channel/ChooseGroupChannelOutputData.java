@@ -22,6 +22,7 @@ public class ChooseGroupChannelOutputData {
             final List<String> userAndMessage = new ArrayList<>();
             userAndMessage.add(message.getUser().getNickname());
             userAndMessage.add(message.getMessage());
+            usersAndMessages.add(userAndMessage);
         }
     }
 
