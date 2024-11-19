@@ -1,11 +1,9 @@
 package use_case.choose_group_channel;
 
-import entity.SbGroupChannelManager;
 import entity.SbMessageManager;
 import org.openapitools.client.model.ListMessagesResponse;
 import org.sendbird.client.ApiClient;
 import org.sendbird.client.Configuration;
-
 
 /**
  * The Choose Group Channel Interactor.
@@ -27,26 +25,6 @@ public class ChooseGroupChannelInteractor implements ChooseGroupChannelInputBoun
         defaultClient.setBasePath("https://api-" + applicationId + ".sendbird.com");
 
         final SbMessageManager sbMessageManager = new SbMessageManager(defaultClient);
-        final SbGroupChannelManager sbGroupChannelManager = new SbGroupChannelManager(defaultClient);
-        try {
-            if (chooseGroupChannelInputData.getUsers() != null && !chooseGroupChannelInputData.getUsers().isEmpty()) {
-                sbGroupChannelManager.createChannel(chooseGroupChannelInputData.getUsers(), chooseGroupChannelInputData.getChatName());
-            }
-            else if (chooseGroupChannelInputData.getUser() != null && !chooseGroupChannelInputData.getUser().isEmpty()) {
-                sbGroupChannelManager.createChannel(
-                        chooseGroupChannelInputData.getUser(),
-                        chooseGroupChannelInputData.getChatName()
-                );
-            }
-            else {
-                chooseGroupChannelPresenter.prepareFailView("No valid user or users.");
-                return;
-            }
-            chooseGroupChannelPresenter.prepareSuccessView(new ChooseGroupChannelOutputData("Chat is created."));
-        }
-        catch (Exception e) {
-            chooseGroupChannelPresenter.prepareFailView("Failed to create chat. ");
-        }
 
         final ListMessagesResponse messagesResponse = sbMessageManager.listMessages(groupChannelUrl);
         final ChooseGroupChannelOutputData outputData = new ChooseGroupChannelOutputData(messagesResponse);
