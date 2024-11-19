@@ -15,12 +15,12 @@ import java.util.*;
 public class SbMessageManager {
     private String apiToken;
     private MessageApi apiInstance;
+    private Map<String, List<BigDecimal>> groupMessageMapping;
 
     public SbMessageManager(ApiClient defaultClient) {
         apiInstance = new MessageApi(defaultClient);
         apiToken = Config.apiToken;
         groupMessageMapping = new HashMap<>();
-        this.defaultClient = defaultClient;
     }
 
     public Map<String, List<BigDecimal>> getGroupMessageMapping() {
@@ -114,7 +114,7 @@ public class SbMessageManager {
      * @return a response containing the details of the message
      */
     public SendBirdMessageResponse editMessage(String channelType, String channelUrl, int messageId, String userId, String newContent, String messageType) {
-        UpdateMessageByIdData updateMessageByIdData = new UpdateMessageByIdData();
+        final UpdateMessageByIdData updateMessageByIdData = new UpdateMessageByIdData();
         updateMessageByIdData.channelType(channelType)
                 .channelUrl(channelUrl)
                 .messageId(messageId)
@@ -122,7 +122,7 @@ public class SbMessageManager {
                 .message(newContent);
 
         try {
-            SendBirdMessageResponse updatedMessage = apiInstance.updateMessageById(channelType, channelUrl, String.valueOf(messageId))
+            final SendBirdMessageResponse updatedMessage = apiInstance.updateMessageById(channelType, channelUrl, String.valueOf(messageId))
                     .apiToken(apiToken)
                     .updateMessageByIdData(updateMessageByIdData)
                     .execute();

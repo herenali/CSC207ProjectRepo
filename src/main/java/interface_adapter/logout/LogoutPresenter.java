@@ -33,6 +33,9 @@ public class LogoutPresenter implements LogoutOutputBoundary {
 
         final var loggedInState = loggedInViewModel.getState();
         loggedInState.setUsername("");
+        loggedInState.setGroupChannelUrl("");
+        loggedInState.setUserId("");
+
         loggedInViewModel.setState(loggedInState);
         loggedInViewModel.firePropertyChanged();
         // 1. get the LoggedInState out of the appropriate View Model,
