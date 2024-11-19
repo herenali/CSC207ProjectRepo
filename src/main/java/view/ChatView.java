@@ -126,9 +126,10 @@ public class ChatView extends JPanel implements PropertyChangeListener {
             final String messageText = messageInputField.getText().trim();
             if (!messageText.isEmpty()) {
 //                sendMessages.sendMessage();
+                final String updatedCurrentUserId = loggedInViewModel.getState().getUserId();
                 final String groupChannelUrl = loggedInViewModel.getState().getGroupChannelUrl();
                 if (groupChannelUrl != null && !groupChannelUrl.isEmpty()) {
-                    sendMessageController.execute(currentUserId, groupChannelUrl, messageText);
+                    sendMessageController.execute(updatedCurrentUserId, groupChannelUrl, messageText);
                 }
                 else {
                     chatArea.setText("No group channel selected.");
