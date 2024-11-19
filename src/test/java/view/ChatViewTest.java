@@ -2,14 +2,16 @@ package view;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.LoggedInViewModel;
-import interface_adapter.choose_group_channel.ChooseGroupChannelController;
-import interface_adapter.choose_group_channel.ChooseGroupChannelPresenter;
+import interface_adapter.create_group_channel.CreateGroupChannelPresenter;
+import interface_adapter.create_group_channel.CreateGroupChannelController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openapitools.client.model.ListMessagesResponse;
+
 import org.sendbird.client.ApiClient;
 import org.sendbird.client.Configuration;
-import use_case.choose_group_channel.*;
+import use_case.create_group_channel.*;
+import use_case.create_group_channel.CreateGroupChannelInteractor;
+
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +20,8 @@ import static org.junit.Assert.assertEquals;
 public class ChatViewTest {
     private LoggedInViewModel loggedInViewModel;
     private ViewManagerModel viewManagerModel;
-    private ChooseGroupChannelController chooseGroupChannelController;
+    private CreateGroupChannelController createGroupChannelController;
+    private CreateGroupChannelInputData createGroupChannelInputData;
     private ChatView chatView;
 
     @BeforeEach
@@ -32,12 +35,12 @@ public class ChatViewTest {
         loggedInViewModel = new LoggedInViewModel();
         viewManagerModel = new ViewManagerModel();
 
-        ChooseGroupChannelPresenter presenter = new ChooseGroupChannelPresenter(viewManagerModel, loggedInViewModel);
-        ChooseGroupChannelInteractor interactor = new ChooseGroupChannelInteractor(presenter);
-        chooseGroupChannelController = new ChooseGroupChannelController(interactor);
+        CreateGroupChannelPresenter presenter = new CreateGroupChannelPresenter(viewManagerModel, loggedInViewModel);
+        CreateGroupChannelInteractor interactor = new CreateGroupChannelInteractor(presenter);
+        createGroupChannelController = new CreateGroupChannelController(interactor);
 
         chatView = new ChatView(loggedInViewModel);
-        chatView.setChooseGroupChannelController(chooseGroupChannelController);
+        chatView.setCreateGroupChannelController(createGroupChannelController);
     }
 
     @Test
@@ -48,8 +51,8 @@ public class ChatViewTest {
         List<String> users = new ArrayList<>();
         users.add(userField1.getText());
         users.add(userField2.getText());
-        ChooseGroupChannelInputData inputData = ChooseGroupChannelInputData.forGroupChat(chatNameField.getText(), users);
-        chooseGroupChannelController.createGroupChat(chatNameField.getText(), users);;
+        CreateGroupChannelInputData inputData = createGroupChannelInputData.forGroupChat(chatNameField.getText(), users);
+        createGroupChannelController.createGroupChat(chatNameField.getText(), users);;
         assertEquals("Group Chat", inputData.getChatName());
         assertEquals(2, users.size());
         assertEquals("ABC", users.get(0));

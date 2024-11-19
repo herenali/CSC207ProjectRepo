@@ -26,14 +26,6 @@ public class ChooseGroupChannelOutputData {
         }
     }
 
-    public ChooseGroupChannelOutputData(String message) {
-        this.messagesResponse =  new ListMessagesResponse();
-        this.usersAndMessages = new ArrayList<>();
-        List<String> userAndMessage = new ArrayList<>();
-        userAndMessage.add(message);
-        usersAndMessages.add(userAndMessage);
-    }
-
     public ListMessagesResponse getMessagesResponse() {
         return messagesResponse;
     }
