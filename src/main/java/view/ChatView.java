@@ -1,6 +1,8 @@
 package view;
 
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashMap;
@@ -37,7 +39,8 @@ public class ChatView extends JPanel implements PropertyChangeListener {
     private final JButton profileButton;
 
     private JList<String> chatList;
-    private final JTextArea chatArea;
+    // private final JTextArea chatArea;
+    private final JPanel chatArea;
 
     private final Map<String, List<String>> chatMessages = new HashMap<>();
     private JTextField messageInputField;
@@ -113,11 +116,14 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         leftPanel.add(chatListScrollPane, BorderLayout.CENTER);
 
         // current chat open
-        chatArea = new JTextArea();
-        chatArea.setEditable(false);
+        chatArea = new JPanel();
       
         final JScrollPane chatAreaScrollPane = new JScrollPane(chatArea);
-        chatArea.setText("No chat selected.");
+        // chatArea.setText("No chat selected.");
+        chatArea.removeAll();
+        chatArea.add(new JLabel("No chat selected."));
+        chatArea.revalidate();
+        chatArea.repaint();
 
         // add to panel
         this.add(topPanel, BorderLayout.NORTH);
@@ -132,11 +138,12 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                 final String groupChannelUrl = loggedInViewModel.getState().getGroupChannelUrl();
                 if (groupChannelUrl != null && !groupChannelUrl.isEmpty()) {
                     sendMessageController.execute(updatedCurrentUserId, groupChannelUrl, messageText);
+                    messageInputField.setText("");
+                    updateChatArea();
                 }
                 else {
-                    chatArea.setText("No group channel selected.");
+                    chatArea.add(new JLabel("No group channel selected."));
                 }
-                messageInputField.setText("");
                 updateChatArea();
             }
         });
@@ -153,7 +160,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                         );
 
                         // Clear chat area
-                        chatArea.setText("No chat selected.");
+                        chatArea.add(new JLabel("No chat selected."));
                     }
                 }
         );
@@ -256,28 +263,40 @@ public class ChatView extends JPanel implements PropertyChangeListener {
 
     private void updateChatArea() {
         final String selectedChat = chatList.getSelectedValue();
-        chatArea.setText("Display messages for: " + selectedChat);
+        // chatArea.setText("Display messages for: " + selectedChat);
+        chatArea.add(new JLabel("Display messages for: " + selectedChat));
 
         if (selectedChat != null) {
             final String groupChannelUrl = selectedChat.substring(selectedChat.lastIndexOf(": ") + 2);
-            System.out.println(groupChannelUrl);
+            // System.out.println(groupChannelUrl);
             loggedInViewModel.getState().setGroupChannelUrl(groupChannelUrl);
-
             chooseGroupChannelController.execute(groupChannelUrl);
             final List<List<String>> usersAndMessages = loggedInViewModel.getState().getUsersAndMessages();
-            final StringBuilder chatAreaBuilder = new StringBuilder();
-            for (List<String> userAndMessage : usersAndMessages) {
-                chatAreaBuilder.append(userAndMessage.get(0));
-                chatAreaBuilder.append(": ");
-                chatAreaBuilder.append(userAndMessage.get(1));
-                chatAreaBuilder.append("\n");
-            }
-            chatArea.setText(chatAreaBuilder.toString());
-        }
-        else {
-            chatArea.setText("No chat selected.");
-        }
 
+            chatArea.removeAll();
+            chatArea.setLayout(new BoxLayout(chatArea, BoxLayout.Y_AXIS));
+
+            for (List<String> userAndMessage : usersAndMessages) {
+                final String user = userAndMessage.get(0);
+                final String message = userAndMessage.get(1);
+
+                JPanel messagePanel = new JPanel();
+                messagePanel.setLayout(new BoxLayout(messagePanel, BoxLayout.X_AXIS));
+                messagePanel.setAlignmentX(JPanel.LEFT_ALIGNMENT);
+
+                JLabel messageLabel = new JLabel(user + ": " + message);
+                messageLabel.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+                messagePanel.add(messageLabel);
+
+
+
+                chatArea.add(messagePanel);
+            }
+            chatArea.revalidate();
+            chatArea.repaint();
+        } else {
+            chatArea.add(new JLabel("No chat selected."));
+        }
     }
 
     public String getViewName() {
@@ -302,14 +321,6 @@ public class ChatView extends JPanel implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-//        if (evt.getPropertyName().equals("state")) {
-//            final LoggedInState state = (LoggedInState) evt.getNewValue();
-//            username.setText(state.getUsername());
-//        }
-//        else if (evt.getPropertyName().equals("password")) {
-//            final LoggedInState state = (LoggedInState) evt.getNewValue();
-//            JOptionPane.showMessageDialog(null, "password updated for " + state.getUsername());
-//        }
         if (evt.getPropertyName().equals("login")) {
             // fetch chats from sendbird
             final String apiToken = "e4fbd0788231cf40830bf62f866aa001182f9971";
