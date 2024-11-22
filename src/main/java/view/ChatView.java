@@ -11,6 +11,7 @@ import java.util.Map;
 
 import javax.swing.*;
 
+import interface_adapter.edit_message.EditMessageController;
 import org.openapitools.client.model.SendBirdGroupChannel;
 import org.sendbird.client.ApiClient;
 import org.sendbird.client.Configuration;
@@ -33,6 +34,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
     private ChooseGroupChannelController chooseGroupChannelController;
     private CreateGroupChannelController createGroupChannelController;
     private SendMessageController sendMessageController;
+    private EditMessageController editMessageController;
 
     private final JButton logOutButton;
     private final JButton newChatButton;
@@ -280,16 +282,33 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                 final String user = userAndMessage.get(0);
                 final String message = userAndMessage.get(1);
 
-                JPanel messagePanel = new JPanel();
-                messagePanel.setLayout(new BoxLayout(messagePanel, BoxLayout.X_AXIS));
+                final JPanel messagePanel = new JPanel();
+                messagePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
                 messagePanel.setAlignmentX(JPanel.LEFT_ALIGNMENT);
+                messagePanel.setSize(new Dimension());
+                messagePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-                JLabel messageLabel = new JLabel(user + ": " + message);
+                final JLabel messageLabel = new JLabel(user + ": " + message);
                 messageLabel.setAlignmentX(JLabel.LEFT_ALIGNMENT);
                 messagePanel.add(messageLabel);
 
+                if (user.equals(loggedInViewModel.getState().getUsername())) {
+                    final JButton editButton = new JButton("edit");
+                    editButton.setPreferredSize(new Dimension(40, 20));
 
+                    editButton.addActionListener(evt -> {
+                        System.out.println("pressed");
+                        final String newMessage = JOptionPane.showInputDialog("Edit Message:", message);
+                        final String userId = loggedInViewModel.getState().getUserId();
+                        final int messageId = 123;
+                        if (newMessage != null && !newMessage.equals(message)) {
 
+                            editMessageController.execute(userId, messageId, groupChannelUrl, newMessage);
+                            updateChatArea();
+                        }
+                    });
+                    messagePanel.add(editButton);
+                }
                 chatArea.add(messagePanel);
             }
             chatArea.revalidate();
@@ -317,6 +336,10 @@ public class ChatView extends JPanel implements PropertyChangeListener {
 
     public void setSendMessageController(SendMessageController sendMessageController) {
         this.sendMessageController = sendMessageController;
+    }
+
+    public void setEditMessageController(EditMessageController editMessageController) {
+        this.editMessageController = editMessageController;
     }
 
     @Override

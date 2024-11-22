@@ -17,6 +17,9 @@ import interface_adapter.change_password.ChangePasswordPresenter;
 import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.choose_group_channel.ChooseGroupChannelController;
 import interface_adapter.choose_group_channel.ChooseGroupChannelPresenter;
+import interface_adapter.edit_message.EditMessageController;
+import interface_adapter.edit_message.EditMessagePresenter;
+import interface_adapter.edit_message.EditMessageViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
@@ -36,6 +39,9 @@ import use_case.change_password.ChangePasswordOutputBoundary;
 import use_case.choose_group_channel.ChooseGroupChannelInputBoundary;
 import use_case.choose_group_channel.ChooseGroupChannelInteractor;
 import use_case.choose_group_channel.ChooseGroupChannelOutputBoundary;
+import use_case.edit_message.EditMessageInputBoundary;
+import use_case.edit_message.EditMessageInteractor;
+import use_case.edit_message.EditMessageOutputBoundary;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
@@ -83,6 +89,7 @@ public class AppBuilder {
     private LoginViewModel loginViewModel;
     private LoggedInViewModel loggedInViewModel;
     private SendMessageViewModel sendMessageViewModel;
+    private EditMessageViewModel editMessageViewModel;
     private LoggedInView loggedInView;
     private ChatView chatView;
     private LoginView loginView;
@@ -243,6 +250,24 @@ public class AppBuilder {
                 new SendMessageController(sendMessageInteractor);
 
         chatView.setSendMessageController(sendMessageController);
+        return this;
+    }
+
+    /**
+     * Adds the EditMessage Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addEditMessageUseCase() {
+        final EditMessageOutputBoundary editMessageOutputBoundary =
+                new EditMessagePresenter(viewManagerModel, editMessageViewModel);
+
+        final EditMessageInputBoundary editMessageInteractor =
+                new EditMessageInteractor(editMessageOutputBoundary);
+
+        final EditMessageController editMessageController =
+                new EditMessageController(editMessageInteractor);
+
+        chatView.setEditMessageController(editMessageController);
         return this;
     }
 

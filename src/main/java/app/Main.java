@@ -23,6 +23,7 @@ public class Main {
                                             .addLogoutUseCase()
                                             .addChooseGroupChannelUseCase()
                                             .addSendMessageUseCase()
+                                            .addEditMessageUseCase()
                                             .build();
 
         application.pack();
