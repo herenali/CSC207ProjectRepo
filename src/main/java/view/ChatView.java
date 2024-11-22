@@ -274,13 +274,18 @@ public class ChatView extends JPanel implements PropertyChangeListener {
             loggedInViewModel.getState().setGroupChannelUrl(groupChannelUrl);
             chooseGroupChannelController.execute(groupChannelUrl);
             final List<List<String>> usersAndMessages = loggedInViewModel.getState().getUsersAndMessages();
+            final List<List<String>> userAndMessageIds = loggedInViewModel.getState().getUserAndMessageIds();
 
             chatArea.removeAll();
             chatArea.setLayout(new BoxLayout(chatArea, BoxLayout.Y_AXIS));
 
-            for (List<String> userAndMessage : usersAndMessages) {
+            for (int i = 0; i < usersAndMessages.size(); i++) {
+                final List<String> userAndMessage = usersAndMessages.get(i);
+                final List<String> userAndMessageId = userAndMessageIds.get(i);
                 final String user = userAndMessage.get(0);
                 final String message = userAndMessage.get(1);
+                final String userId = userAndMessageId.get(0);
+                final String messageId = userAndMessageId.get(1);
 
                 final JPanel messagePanel = new JPanel();
                 messagePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -292,18 +297,16 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                 messageLabel.setAlignmentX(JLabel.LEFT_ALIGNMENT);
                 messagePanel.add(messageLabel);
 
-                if (user.equals(loggedInViewModel.getState().getUsername())) {
+                final String currentUserId = loggedInViewModel.getState().getUserId();
+                if (userId.equals(currentUserId)) {
                     final JButton editButton = new JButton("edit");
                     editButton.setPreferredSize(new Dimension(40, 20));
 
                     editButton.addActionListener(evt -> {
-                        System.out.println("pressed");
                         final String newMessage = JOptionPane.showInputDialog("Edit Message:", message);
-                        final String userId = loggedInViewModel.getState().getUserId();
-                        final int messageId = 123;
-                        if (newMessage != null && !newMessage.equals(message)) {
 
-                            editMessageController.execute(userId, messageId, groupChannelUrl, newMessage);
+                        if (newMessage != null && !newMessage.equals(message)) {
+                            editMessageController.execute(currentUserId, Integer.valueOf(messageId), groupChannelUrl, newMessage);
                             updateChatArea();
                         }
                     });

@@ -16,6 +16,7 @@ public class LoggedInState {
 
     private String groupChannelUrl = "";
     private List<List<String>> usersAndMessages;
+    private List<List<String>> userAndMessageIds;
 
     public LoggedInState(LoggedInState copy) {
         username = copy.username;
@@ -73,6 +74,14 @@ public class LoggedInState {
 
     public List<List<String>> getUsersAndMessages() {
         return usersAndMessages;
+    }
+
+    public void setUserAndMessageIds(List<List<String>> userAndMessageIds) {
+        this.userAndMessageIds = userAndMessageIds;
+    }
+
+    public List<List<String>> getUserAndMessageIds() {
+        return userAndMessageIds;
     }
 
 }
