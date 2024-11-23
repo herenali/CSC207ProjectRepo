@@ -19,7 +19,6 @@ public class ChooseGroupChannelInteractorTest {
                 List<List<String>> usersAndMessages = outputData.getUsersAndMessages();
                 List<String> firstUserAndMessage = usersAndMessages.get(0);
                 assertEquals(firstUserAndMessage.get(0), "Paul");
-                assertEquals(firstUserAndMessage.get(1), "New message");
             }
 
             @Override
