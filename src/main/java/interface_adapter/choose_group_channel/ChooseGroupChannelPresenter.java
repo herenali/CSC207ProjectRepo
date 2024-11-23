@@ -22,6 +22,7 @@ public class ChooseGroupChannelPresenter implements ChooseGroupChannelOutputBoun
         // On success, update the contents of the chat area
         final var loggedInState = loggedInViewModel.getState();
         loggedInState.setUsersAndMessages(outputData.getUsersAndMessages());
+        loggedInState.setUserAndMessageIds(outputData.getUserAndMessageIds());
         loggedInViewModel.setState(loggedInState);
         loggedInViewModel.firePropertyChanged();
     }
