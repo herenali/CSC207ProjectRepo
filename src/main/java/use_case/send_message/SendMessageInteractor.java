@@ -4,6 +4,9 @@ import entity.SbMessageManager;
 import org.sendbird.client.ApiClient;
 import org.sendbird.client.Configuration;
 
+/**
+ * The Send Message Interactor.
+ */
 public class SendMessageInteractor implements SendMessageInputBoundary {
     private final SendMessageOutputBoundary sendMessagePresenter;
 
