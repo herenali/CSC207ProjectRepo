@@ -9,6 +9,7 @@ import use_case.choose_group_channel.ChooseGroupChannelInputData;
 public class ChooseGroupChannelController {
     private final ChooseGroupChannelInputBoundary chooseGroupChannelUseCaseInteractor;
 
+
     public ChooseGroupChannelController(ChooseGroupChannelInputBoundary chooseGroupChannelUseCaseInteractor) {
         this.chooseGroupChannelUseCaseInteractor = chooseGroupChannelUseCaseInteractor;
     }
@@ -24,4 +25,3 @@ public class ChooseGroupChannelController {
         chooseGroupChannelUseCaseInteractor.execute(chooseGroupChannelInputData);
     }
 }
-
