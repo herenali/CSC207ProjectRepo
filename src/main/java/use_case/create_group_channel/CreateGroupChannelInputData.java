@@ -9,31 +9,35 @@ public final class CreateGroupChannelInputData {
     private final String chatName;
     private final String user;
     private final List<String> users;
+    private final String currentUserId;
 
-    private CreateGroupChannelInputData(String chatName, String user, List<String> users) {
+    public CreateGroupChannelInputData(String chatName, String user, List<String> users, String currentUserId) {
         this.chatName = chatName;
         this.user = user;
         this.users = users;
+        this.currentUserId = currentUserId;
     }
 
     /**
      * Executes the Create Single Chat Use Case.
      * @param chatName for name of chat
      * @param user for name of user
+     * @param currentUserId for current logged-in user's ID
      * @return the InputData
      */
-    public static CreateGroupChannelInputData forSingleChat(String chatName, String user) {
-        return new CreateGroupChannelInputData(chatName, user, null);
+    public static CreateGroupChannelInputData forSingleChat(String chatName, String user, String currentUserId) {
+        return new CreateGroupChannelInputData(chatName, user, null, currentUserId);
     }
 
     /**
      * Executes the Create Group Chat Use Case.
      * @param chatName for name of chat
      * @param users for name of users
+     * @param currentUserId for current logged-in user's ID
      * @return the InputData
      */
-    public static CreateGroupChannelInputData forGroupChat(String chatName, List<String> users) {
-        return new CreateGroupChannelInputData(chatName, null, users);
+    public static CreateGroupChannelInputData forGroupChat(String chatName, List<String> users, String currentUserId) {
+        return new CreateGroupChannelInputData(chatName, null, users, currentUserId);
     }
 
     public String getChatName() {
@@ -46,5 +50,9 @@ public final class CreateGroupChannelInputData {
 
     public List<String> getUsers() {
         return users;
+    }
+
+    public String getCurrentUserId() {
+        return currentUserId;
     }
 }

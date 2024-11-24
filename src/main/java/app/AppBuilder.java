@@ -31,6 +31,8 @@ import interface_adapter.send_message.SendMessageViewModel;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
+import interface_adapter.create_group_channel.CreateGroupChannelController;
+import interface_adapter.create_group_channel.CreateGroupChannelPresenter;
 import org.sendbird.client.ApiClient;
 import org.sendbird.client.Configuration;
 import use_case.change_password.ChangePasswordInputBoundary;
@@ -54,6 +56,9 @@ import use_case.send_message.SendMessageOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
+import use_case.create_group_channel.CreateGroupChannelInputBoundary;
+import use_case.create_group_channel.CreateGroupChannelOutputBoundary;
+import use_case.create_group_channel.CreateGroupChannelInteractor;
 import view.LoggedInView;
 import view.LoginView;
 import view.SignupView;
@@ -268,6 +273,21 @@ public class AppBuilder {
                 new EditMessageController(editMessageInteractor);
 
         chatView.setEditMessageController(editMessageController);
+        return this;
+    }
+
+    /**
+     * Adds the CreateGroupChannel Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addCreateGroupChannelUseCase() {
+        final CreateGroupChannelOutputBoundary createGroupChannelOutputBoundary = new CreateGroupChannelPresenter(viewManagerModel, loggedInViewModel);
+        final CreateGroupChannelInputBoundary createGroupChannelInteractor = new CreateGroupChannelInteractor(createGroupChannelOutputBoundary);
+
+        final CreateGroupChannelController createGroupChannelController = new CreateGroupChannelController(createGroupChannelInteractor);
+
+        chatView.setCreateGroupChannelController(createGroupChannelController);
+
         return this;
     }
 

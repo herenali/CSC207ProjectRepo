@@ -66,5 +66,4 @@ public class SbGroupChannelManager implements GroupChannelManager {
 
         return null;
     }
-
 }

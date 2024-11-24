@@ -1,7 +1,7 @@
 package use_case.create_group_channel;
 
 /**
- * Input Boundary for actions which are related to choosing a group channel.
+ * Input Boundary for actions which are related to creating a group channel.
  */
 public interface CreateGroupChannelInputBoundary {
 

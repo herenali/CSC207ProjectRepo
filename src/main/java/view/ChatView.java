@@ -11,6 +11,8 @@ import java.util.Map;
 
 import javax.swing.*;
 
+import interface_adapter.ViewManagerModel;
+import interface_adapter.create_group_channel.CreateGroupChannelPresenter;
 import interface_adapter.edit_message.EditMessageController;
 import org.openapitools.client.model.SendBirdGroupChannel;
 import org.sendbird.client.ApiClient;
@@ -23,6 +25,10 @@ import interface_adapter.choose_group_channel.ChooseGroupChannelController;
 import interface_adapter.create_group_channel.CreateGroupChannelController;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.send_message.SendMessageController;
+import use_case.create_group_channel.CreateGroupChannelInputBoundary;
+import use_case.create_group_channel.CreateGroupChannelInputData;
+import use_case.create_group_channel.CreateGroupChannelInteractor;
+import use_case.create_group_channel.CreateGroupChannelOutputBoundary;
 
 /**
  * The View for when the user is logged into the program.
@@ -173,19 +179,22 @@ public class ChatView extends JPanel implements PropertyChangeListener {
             final String[] options = {"Single Chat", "Group Chat"};
             final int chatType = JOptionPane.showOptionDialog(null, "Select Chat Type:", "New Chat",
                     JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+
             final JTextField chatNameField = new JTextField(15);
             panel.add(new JLabel("Chat Name: "));
             panel.add(chatNameField);
+
             if (chatType == 0) {
                 final JTextField userNameField = new JTextField(15);
                 panel.add(new JLabel("Enter Username: "));
                 panel.add(userNameField);
                 final int result = JOptionPane.showConfirmDialog(null, panel, "New Single Chat", JOptionPane.OK_CANCEL_OPTION);
+
                 if (result == JOptionPane.OK_OPTION) {
                     final String chatName = chatNameField.getText().trim();
                     final String user = userNameField.getText().trim();
                     if (!chatName.isEmpty() && !user.isEmpty()) {
-                        createGroupChannelController.createSingleChat(chatName, user);
+                        createGroupChannelController.createSingleChat(chatName, user, currentUserId);
                         updateChatArea();
                     }
                 }
@@ -195,16 +204,18 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                 panel.add(new JLabel("Enter Users (comma-separated): "));
                 panel.add(usersField);
                 final int result = JOptionPane.showConfirmDialog(null, panel, "New Group Chat", JOptionPane.OK_CANCEL_OPTION);
+
                 if (result == JOptionPane.OK_OPTION) {
                     final String chatName = chatNameField.getText().trim();
                     final String usersInput = usersField.getText().trim();
+
                     if (!chatName.isEmpty() && !usersInput.isEmpty()) {
                         final List<String> users = List.of(usersInput.split(","));
                         if (users.isEmpty()) {
                             JOptionPane.showMessageDialog(null, "You must enter at least one user.");
                             return;
                         }
-                        createGroupChannelController.createGroupChat(chatName, users);
+                        createGroupChannelController.createGroupChat(chatName, users, currentUserId);
                         updateChatArea();
                     }
                     else {

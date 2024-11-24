@@ -45,14 +45,15 @@ public class ChatViewTest {
 
     @Test
     public void testCreateGroupChat(){
+        String currentUserId = loggedInViewModel.getState().getUserId();
         JTextField chatNameField = new JTextField("Group Chat");
         JTextField userField1 = new JTextField("ABC");
         JTextField userField2 = new JTextField("DEF");
         List<String> users = new ArrayList<>();
         users.add(userField1.getText());
         users.add(userField2.getText());
-        CreateGroupChannelInputData inputData = createGroupChannelInputData.forGroupChat(chatNameField.getText(), users);
-        createGroupChannelController.createGroupChat(chatNameField.getText(), users);;
+        CreateGroupChannelInputData inputData = createGroupChannelInputData.forGroupChat(chatNameField.getText(), users, currentUserId);
+        createGroupChannelController.createGroupChat(chatNameField.getText(), users, currentUserId);;
         assertEquals("Group Chat", inputData.getChatName());
         assertEquals(2, users.size());
         assertEquals("ABC", users.get(0));
