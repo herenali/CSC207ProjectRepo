@@ -195,6 +195,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                     final String user = userNameField.getText().trim();
                     if (!chatName.isEmpty() && !user.isEmpty()) {
                         createGroupChannelController.createSingleChat(chatName, user, currentUserId);
+                        chats.addElement(chatName);
                         updateChatArea();
                     }
                 }
@@ -216,6 +217,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                             return;
                         }
                         createGroupChannelController.createGroupChat(chatName, users, currentUserId);
+                        chats.addElement(chatName);
                         updateChatArea();
                     }
                     else {
