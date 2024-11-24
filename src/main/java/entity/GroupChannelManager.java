@@ -10,12 +10,12 @@ import java.util.List;
  */
 public interface GroupChannelManager {
     /**
-     * Creates a new group channel.
-     * @param userIds a list of the ids of the users in the group channel
-     * @param name the name of the group channel
-     * @return the group channel
+     * Creates a new single channel.
+     * @param userId a string of the id of the users in the channel
+     * @param name the name of the channel
+     * @return the channel
      */
-    SendBirdGroupChannel createChannel(List userIds, String name);
+    SendBirdGroupChannel createChannel(List userId, String name);
 
     /**
      * Deletes a group channel.

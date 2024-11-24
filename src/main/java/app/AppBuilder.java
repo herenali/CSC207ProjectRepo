@@ -20,6 +20,7 @@ import interface_adapter.choose_group_channel.ChooseGroupChannelPresenter;
 import interface_adapter.edit_message.EditMessageController;
 import interface_adapter.edit_message.EditMessagePresenter;
 import interface_adapter.edit_message.EditMessageViewModel;
+import interface_adapter.create_group_channel.CreateGroupChannelViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
@@ -95,6 +96,7 @@ public class AppBuilder {
     private LoggedInViewModel loggedInViewModel;
     private SendMessageViewModel sendMessageViewModel;
     private EditMessageViewModel editMessageViewModel;
+    private CreateGroupChannelViewModel createGroupChannelViewModel;
     private LoggedInView loggedInView;
     private ChatView chatView;
     private LoginView loginView;
@@ -281,7 +283,7 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addCreateGroupChannelUseCase() {
-        final CreateGroupChannelOutputBoundary createGroupChannelOutputBoundary = new CreateGroupChannelPresenter(viewManagerModel, loggedInViewModel);
+        final CreateGroupChannelOutputBoundary createGroupChannelOutputBoundary = new CreateGroupChannelPresenter(viewManagerModel, createGroupChannelViewModel);
         final CreateGroupChannelInputBoundary createGroupChannelInteractor = new CreateGroupChannelInteractor(createGroupChannelOutputBoundary);
 
         final CreateGroupChannelController createGroupChannelController = new CreateGroupChannelController(createGroupChannelInteractor);

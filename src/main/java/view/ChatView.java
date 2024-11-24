@@ -5,12 +5,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.*;
 
+import entity.SbUser;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.create_group_channel.CreateGroupChannelPresenter;
 import interface_adapter.edit_message.EditMessageController;
@@ -96,7 +98,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         defaultClient.setBasePath("https://api-" + applicationId + ".sendbird.com");
         final SbUserManager sbUserManager = new SbUserManager(defaultClient);
         final String currentUserId = loggedInViewModel.getState().getUserId();
-        final DefaultListModel chats = new DefaultListModel();
+        final DefaultListModel<String> chats = new DefaultListModel<>();
 
         if (currentUserId.length() > 0) {
             final List<SendBirdGroupChannel> groupChannels = sbUserManager
@@ -196,9 +198,10 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                     if (!chatName.isEmpty() && !user.isEmpty()) {
                         createGroupChannelController.createSingleChat(chatName, user, currentUserId);
                         chats.addElement(chatName);
-                        chatList.revalidate();
-                        chatList.repaint();
-                        updateChatArea();
+                        chatList.setModel(chats);
+                        // chatList.revalidate();
+                        // chatList.repaint();
+                        // updateChatArea();
                     }
                 }
             }
@@ -219,7 +222,11 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                             return;
                         }
                         createGroupChannelController.createGroupChat(chatName, users, currentUserId);
-                        updateChatArea();
+                        chats.addElement(chatName);
+                        chatList.setModel(chats);
+                        // chatList.revalidate();
+                        // chatList.repaint();
+                        // updateChatArea();
                     }
                     else {
                         JOptionPane.showMessageDialog(null, "You must enter at least one user.");
@@ -357,6 +364,10 @@ public class ChatView extends JPanel implements PropertyChangeListener {
 
     public void setEditMessageController(EditMessageController editMessageController) {
         this.editMessageController = editMessageController;
+    }
+
+    public JButton getNewChatButton(){
+        return newChatButton;
     }
 
     @Override

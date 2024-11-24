@@ -4,6 +4,8 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.create_group_channel.CreateGroupChannelPresenter;
 import interface_adapter.create_group_channel.CreateGroupChannelController;
+import interface_adapter.create_group_channel.CreateGroupChannelState;
+import interface_adapter.create_group_channel.CreateGroupChannelViewModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +15,9 @@ import use_case.create_group_channel.*;
 import use_case.create_group_channel.CreateGroupChannelInteractor;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -23,6 +27,7 @@ public class ChatViewTest {
     private ViewManagerModel viewManagerModel;
     private CreateGroupChannelController createGroupChannelController;
     private CreateGroupChannelInputData createGroupChannelInputData;
+    private CreateGroupChannelViewModel createGroupChannelViewModel;
     private ChatView chatView;
 
     @BeforeEach
@@ -35,8 +40,9 @@ public class ChatViewTest {
 
         loggedInViewModel = new LoggedInViewModel();
         viewManagerModel = new ViewManagerModel();
+        createGroupChannelViewModel = new CreateGroupChannelViewModel();
 
-        CreateGroupChannelPresenter presenter = new CreateGroupChannelPresenter(viewManagerModel, loggedInViewModel);
+        CreateGroupChannelPresenter presenter = new CreateGroupChannelPresenter(viewManagerModel, createGroupChannelViewModel);
         CreateGroupChannelInteractor interactor = new CreateGroupChannelInteractor(presenter);
         createGroupChannelController = new CreateGroupChannelController(interactor);
 

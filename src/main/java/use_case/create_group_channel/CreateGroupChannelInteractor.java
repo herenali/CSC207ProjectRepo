@@ -36,16 +36,14 @@ public class CreateGroupChannelInteractor implements CreateGroupChannelInputBoun
                         createGroupChannelInputData.getChatName());
             }
             else if (createGroupChannelInputData.getUser() != null && !createGroupChannelInputData.getUser().isEmpty()) {
-                List<String> userList = new ArrayList<>();
-                userList.add(createGroupChannelInputData.getUser());
-                sbGroupChannelManager.createChannel(userList,
+                sbGroupChannelManager.createChannel(List.of(createGroupChannelInputData.getUser()),
                         createGroupChannelInputData.getChatName());
             }
             else {
                 createGroupChannelPresenter.prepareFailView("No valid user or users.");
                 return;
             }
-            createGroupChannelPresenter.prepareSuccessView(new CreateGroupChannelOutputData("Chat is created."));
+            createGroupChannelPresenter.prepareSuccessView(new CreateGroupChannelOutputData("Chat is created.", false));
         }
         catch (Exception e) {
             throw new RuntimeException(e);

@@ -25,12 +25,21 @@ public class SbGroupChannelManager implements GroupChannelManager {
         apiToken = Config.apiToken;
     }
 
+    /**
+     * Creates a group channel for multiple users.
+     * @param userIds A list of user IDs for the group.
+     * @param name The name of the channel.
+     * @return The created group channel.
+     */
     @Override
     public SendBirdGroupChannel createChannel(List userIds, String name) {
         GcCreateChannelData gcCreateChannelData = new GcCreateChannelData();
         gcCreateChannelData.name(name);
         gcCreateChannelData.userIds(userIds);
-//        gcCreateChannelData.isDistinct(userIds.size() == 1);
+
+        if (userIds.size() == 1) {
+            gcCreateChannelData.isDistinct(true);
+        }
 
         try {
             SendBirdGroupChannel result = apiInstance.gcCreateChannel().apiToken(apiToken).gcCreateChannelData(gcCreateChannelData).execute();
