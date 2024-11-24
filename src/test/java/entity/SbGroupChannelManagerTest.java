@@ -1,29 +1,53 @@
 package entity;
 
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.openapitools.client.model.OcDeleteChannelByUrl200Response;
 import org.openapitools.client.model.SendBirdGroupChannel;
 import org.sendbird.client.ApiClient;
 import org.sendbird.client.Configuration;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class SbGroupChannelManagerTest {
-    @Test
-    public void createChannel() {
+    private static SbGroupChannelManager sbGroupChannelManager;
+    private static String userPaulId;
+    private static String userJonathanId;
+    private static String groupChannelUrl;
+
+    @BeforeEach
+    void initAll() {
         String apiToken = "e4fbd0788231cf40830bf62f866aa001182f9971";
         String applicationId = "049E2510-3508-4C99-80F9-A3C24ECA7677";
         ApiClient defaultClient = Configuration.getDefaultApiClient().addDefaultHeader("Api-Token", apiToken);
         defaultClient.setBasePath("https://api-" + applicationId + ".sendbird.com");
 
-        SbGroupChannelManager sbGroupChannelManager = new SbGroupChannelManager(defaultClient);
+        sbGroupChannelManager = new SbGroupChannelManager(defaultClient);
 
-        List<String> userIds = List.of("9fe8dffb-30a8-4125-8882-c24e0d5efc52", "Test User Id");
+        userPaulId = "9fe8dffb-30a8-4125-8882-c24e0d5efc52";
+        userJonathanId = "11415872-17cb-47ff-a986-ed7c1b63760c";
+        groupChannelUrl = "sendbird_group_channel_17729697_fbf1838c39e6d07e9cc4b3d68d1a5f35eae4312f";
+    }
+
+    @Test
+    public void testcreateChannel() {
+        List<String> userIds = Arrays.asList(userPaulId, userJonathanId);
         String channelName = "Test";
 
-        SendBirdGroupChannel newChannel = sbGroupChannelManager.createChannel(userIds, channelName);
-        assertEquals(channelName, newChannel.getName());
+        SendBirdGroupChannel result = sbGroupChannelManager.createChannel(userIds, channelName);
+
+        assertEquals(channelName, result.getName());
+    }
+
+    @Test
+    public void testdeleteChannel() {
+        OcDeleteChannelByUrl200Response expectedResponse = new OcDeleteChannelByUrl200Response();
+        OcDeleteChannelByUrl200Response result = sbGroupChannelManager.deleteChannelByUrl(groupChannelUrl);
+        assertNotNull(result);
     }
 }
