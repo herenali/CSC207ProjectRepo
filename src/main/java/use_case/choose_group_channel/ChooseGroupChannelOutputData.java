@@ -10,14 +10,12 @@ import java.util.List;
  * Output Data for the Choose Group Channel Use Case.
  */
 public class ChooseGroupChannelOutputData {
-    private final ListMessagesResponse messagesResponse;
     // List of messages for that group channel
     // Each message is stored as a list of a user and their message
     private final List<List<String>> usersAndMessages;
     private final List<List<String>> userAndMessageIds;
 
     public ChooseGroupChannelOutputData(ListMessagesResponse messagesResponse) {
-        this.messagesResponse = messagesResponse;
         this.usersAndMessages = new ArrayList<>();
         this.userAndMessageIds = new ArrayList<>();
 
@@ -32,10 +30,6 @@ public class ChooseGroupChannelOutputData {
             userAndMessageId.add(String.valueOf(message.getMessageId()));
             userAndMessageIds.add(userAndMessageId);
         }
-    }
-
-    public ListMessagesResponse getMessagesResponse() {
-        return messagesResponse;
     }
 
     public List<List<String>> getUsersAndMessages() {
