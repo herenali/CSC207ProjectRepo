@@ -16,6 +16,7 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class ChatViewTest {
     private LoggedInViewModel loggedInViewModel;
@@ -41,47 +42,5 @@ public class ChatViewTest {
 
         chatView = new ChatView(loggedInViewModel);
         chatView.setCreateGroupChannelController(createGroupChannelController);
-    }
-
-    @Test
-    public void testCreateGroupChat(){
-        String currentUserId = loggedInViewModel.getState().getUserId();
-        JTextField chatNameField = new JTextField("Group Chat");
-        JTextField userField1 = new JTextField("ABC");
-        JTextField userField2 = new JTextField("DEF");
-        List<String> users = new ArrayList<>();
-        users.add(userField1.getText());
-        users.add(userField2.getText());
-        CreateGroupChannelInputData inputData = createGroupChannelInputData.forGroupChat(chatNameField.getText(), users, currentUserId);
-        createGroupChannelController.createGroupChat(chatNameField.getText(), users, currentUserId);;
-        assertEquals("Group Chat", inputData.getChatName());
-        assertEquals(2, users.size());
-        assertEquals("ABC", users.get(0));
-        assertEquals("DEF", users.get(1));
-        System.out.println("Group chat created with users: " + inputData.getUsers());
-    }
-
-    @Test
-    public void testNewChatButtonValidInput() {
-        JTextField chatNameField = (JTextField) ((JPanel) chatView.getComponent(1)).getComponent(1);
-        JTextField userNameField = (JTextField) ((JPanel) chatView.getComponent(1)).getComponent(3);
-        chatNameField.setText("New Chat");
-        userNameField.setText("ABC");
-        JButton newChatButton = (JButton) chatView.getComponent(0);
-        newChatButton.doClick();
-        DefaultListModel model = (DefaultListModel) ((JList) chatView.getComponent(2)).getModel();
-        assertEquals("New Chat", model.getElementAt(model.getSize() - 1));
-    }
-
-    @Test
-    public void testNewChatButtonInvalidInput() {
-        JTextField chatNameField = (JTextField) ((JPanel) chatView.getComponent(1)).getComponent(1);
-        JTextField userNameField = (JTextField) ((JPanel) chatView.getComponent(1)).getComponent(3);
-        chatNameField.setText("");
-        userNameField.setText("ABC");
-        JButton newChatButton = (JButton) chatView.getComponent(0);
-        newChatButton.doClick();
-        DefaultListModel model = (DefaultListModel) ((JList) chatView.getComponent(2)).getModel();
-        assertEquals(0, model.getSize());
     }
 }

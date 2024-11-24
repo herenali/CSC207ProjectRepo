@@ -125,7 +125,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
 
         // current chat open
         chatArea = new JPanel();
-      
+
         final JScrollPane chatAreaScrollPane = new JScrollPane(chatArea);
         // chatArea.setText("No chat selected.");
         chatArea.removeAll();
@@ -196,6 +196,8 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                     if (!chatName.isEmpty() && !user.isEmpty()) {
                         createGroupChannelController.createSingleChat(chatName, user, currentUserId);
                         chats.addElement(chatName);
+                        chatList.revalidate();
+                        chatList.repaint();
                         updateChatArea();
                     }
                 }
@@ -217,7 +219,6 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                             return;
                         }
                         createGroupChannelController.createGroupChat(chatName, users, currentUserId);
-                        chats.addElement(chatName);
                         updateChatArea();
                     }
                     else {
