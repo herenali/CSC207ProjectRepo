@@ -18,6 +18,9 @@ public class SbGroupChannelManager implements GroupChannelManager {
     GroupChannelApi apiInstance;
 
     public SbGroupChannelManager(ApiClient defaultClient) {
+        if (defaultClient == null) {
+            throw new IllegalArgumentException("ApiClient cannot be null");
+        }
         apiInstance = new GroupChannelApi(defaultClient);
         apiToken = Config.apiToken;
     }
