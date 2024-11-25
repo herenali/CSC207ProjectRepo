@@ -283,15 +283,18 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addCreateGroupChannelUseCase() {
-        final CreateGroupChannelOutputBoundary createGroupChannelOutputBoundary = new CreateGroupChannelPresenter(viewManagerModel, createGroupChannelViewModel);
-        final CreateGroupChannelInputBoundary createGroupChannelInteractor = new CreateGroupChannelInteractor(createGroupChannelOutputBoundary);
-
-        final CreateGroupChannelController createGroupChannelController = new CreateGroupChannelController(createGroupChannelInteractor);
+        final CreateGroupChannelOutputBoundary createGroupChannelOutputBoundary =
+                new CreateGroupChannelPresenter(viewManagerModel, createGroupChannelViewModel);
+        final CreateGroupChannelInputBoundary createGroupChannelInteractor =
+                new CreateGroupChannelInteractor(createGroupChannelOutputBoundary, userDataAccessObject);
+        final CreateGroupChannelController createGroupChannelController =
+                new CreateGroupChannelController(createGroupChannelInteractor);
 
         chatView.setCreateGroupChannelController(createGroupChannelController);
 
         return this;
     }
+
 
     /**
      * Creates the JFrame for the application and initially sets the SignupView to be displayed.

@@ -1,12 +1,34 @@
 package use_case.create_group_channel;
 
+
+
+
+import entity.User;
+
+
 /**
  * DAO for the Create Group Channel Use Case.
  */
 public interface CreateGroupChannelDataAccessInterface {
     /**
-     * Sets current chatname, user, and users.
-     * @param chatName for chat name
+     * Checks if the given username exists.
+     * @param username the username to look for
+     * @return true if a user with the given username exists; false otherwise
      */
-    void setCurrentChatName(String chatName);
+    boolean existsByName(String username);
+
+    /**
+     * Returns userId of the user with the given username.
+     * @param username the username to look up
+     * @return the userId of the user with the given username
+     */
+    String getUserId(String username);
+
+    /**
+     * Saves the user.
+     * @param user the user to save
+     */
+    void save(User user);
+
 }
+

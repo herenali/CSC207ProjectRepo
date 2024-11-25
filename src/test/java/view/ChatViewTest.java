@@ -1,18 +1,22 @@
 package view;
 
+
 import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.create_group_channel.CreateGroupChannelPresenter;
 import interface_adapter.create_group_channel.CreateGroupChannelController;
 import interface_adapter.create_group_channel.CreateGroupChannelState;
 import interface_adapter.create_group_channel.CreateGroupChannelViewModel;
+import data_access.InMemoryUserDataAccessObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 
 import org.sendbird.client.ApiClient;
 import org.sendbird.client.Configuration;
 import use_case.create_group_channel.*;
 import use_case.create_group_channel.CreateGroupChannelInteractor;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,6 +26,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+
 public class ChatViewTest {
     private LoggedInViewModel loggedInViewModel;
     private ViewManagerModel viewManagerModel;
@@ -29,6 +34,8 @@ public class ChatViewTest {
     private CreateGroupChannelInputData createGroupChannelInputData;
     private CreateGroupChannelViewModel createGroupChannelViewModel;
     private ChatView chatView;
+    private InMemoryUserDataAccessObject userRepository;
+
 
     @BeforeEach
     public void init(){
@@ -38,13 +45,17 @@ public class ChatViewTest {
                 .addDefaultHeader("Api-Token", apiToken);
         defaultClient.setBasePath("https://api-" + applicationId + ".sendbird.com");
 
+
+        userRepository = new InMemoryUserDataAccessObject();
         loggedInViewModel = new LoggedInViewModel();
         viewManagerModel = new ViewManagerModel();
         createGroupChannelViewModel = new CreateGroupChannelViewModel();
 
+
         CreateGroupChannelPresenter presenter = new CreateGroupChannelPresenter(viewManagerModel, createGroupChannelViewModel);
-        CreateGroupChannelInteractor interactor = new CreateGroupChannelInteractor(presenter);
+        CreateGroupChannelInteractor interactor = new CreateGroupChannelInteractor(presenter, userRepository);
         createGroupChannelController = new CreateGroupChannelController(interactor);
+
 
         chatView = new ChatView(loggedInViewModel);
         chatView.setCreateGroupChannelController(createGroupChannelController);

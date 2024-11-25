@@ -32,3 +32,4 @@ public class CreateGroupChannelInputDataTest {
         assertEquals(new ArrayList<>(Arrays.asList("user456", "user789")), createGroupChannelInputData.getUsers());
     }
 }
+
