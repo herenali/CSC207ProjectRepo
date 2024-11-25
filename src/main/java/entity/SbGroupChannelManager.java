@@ -40,11 +40,12 @@ public class SbGroupChannelManager implements GroupChannelManager {
         gcCreateChannelData.name(name);
         gcCreateChannelData.userIds(userIds);
 
-        if (userIds.size() == 1) {
-            gcCreateChannelData.isDistinct(true);
-        }
+//        if (userIds.size() == 1) {
+//            gcCreateChannelData.isDistinct(true);
+//        }
 
         try {
+            System.out.println("Creating channel with data: " + gcCreateChannelData);
             SendBirdGroupChannel result = apiInstance.gcCreateChannel().apiToken(apiToken).gcCreateChannelData(gcCreateChannelData).execute();
             return result;
         }
@@ -58,6 +59,7 @@ public class SbGroupChannelManager implements GroupChannelManager {
 
         return null;
     }
+
 
     @Override
     public OcDeleteChannelByUrl200Response deleteChannelByUrl(String channelUrl) {

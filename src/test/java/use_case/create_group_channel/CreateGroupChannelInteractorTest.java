@@ -1,10 +1,7 @@
 package use_case.create_group_channel;
 
 import data_access.InMemoryUserDataAccessObject;
-import entity.SbGroupChannelManager;
-import entity.SbUserFactory;
-import entity.User;
-import entity.UserFactory;
+import entity.*;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.create_group_channel.CreateGroupChannelController;
 import interface_adapter.create_group_channel.CreateGroupChannelPresenter;
@@ -13,15 +10,14 @@ import interface_adapter.create_group_channel.CreateGroupChannelState;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.openapitools.client.model.ListMyGroupChannelsResponse;
 import org.sendbird.client.ApiClient;
 import org.sendbird.client.Configuration;
 
 import java.util.Arrays;
 import java.util.List;
 
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 
 public class CreateGroupChannelInteractorTest {
@@ -58,22 +54,34 @@ public class CreateGroupChannelInteractorTest {
         UserFactory factory = new SbUserFactory(defaultClient);
         User Paul = factory.create("Paul", "123");
         User Jonathan = factory.create("Jonathan", "123");
-        String userPaulId = "9fe8dffb-30a8-4125-8882-c24e0d5efc52";
-        String userJonathanId = "11415872-17cb-47ff-a986-ed7c1b63760c";
-
-
+        // String userPaulId = "9fe8dffb-30a8-4125-8882-c24e0d5efc52";
+        // String userJonathanId = "11415872-17cb-47ff-a986-ed7c1b63760c";
         userRepository.save(Paul);
         userRepository.save(Jonathan);
+        System.out.println("Creating user: " + Paul.getUserId());
+        System.out.println("Creating user: " + Jonathan.getUserId());
 
-
-        CreateGroupChannelInputData inputData = new CreateGroupChannelInputData("Testing Channel", "Jonathan", null, userPaulId);
-
+        CreateGroupChannelInputData inputData = new CreateGroupChannelInputData("Testing Channel", "Jonathan", null, Paul.getUserId());
 
         CreateGroupChannelOutputBoundary successPresenter = new CreateGroupChannelOutputBoundary() {
             @Override
             public void prepareSuccessView(CreateGroupChannelOutputData outputData) {
                 assertEquals("Chat created successfully.", outputData.getMessage());
                 assertEquals(false, outputData.isUseCaseFailed());
+
+                String createdChannelUrl = outputData.getChannelUrl();
+                assertNotNull(createdChannelUrl);
+
+
+                SbUserManager userManager = new SbUserManager(defaultClient);
+
+                ListMyGroupChannelsResponse paulChannels = userManager.listGroupChannelsByUserId(Paul.getUserId());
+                assertNotNull(paulChannels);
+                System.out.println(paulChannels);
+
+//                ListMyGroupChannelsResponse jonathanChannels = userManager.listGroupChannelsByUserId(userJonathanId);
+//                assertTrue(jonathanChannels.getChannels().stream()
+//                        .anyMatch(channel -> channel.getChannelUrl().equals(createdChannelUrl)));
             }
             @Override
             public void prepareFailView(String errorMessage) {

@@ -13,8 +13,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 
 public class SbGroupChannelManagerTest {
@@ -32,6 +31,7 @@ public class SbGroupChannelManagerTest {
 
         ApiClient defaultClient = Configuration.getDefaultApiClient().addDefaultHeader("Api-Token", apiToken);
         defaultClient.setBasePath("https://api-" + applicationId + ".sendbird.com");
+
 
 
         userRepository = new InMemoryUserDataAccessObject();
@@ -53,6 +53,13 @@ public class SbGroupChannelManagerTest {
         assertNotNull("Resulting channel should not be null", result);
         assertEquals("Channel name should match the expected value", channelName, result.getName());
         assertNotNull("Channel URL should not be null", result.getChannelUrl());
+
+//        SbUserManager userChannels = SbUserManager.listGroupChannelsByUserId(userPaulId);
+//        assertNotNull("Failed to retrieve user channels.", userChannels);
+//        boolean isChannelFound = userChannels.getChannels().stream()
+//                .anyMatch(channel -> channel.getName().equals(channelName));
+//        assertTrue("Created channel not found in user's channels.", isChannelFound);
+
     }
 
     @Test

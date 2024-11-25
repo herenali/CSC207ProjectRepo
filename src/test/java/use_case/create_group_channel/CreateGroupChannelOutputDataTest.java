@@ -12,8 +12,8 @@ public class CreateGroupChannelOutputDataTest {
 
     @BeforeEach
     void setUp() {
-        successOutputData = new CreateGroupChannelOutputData("Group channel created successfully.", false);
-        failureOutputData = new CreateGroupChannelOutputData("Failed to create group channel.", true);
+        successOutputData = new CreateGroupChannelOutputData("Channel Url", "Group channel created successfully.", false);
+        failureOutputData = new CreateGroupChannelOutputData(null, "Failed to create group channel.", true);
     }
 
     @Test
