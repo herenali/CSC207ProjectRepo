@@ -1,21 +1,23 @@
 package use_case.create_group_channel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.sendbird.client.ApiClient;
 import org.sendbird.client.Configuration;
 
 import entity.SbGroupChannelManager;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The Create Group Channel Interactor.
  */
 public class CreateGroupChannelInteractor implements CreateGroupChannelInputBoundary {
     private final CreateGroupChannelOutputBoundary createGroupChannelPresenter;
+    private final CreateGroupChannelDataAccessInterface userDataAccessObject;
 
-    public CreateGroupChannelInteractor(CreateGroupChannelOutputBoundary createGroupChannelPresenter) {
+    public CreateGroupChannelInteractor(CreateGroupChannelOutputBoundary createGroupChannelPresenter, CreateGroupChannelDataAccessInterface userDataAccessInterface) {
         this.createGroupChannelPresenter = createGroupChannelPresenter;
+        this.userDataAccessObject = userDataAccessInterface;
     }
 
     public void execute(CreateGroupChannelInputData createGroupChannelInputData) {
@@ -26,26 +28,48 @@ public class CreateGroupChannelInteractor implements CreateGroupChannelInputBoun
 
         final SbGroupChannelManager sbGroupChannelManager = new SbGroupChannelManager(defaultClient);
 
-        final String currentUserId = createGroupChannelInputData.getCurrentUserId();
         try {
+            final List<String> userIds = new ArrayList<>();
+
             if (createGroupChannelInputData.getUsers() != null && !createGroupChannelInputData.getUsers().isEmpty()) {
-                if (!createGroupChannelInputData.getUsers().contains(currentUserId)){
-                    createGroupChannelInputData.getUsers().add(currentUserId);
+                for (String username : createGroupChannelInputData.getUsers()) {
+                    if (!userDataAccessObject.existsByName(username)) {
+                        createGroupChannelPresenter.prepareFailView("Username \"" + username + "\" does not exist.");
+                        return;
+                    }
+                    userIds.add(userDataAccessObject.getUserId(username));
                 }
-                sbGroupChannelManager.createChannel(createGroupChannelInputData.getUsers(),
-                        createGroupChannelInputData.getChatName());
             }
             else if (createGroupChannelInputData.getUser() != null && !createGroupChannelInputData.getUser().isEmpty()) {
-                sbGroupChannelManager.createChannel(List.of(createGroupChannelInputData.getUser()),
-                        createGroupChannelInputData.getChatName());
+                final String username = createGroupChannelInputData.getUser();
+                if (!userDataAccessObject.existsByName(username)) {
+                    createGroupChannelPresenter.prepareFailView("Username \"" + username + "\" does not exist.");
+                    return;
+                }
+                userIds.add(userDataAccessObject.getUserId(username));
             }
             else {
-                createGroupChannelPresenter.prepareFailView("No valid user or users.");
+                createGroupChannelPresenter.prepareFailView("No valid user(s).");
                 return;
             }
-            createGroupChannelPresenter.prepareSuccessView(new CreateGroupChannelOutputData("Chat is created.", false));
+
+            if (!userIds.contains(createGroupChannelInputData.getCurrentUserId())) {
+                userIds.add(createGroupChannelInputData.getCurrentUserId());
+            }
+
+            final var groupChannel = sbGroupChannelManager.createChannel(userIds, createGroupChannelInputData.getChatName());
+
+            if (groupChannel != null && groupChannel.getChannelUrl() != null) {
+                createGroupChannelPresenter.prepareSuccessView(
+                        new CreateGroupChannelOutputData("Chat created successfully.", false)
+                );
+            }
+            else {
+                createGroupChannelPresenter.prepareFailView("Failed to create group channel.");
+            }
         }
         catch (Exception e) {
+            createGroupChannelPresenter.prepareFailView("An error occurred: " + e.getMessage());
             throw new RuntimeException(e);
         }
     }

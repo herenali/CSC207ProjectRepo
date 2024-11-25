@@ -30,5 +30,4 @@ public class CreateGroupChannelViewModel extends ViewModel<CreateGroupChannelSta
     public void setCreateError(String error) {
         getState().setCreateError(error);
     }
-
 }

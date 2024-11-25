@@ -98,7 +98,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         defaultClient.setBasePath("https://api-" + applicationId + ".sendbird.com");
         final SbUserManager sbUserManager = new SbUserManager(defaultClient);
         final String currentUserId = loggedInViewModel.getState().getUserId();
-        final DefaultListModel<String> chats = new DefaultListModel<>();
+        final DefaultListModel chats = new DefaultListModel();
 
         if (currentUserId.length() > 0) {
             final List<SendBirdGroupChannel> groupChannels = sbUserManager
@@ -196,7 +196,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                     final String chatName = chatNameField.getText().trim();
                     final String user = userNameField.getText().trim();
                     if (!chatName.isEmpty() && !user.isEmpty()) {
-                        createGroupChannelController.createSingleChat(chatName, user, currentUserId);
+                        createGroupChannelController.createSingleChat(chatName, user, loggedInViewModel.getState().getUserId());
                         chats.addElement(chatName);
                         chatList.setModel(chats);
                         // chatList.revalidate();
@@ -221,7 +221,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                             JOptionPane.showMessageDialog(null, "You must enter at least one user.");
                             return;
                         }
-                        createGroupChannelController.createGroupChat(chatName, users, currentUserId);
+                        createGroupChannelController.createGroupChat(chatName, users, loggedInViewModel.getState().getUserId());
                         chats.addElement(chatName);
                         chatList.setModel(chats);
                         // chatList.revalidate();

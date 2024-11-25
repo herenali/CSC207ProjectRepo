@@ -1,5 +1,6 @@
 package entity;
 
+
 import app.Config;
 import org.openapitools.client.model.GcCreateChannelData;
 import org.openapitools.client.model.OcDeleteChannelByUrl200Response;
@@ -8,7 +9,9 @@ import org.sendbird.client.ApiClient;
 import org.sendbird.client.ApiException;
 import org.sendbird.client.api.GroupChannelApi;
 
+
 import java.util.List;
+
 
 /**
  * Class for managing group channels.
@@ -44,7 +47,6 @@ public class SbGroupChannelManager implements GroupChannelManager {
         try {
             SendBirdGroupChannel result = apiInstance.gcCreateChannel().apiToken(apiToken).gcCreateChannelData(gcCreateChannelData).execute();
             return result;
-
         }
         catch (ApiException e) {
             System.err.println("Exception when calling GroupChannelApi#gcCreateChannel");
@@ -55,7 +57,6 @@ public class SbGroupChannelManager implements GroupChannelManager {
         }
 
         return null;
-
     }
 
     @Override

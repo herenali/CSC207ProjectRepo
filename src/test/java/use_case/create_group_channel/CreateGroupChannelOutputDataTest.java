@@ -9,6 +9,7 @@ public class CreateGroupChannelOutputDataTest {
     private CreateGroupChannelOutputData successOutputData;
     private CreateGroupChannelOutputData failureOutputData;
 
+
     @BeforeEach
     void setUp() {
         successOutputData = new CreateGroupChannelOutputData("Group channel created successfully.", false);
@@ -26,5 +27,4 @@ public class CreateGroupChannelOutputDataTest {
         assertFalse(successOutputData.isUseCaseFailed());
         assertTrue(failureOutputData.isUseCaseFailed());
     }
-
 }
