@@ -9,17 +9,17 @@ import java.util.Map;
 
 import javax.swing.*;
 
-import entity.SbGroupChannelManager;
-import interface_adapter.edit_message.EditMessageController;
 import org.openapitools.client.model.SendBirdGroupChannel;
 import org.sendbird.client.ApiClient;
 import org.sendbird.client.Configuration;
 
+import entity.SbGroupChannelManager;
 import entity.SbUserManager;
 import interface_adapter.change_password.LoggedInState;
 import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.choose_group_channel.ChooseGroupChannelController;
 import interface_adapter.create_group_channel.CreateGroupChannelController;
+import interface_adapter.edit_message.EditMessageController;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.send_message.SendMessageController;
 import use_case.create_group_channel.CreateGroupChannelInputBoundary;
@@ -44,7 +44,6 @@ public class ChatView extends JPanel implements PropertyChangeListener {
     private final JButton profileButton;
 
     private JList<String> chatList;
-    // private final JTextArea chatArea;
     private final JPanel chatArea;
 
     private final Map<String, List<String>> chatMessages = new HashMap<>();
@@ -85,8 +84,6 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         leftPanel.setLayout(new BorderLayout());
         leftPanel.setPreferredSize(new Dimension(200, this.getHeight()));
 
-        // final String[] sampleChats = {"Chat 1", "Chat 2", "Chat 3"}; // replace with actual chats
-
         // fetch chats from sendbird
         final String apiToken = "e4fbd0788231cf40830bf62f866aa001182f9971";
         final String applicationId = "049E2510-3508-4C99-80F9-A3C24ECA7677";
@@ -116,7 +113,6 @@ public class ChatView extends JPanel implements PropertyChangeListener {
             chatList = new JList<>();
         }
 
-        // chatList = new JList<>(sampleChats);
         chatList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         chatList.setSelectedIndex(0);
         chatList.addListSelectionListener(e -> updateChatArea());
@@ -268,6 +264,9 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         });
     }
 
+    /**
+     * Updates chat area with newly sent/edited messages
+     */
     private void updateChatArea() {
         final String selectedChat = chatList.getSelectedValue();
         // chatArea.setText("Display messages for: " + selectedChat);
