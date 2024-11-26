@@ -1,11 +1,8 @@
 package view;
 
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,9 +10,6 @@ import java.util.Map;
 import javax.swing.*;
 
 import entity.SbGroupChannelManager;
-import entity.SbUser;
-import interface_adapter.ViewManagerModel;
-import interface_adapter.create_group_channel.CreateGroupChannelPresenter;
 import interface_adapter.edit_message.EditMessageController;
 import org.openapitools.client.model.SendBirdGroupChannel;
 import org.sendbird.client.ApiClient;
@@ -89,6 +83,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         // left panel for the chats
         final JPanel leftPanel = new JPanel();
         leftPanel.setLayout(new BorderLayout());
+        leftPanel.setPreferredSize(new Dimension(200, this.getHeight()));
 
         // final String[] sampleChats = {"Chat 1", "Chat 2", "Chat 3"}; // replace with actual chats
 
@@ -131,9 +126,9 @@ public class ChatView extends JPanel implements PropertyChangeListener {
 
         // current chat open
         chatArea = new JPanel();
+        chatArea.setPreferredSize(new Dimension(800, this.getHeight()));
 
         final JScrollPane chatAreaScrollPane = new JScrollPane(chatArea);
-        // chatArea.setText("No chat selected.");
         chatArea.removeAll();
         chatArea.add(new JLabel("No chat selected."));
         chatArea.revalidate();
@@ -147,7 +142,6 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         sendButton.addActionListener(evt -> {
             final String messageText = messageInputField.getText().trim();
             if (!messageText.isEmpty()) {
-//                sendMessages.sendMessage();
                 final String updatedCurrentUserId = loggedInViewModel.getState().getUserId();
                 final String groupChannelUrl = loggedInViewModel.getState().getGroupChannelUrl();
                 if (groupChannelUrl != null && !groupChannelUrl.isEmpty()) {
@@ -301,8 +295,8 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                 final JPanel messagePanel = new JPanel();
                 messagePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
                 messagePanel.setAlignmentX(JPanel.LEFT_ALIGNMENT);
-                messagePanel.setSize(new Dimension());
-                messagePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                messagePanel.setMaximumSize(new Dimension(400, 30));
+                // messagePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
                 final JLabel messageLabel = new JLabel(user + ": " + message);
                 messageLabel.setAlignmentX(JLabel.LEFT_ALIGNMENT);

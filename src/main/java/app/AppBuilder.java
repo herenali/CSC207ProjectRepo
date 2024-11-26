@@ -1,6 +1,6 @@
 package app;
 
-import java.awt.CardLayout;
+import java.awt.*;
 import java.io.IOException;
 
 import javax.swing.JFrame;
@@ -297,8 +297,9 @@ public class AppBuilder {
      * @return the application
      */
     public JFrame build() {
-        final JFrame application = new JFrame("Login Example");
+        final JFrame application = new JFrame("Chat System");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        application.setPreferredSize(new Dimension(1000, 600));
 
         application.add(cardPanel);
 
