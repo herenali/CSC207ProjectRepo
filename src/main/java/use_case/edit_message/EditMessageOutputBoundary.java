@@ -10,6 +10,10 @@ public interface EditMessageOutputBoundary {
      */
     void prepareSuccessView(EditMessageOutputData outputData);
 
+    /**
+     * Prepares the fail view for the Edit Message Use Case.
+     * @param error the error
+     */
     void prepareFailView(String error);
 
 }

@@ -1,10 +1,6 @@
 package use_case.create_group_channel;
 
-
-
-
 import entity.User;
-
 
 /**
  * DAO for the Create Group Channel Use Case.

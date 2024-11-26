@@ -1,9 +1,10 @@
 package use_case.choose_group_channel;
 
-import entity.SbMessageManager;
 import org.openapitools.client.model.ListMessagesResponse;
 import org.sendbird.client.ApiClient;
 import org.sendbird.client.Configuration;
+
+import entity.SbMessageManager;
 
 /**
  * The Choose Group Channel Interactor.

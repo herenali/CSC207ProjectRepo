@@ -1,8 +1,9 @@
 package use_case.send_message;
 
-import entity.SbMessageManager;
 import org.sendbird.client.ApiClient;
 import org.sendbird.client.Configuration;
+
+import entity.SbMessageManager;
 
 /**
  * The Send Message Interactor.

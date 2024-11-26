@@ -1,9 +1,13 @@
 package use_case.edit_message;
 
-import entity.SbMessageManager;
 import org.sendbird.client.ApiClient;
 import org.sendbird.client.Configuration;
 
+import entity.SbMessageManager;
+
+/**
+ * The Edit Message Interactor.
+ */
 public class EditMessageInteractor implements EditMessageInputBoundary {
     private final EditMessageOutputBoundary editMessagePresenter;
 
