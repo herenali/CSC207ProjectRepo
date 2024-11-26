@@ -38,35 +38,6 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         // No need to do anything to reinitialize a user list! The data is the cloud that may be miles away.
     }
 
-//    @Override
-//    public User get(String username) {
-//        // Make an API call to get the user object.
-//        final OkHttpClient client = new OkHttpClient().newBuilder().build();
-//        final Request request = new Request.Builder()
-//                .url(String.format("http://vm003.teach.cs.toronto.edu:20112/user?username=%s", username))
-//                .addHeader("Content-Type", CONTENT_TYPE_JSON)
-//                .build();
-//        try {
-//            final Response response = client.newCall(request).execute();
-//
-//            final JSONObject responseBody = new JSONObject(response.body().string());
-//
-//            if (responseBody.getInt(STATUS_CODE_LABEL) == SUCCESS_CODE) {
-//                final JSONObject userJSONObject = responseBody.getJSONObject("user");
-//                final String name = userJSONObject.getString(USERNAME);
-//                final String password = userJSONObject.getString(PASSWORD);
-//
-//                return userFactory.create(name, password);
-//            }
-//            else {
-//                throw new RuntimeException(responseBody.getString(MESSAGE));
-//            }
-//        }
-//        catch (IOException | JSONException ex) {
-//            throw new RuntimeException(ex);
-//        }
-//    }
-
     @Override
     public void setCurrentUsername(String name) {
         // this isn't implemented for the lab
@@ -134,39 +105,6 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
     public String getUserId(String username) {
         return "";
     }
-
-//    @Override
-//    public void changePassword(User user) {
-//        final OkHttpClient client = new OkHttpClient().newBuilder()
-//                .build();
-//
-//        // POST METHOD
-//        final MediaType mediaType = MediaType.parse(CONTENT_TYPE_JSON);
-//        final JSONObject requestBody = new JSONObject();
-//        requestBody.put(USERNAME, user.getName());
-//        requestBody.put(PASSWORD, user.getPassword());
-//        final RequestBody body = RequestBody.create(requestBody.toString(), mediaType);
-//        final Request request = new Request.Builder()
-//                .url("http://vm003.teach.cs.toronto.edu:20112/user")
-//                .method("PUT", body)
-//                .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
-//                .build();
-//        try {
-//            final Response response = client.newCall(request).execute();
-//
-//            final JSONObject responseBody = new JSONObject(response.body().string());
-//
-//            if (responseBody.getInt(STATUS_CODE_LABEL) == SUCCESS_CODE) {
-//                // success!
-//            }
-//            else {
-//                throw new RuntimeException(responseBody.getString(MESSAGE));
-//            }
-//        }
-//        catch (IOException | JSONException ex) {
-//            throw new RuntimeException(ex);
-//        }
-//    }
 
     @Override
     public String getCurrentUsername() {
