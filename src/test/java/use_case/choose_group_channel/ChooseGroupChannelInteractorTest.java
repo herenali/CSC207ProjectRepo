@@ -11,14 +11,19 @@ public class ChooseGroupChannelInteractorTest {
     @Test
     public void successTest() {
         ChooseGroupChannelInputData inputData =
-                new ChooseGroupChannelInputData("sendbird_group_channel_17729697_fbf1838c39e6d07e9cc4b3d68d1a5f35eae4312f");
+                new ChooseGroupChannelInputData("sendbird_group_channel_19639730_1cd19e30afe26f9fbdd933b26ee4752a8fd5e107");
 
         ChooseGroupChannelOutputBoundary successPresenter = new ChooseGroupChannelOutputBoundary() {
             @Override
             public void prepareSuccessView(ChooseGroupChannelOutputData outputData) {
                 List<List<String>> usersAndMessages = outputData.getUsersAndMessages();
                 List<String> firstUserAndMessage = usersAndMessages.get(0);
-                assertEquals(firstUserAndMessage.get(0), "Paul");
+                assertEquals(firstUserAndMessage.get(0), "abc");
+                assertEquals(firstUserAndMessage.get(1), "Hello!");
+
+                List<List<String>> userAndMessageIds = outputData.getUserAndMessageIds();
+                List<String> firstUserAndMessageId = userAndMessageIds.get(0);
+                assertEquals(firstUserAndMessageId.get(0), "39bd6921-ef43-44bf-b8eb-f5394ca5272f");
             }
 
             @Override

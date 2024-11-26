@@ -1,6 +1,7 @@
 package entity;
 
 
+import org.openapitools.client.model.GcListChannelsResponse;
 import org.openapitools.client.model.OcDeleteChannelByUrl200Response;
 import org.openapitools.client.model.SendBirdGroupChannel;
 
@@ -25,5 +26,12 @@ public interface GroupChannelManager {
      * @return the user
      */
     OcDeleteChannelByUrl200Response deleteChannelByUrl(String channelUrl);
+
+    /**
+     * Lists all group channels.
+     * @param userId the id of the user
+     * @return the list of group channels
+     */
+    GcListChannelsResponse listChannels(String userId);
 }
 

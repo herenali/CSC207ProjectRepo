@@ -7,8 +7,8 @@ import static org.junit.Assert.assertEquals;
 public class SendMessageInteractorTest {
     @Test
     public void successTest() {
-        SendMessageInputData inputData = new SendMessageInputData("9fe8dffb-30a8-4125-8882-c24e0d5efc52",
-                "sendbird_group_channel_17729697_fbf1838c39e6d07e9cc4b3d68d1a5f35eae4312f",
+        SendMessageInputData inputData = new SendMessageInputData("39bd6921-ef43-44bf-b8eb-f5394ca5272f",
+                "sendbird_group_channel_19639730_1cd19e30afe26f9fbdd933b26ee4752a8fd5e107",
                 "Send Message Interactor Test");
 
         SendMessageOutputBoundary successPresenter = new SendMessageOutputBoundary() {

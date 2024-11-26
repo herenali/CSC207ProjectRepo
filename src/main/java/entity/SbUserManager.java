@@ -75,6 +75,7 @@ public class SbUserManager implements UserManager {
 
     @Override
     public ListMyGroupChannelsResponse listGroupChannelsByUserId(String userId) {
+        // TODO: remove this method
         try {
             ListMyGroupChannelsResponse result = apiInstance.listMyGroupChannels(userId).execute();
             return result;
