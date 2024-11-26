@@ -1,11 +1,13 @@
 package use_case.edit_message;
 
+import entity.SbGroupChannelManager;
 import entity.SbMessageManager;
 import org.junit.Test;
 import org.sendbird.client.ApiClient;
 import org.sendbird.client.Configuration;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -17,7 +19,9 @@ public class EditMessageInteractorTest {
         final String applicationId = "049E2510-3508-4C99-80F9-A3C24ECA7677";
         final ApiClient defaultClient = Configuration.getDefaultApiClient().addDefaultHeader("Api-Token", apiToken);
         defaultClient.setBasePath("https://api-" + applicationId + ".sendbird.com");
+
         SbMessageManager sbMessageManager = new SbMessageManager(defaultClient);
+        SbGroupChannelManager sbGroupChannelManager = new SbGroupChannelManager(defaultClient);
 
         EditMessageOutputBoundary editMessagePresenter = new EditMessageOutputBoundary() {
             @Override
@@ -32,9 +36,10 @@ public class EditMessageInteractorTest {
 
         String testUserId = "9fe8dffb-30a8-4125-8882-c24e0d5efc52";
         String testChannelType = "group_channels";
-        String testChannelUrl = "sendbird_group_channel_17729697_fbf1838c39e6d07e9cc4b3d68d1a5f35eae4312f";
         String newMessage = "updated message";
         String oldMessage = "original message";
+
+        String testChannelUrl = sbGroupChannelManager.createChannel(Collections.singletonList(testUserId), "group name").getChannelUrl();
 
         BigDecimal testMessageId = sbMessageManager.sendMessage(testChannelType, testChannelUrl, testUserId,
                 oldMessage, "MESG").getMessageId();
@@ -44,7 +49,6 @@ public class EditMessageInteractorTest {
 
         assertEquals(oldMessage, sbMessageManager.getMessage(testChannelType, testChannelUrl,
                 String.valueOf(testMessageId)).getMessage()); // checks if message before editing is original message
-
 
         editMessageInteractor.execute(editMessageInputData);
 
