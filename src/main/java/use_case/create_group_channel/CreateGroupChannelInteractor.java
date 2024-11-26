@@ -40,14 +40,6 @@ public class CreateGroupChannelInteractor implements CreateGroupChannelInputBoun
                     userIds.add(userDataAccessObject.getUserId(username));
                 }
             }
-            else if (createGroupChannelInputData.getUser() != null && !createGroupChannelInputData.getUser().isEmpty()) {
-                final String username = createGroupChannelInputData.getUser();
-                if (!userDataAccessObject.existsByName(username)) {
-                    createGroupChannelPresenter.prepareFailView("Username \"" + username + "\" does not exist.");
-                    return;
-                }
-                userIds.add(userDataAccessObject.getUserId(username));
-            }
             else {
                 createGroupChannelPresenter.prepareFailView("No valid user(s).");
                 return;
@@ -61,7 +53,7 @@ public class CreateGroupChannelInteractor implements CreateGroupChannelInputBoun
 
             if (groupChannel != null && groupChannel.getChannelUrl() != null) {
                 createGroupChannelPresenter.prepareSuccessView(
-                        new CreateGroupChannelOutputData(groupChannel.getChannelUrl(), "Chat created successfully.", false)
+                        new CreateGroupChannelOutputData(groupChannel.getChannelUrl(), false)
                 );
             }
             else {

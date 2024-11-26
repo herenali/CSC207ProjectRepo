@@ -60,7 +60,6 @@ public class SbGroupChannelManager implements GroupChannelManager {
         return null;
     }
 
-
     @Override
     public OcDeleteChannelByUrl200Response deleteChannelByUrl(String channelUrl) {
         try {

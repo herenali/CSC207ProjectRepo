@@ -13,7 +13,7 @@ public class CreateGroupChannelInputDataTest {
 
     @BeforeEach
     void setUp() {
-        createGroupChannelInputData = new CreateGroupChannelInputData("Test Channel", null,
+        createGroupChannelInputData = new CreateGroupChannelInputData("Test Channel",
                 new ArrayList<>(Arrays.asList("user456", "user789")), "user123");
     }
 
@@ -28,7 +28,7 @@ public class CreateGroupChannelInputDataTest {
     }
 
     @Test
-    void getUserIds() {
+    void getUserNames() {
         assertEquals(new ArrayList<>(Arrays.asList("user456", "user789")), createGroupChannelInputData.getUsers());
     }
 }

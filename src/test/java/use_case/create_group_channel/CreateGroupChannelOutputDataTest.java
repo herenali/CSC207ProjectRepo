@@ -12,14 +12,8 @@ public class CreateGroupChannelOutputDataTest {
 
     @BeforeEach
     void setUp() {
-        successOutputData = new CreateGroupChannelOutputData("Channel Url", "Group channel created successfully.", false);
-        failureOutputData = new CreateGroupChannelOutputData(null, "Failed to create group channel.", true);
-    }
-
-    @Test
-    void getMessage() {
-        assertEquals("Group channel created successfully.", successOutputData.getMessage());
-        assertEquals("Failed to create group channel.", failureOutputData.getMessage());
+        successOutputData = new CreateGroupChannelOutputData("Channel Url", false);
+        failureOutputData = new CreateGroupChannelOutputData(null, true);
     }
 
     @Test

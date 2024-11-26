@@ -41,7 +41,8 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
 
     @Override
     public String getUserId(String username) {
-        return "";
+        // return "";
+        return users.get(username).getUserId();
     }
 
 //    @Override

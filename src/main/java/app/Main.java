@@ -25,6 +25,7 @@ public class Main {
                                             .addSendMessageUseCase()
                                             .addEditMessageUseCase()
                                             .addCreateGroupChannelUseCase()
+
                                             .build();
 
         application.pack();

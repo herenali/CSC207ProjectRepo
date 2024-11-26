@@ -2,6 +2,7 @@ package interface_adapter.create_group_channel;
 
 
 import interface_adapter.ViewManagerModel;
+import interface_adapter.change_password.LoggedInViewModel;
 import use_case.create_group_channel.CreateGroupChannelOutputBoundary;
 import use_case.create_group_channel.CreateGroupChannelOutputData;
 
@@ -11,34 +12,39 @@ import use_case.create_group_channel.CreateGroupChannelOutputData;
  */
 public class CreateGroupChannelPresenter implements CreateGroupChannelOutputBoundary {
 
-
-    private final CreateGroupChannelViewModel createGroupChannelViewModel;
     private final ViewManagerModel viewManagerModel;
-    private CreateGroupChannelOutputData outputData;
+    private final LoggedInViewModel loggedInViewModel;
 
-
-    public CreateGroupChannelPresenter(ViewManagerModel viewManagerModel, CreateGroupChannelViewModel createGroupChannelViewModel) {
+    public CreateGroupChannelPresenter(ViewManagerModel viewManagerModel, LoggedInViewModel loggedInViewModel) {
         this.viewManagerModel = viewManagerModel;
-        this.createGroupChannelViewModel = createGroupChannelViewModel;
+        this.loggedInViewModel = loggedInViewModel;
     }
 
     /**
-     * Executes the Create Group Channel Use Case.
-     * @param outputData for data to be outputted
+     * Handles the response when the group channel creation is successful.
+     * Updates the state and notifies the view manager to switch views.
+     *
+     * @param outputData contains the result of the group channel creation
      */
+    @Override
     public void prepareSuccessView(CreateGroupChannelOutputData outputData) {
         // On success, update the contents of the chat area
+
+        final var loggedInState = loggedInViewModel.getState();
+        loggedInState.setGroupChannelUrl(outputData.getChannelUrl());
+        loggedInState.addGroupChannelUrl(outputData.getChannelUrl());
+        loggedInViewModel.setState(loggedInState);
+        loggedInViewModel.firePropertyChanged();
     }
 
     /**
-     * Executes the Create Group Channel Use Case.
-     * @param errorMessage to be displayed when program runs into an error
+     * Handles the response when the group channel creation fails.
+     * Displays an error message or other relevant failure responses.
+     *
+     * @param errorMessage the error message to display
      */
+    @Override
     public void prepareFailView(String errorMessage) {
         // Display an error message in the chat area
-    }
-
-    public CreateGroupChannelOutputData getOutputData() {
-        return outputData;
     }
 }

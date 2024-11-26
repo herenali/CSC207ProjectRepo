@@ -1,4 +1,20 @@
-# Note Application
+Messaging App with SendBird API (Authors: )
+
+## Summary of the project’s purpose
+Our messaging app program is designed to provide an efficient and reliable platform for communication between individuals and groups. 
+The program allows users to sign up, log in/ out of accounts, and create/ delete chats with other users. Users can send, receive, edit messages within chats. 
+Whether it is for coordinating with a team on a group project, connecting with friends, or XXX, our project aims to simplify communication and ensure everyone 
+can stay engaged an dinformed, making it a valuable tool for fostering connection and ensuring productivity. 
+
+## Table of contents
+1. Team Use Case - ![img_2.png](img_2.png)
+
+## Features of the software
+
+## Installation instructions
+
+
+
 
 This is a minimal example demonstrating usage of the
 password-protected user part of the API used in lab 5.

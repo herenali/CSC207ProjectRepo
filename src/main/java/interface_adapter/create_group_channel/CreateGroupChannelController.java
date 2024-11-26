@@ -23,23 +23,11 @@ public class CreateGroupChannelController {
     /**
      * Executes the Create Group Chat Use Case.
      * @param chatName for name of chat
-     * @param user for name of user
-     * @param currentUserId for logged-in user's ID
-     */
-    public void createSingleChat(String chatName, String user, String currentUserId) {
-        final CreateGroupChannelInputData createGroupChannelInputData = CreateGroupChannelInputData.forSingleChat(chatName, user, currentUserId);
-        createGroupChannelUseCaseInteractor.execute(createGroupChannelInputData);
-    }
-
-
-    /**
-     * Executes the Create Group Chat Use Case.
-     * @param chatName for name of chat
      * @param users for list of users
      * @param currentUserId for logged-in user's ID
      */
-    public void createGroupChat(String chatName, List<String> users, String currentUserId) {
-        final CreateGroupChannelInputData inputData = CreateGroupChannelInputData.forGroupChat(chatName, users, currentUserId);
+    public void execute(String chatName, List<String> users, String currentUserId) {
+        final CreateGroupChannelInputData inputData = new CreateGroupChannelInputData(chatName, users, currentUserId);
         createGroupChannelUseCaseInteractor.execute(inputData);
     }
 }

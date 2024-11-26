@@ -186,50 +186,36 @@ public class ChatView extends JPanel implements PropertyChangeListener {
             panel.add(new JLabel("Chat Name: "));
             panel.add(chatNameField);
 
-            if (chatType == 0) {
-                final JTextField userNameField = new JTextField(15);
-                panel.add(new JLabel("Enter Username: "));
-                panel.add(userNameField);
-                final int result = JOptionPane.showConfirmDialog(null, panel, "New Single Chat", JOptionPane.OK_CANCEL_OPTION);
-
-                if (result == JOptionPane.OK_OPTION) {
-                    final String chatName = chatNameField.getText().trim();
-                    final String user = userNameField.getText().trim();
-                    if (!chatName.isEmpty() && !user.isEmpty()) {
-                        createGroupChannelController.createSingleChat(chatName, user, loggedInViewModel.getState().getUserId());
-                        chats.addElement(chatName);
-                        chatList.setModel(chats);
-                        // chatList.revalidate();
-                        // chatList.repaint();
-                        // updateChatArea();
-                    }
-                }
-            }
-            else if (chatType == 1) {
-                final JTextField usersField = new JTextField(20);
-                panel.add(new JLabel("Enter Users (comma-separated): "));
+            if (chatType == 0 || chatType == 1) {
+                final JTextField usersField = new JTextField(chatType == 0 ? 15 : 20);
+                final String labelText = chatType == 0 ? "Enter Username: " : "Enter UserNames (comma-separated): ";
+                panel.add(new JLabel(labelText));
                 panel.add(usersField);
-                final int result = JOptionPane.showConfirmDialog(null, panel, "New Group Chat", JOptionPane.OK_CANCEL_OPTION);
+
+                final int result = JOptionPane.showConfirmDialog(null, panel,
+                        chatType == 0 ? "New Single Chat" : "New Group Chat", JOptionPane.OK_CANCEL_OPTION);
 
                 if (result == JOptionPane.OK_OPTION) {
                     final String chatName = chatNameField.getText().trim();
                     final String usersInput = usersField.getText().trim();
 
-                    if (!chatName.isEmpty() && !usersInput.isEmpty()) {
-                        final List<String> users = List.of(usersInput.split(","));
-                        if (users.isEmpty()) {
-                            JOptionPane.showMessageDialog(null, "You must enter at least one user.");
-                            return;
+                    if (!chatName.isEmpty()) {
+                        List<String> users = null;
+                        if (chatType == 0) {
+                            users = List.of(usersInput);
+                        } else if (chatType == 1) {
+                            users = List.of(usersInput.split(","));
+                            if (users.isEmpty()) {
+                                JOptionPane.showMessageDialog(null, "You must enter at least one user.");
+                                return;
+                            }
                         }
-                        createGroupChannelController.createGroupChat(chatName, users, loggedInViewModel.getState().getUserId());
-                        chats.addElement(chatName);
-                        chatList.setModel(chats);
-                        // chatList.revalidate();
-                        // chatList.repaint();
-                        // updateChatArea();
-                    }
-                    else {
-                        JOptionPane.showMessageDialog(null, "You must enter at least one user.");
+                        createGroupChannelController.execute(chatName, users, loggedInViewModel.getState().getUserId());
+                        firePropertyChange("newChat", null, chatName);
+                        SwingUtilities.invokeLater(() -> {
+                            chats.addElement(chatName);
+                            chatList.setModel(chats);
+                        });
                     }
                 }
             }
@@ -337,7 +323,8 @@ public class ChatView extends JPanel implements PropertyChangeListener {
             }
             chatArea.revalidate();
             chatArea.repaint();
-        } else {
+        }
+        else {
             chatArea.add(new JLabel("No chat selected."));
         }
     }
@@ -366,13 +353,9 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         this.editMessageController = editMessageController;
     }
 
-    public JButton getNewChatButton(){
-        return newChatButton;
-    }
-
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals("login")) {
+        if (evt.getPropertyName().equals("login") || (evt.getPropertyName().equals("newChat"))) {
             // fetch chats from sendbird
             final String apiToken = "e4fbd0788231cf40830bf62f866aa001182f9971";
             final String applicationId = "049E2510-3508-4C99-80F9-A3C24ECA7677";

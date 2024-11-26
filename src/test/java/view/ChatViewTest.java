@@ -5,11 +5,8 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.create_group_channel.CreateGroupChannelPresenter;
 import interface_adapter.create_group_channel.CreateGroupChannelController;
-import interface_adapter.create_group_channel.CreateGroupChannelState;
-import interface_adapter.create_group_channel.CreateGroupChannelViewModel;
 import data_access.InMemoryUserDataAccessObject;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 
 import org.sendbird.client.ApiClient;
@@ -18,11 +15,6 @@ import use_case.create_group_channel.*;
 import use_case.create_group_channel.CreateGroupChannelInteractor;
 
 
-import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -31,8 +23,6 @@ public class ChatViewTest {
     private LoggedInViewModel loggedInViewModel;
     private ViewManagerModel viewManagerModel;
     private CreateGroupChannelController createGroupChannelController;
-    private CreateGroupChannelInputData createGroupChannelInputData;
-    private CreateGroupChannelViewModel createGroupChannelViewModel;
     private ChatView chatView;
     private InMemoryUserDataAccessObject userRepository;
 
@@ -49,10 +39,9 @@ public class ChatViewTest {
         userRepository = new InMemoryUserDataAccessObject();
         loggedInViewModel = new LoggedInViewModel();
         viewManagerModel = new ViewManagerModel();
-        createGroupChannelViewModel = new CreateGroupChannelViewModel();
 
 
-        CreateGroupChannelPresenter presenter = new CreateGroupChannelPresenter(viewManagerModel, createGroupChannelViewModel);
+        CreateGroupChannelPresenter presenter = new CreateGroupChannelPresenter(viewManagerModel, loggedInViewModel);
         CreateGroupChannelInteractor interactor = new CreateGroupChannelInteractor(presenter, userRepository);
         createGroupChannelController = new CreateGroupChannelController(interactor);
 

@@ -53,13 +53,6 @@ public class SbGroupChannelManagerTest {
         assertNotNull("Resulting channel should not be null", result);
         assertEquals("Channel name should match the expected value", channelName, result.getName());
         assertNotNull("Channel URL should not be null", result.getChannelUrl());
-
-//        SbUserManager userChannels = SbUserManager.listGroupChannelsByUserId(userPaulId);
-//        assertNotNull("Failed to retrieve user channels.", userChannels);
-//        boolean isChannelFound = userChannels.getChannels().stream()
-//                .anyMatch(channel -> channel.getName().equals(channelName));
-//        assertTrue("Created channel not found in user's channels.", isChannelFound);
-
     }
 
     @Test
