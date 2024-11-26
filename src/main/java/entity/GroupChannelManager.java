@@ -1,11 +1,10 @@
 package entity;
 
+import java.util.List;
 
 import org.openapitools.client.model.GcListChannelsResponse;
 import org.openapitools.client.model.OcDeleteChannelByUrl200Response;
 import org.openapitools.client.model.SendBirdGroupChannel;
-
-import java.util.List;
 
 /**
  * Class for managing group channels.
@@ -18,7 +17,6 @@ public interface GroupChannelManager {
      * @return the group channel
      */
     SendBirdGroupChannel createChannel(List userIds, String name);
-
 
     /**
      * Deletes a group channel.

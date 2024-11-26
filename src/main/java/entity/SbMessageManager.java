@@ -19,7 +19,7 @@ public class SbMessageManager {
 
     public SbMessageManager(ApiClient defaultClient) {
         apiInstance = new MessageApi(defaultClient);
-        apiToken = Config.apiToken;
+        apiToken = Config.getApiToken();
     }
 
     /**

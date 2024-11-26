@@ -1,7 +1,7 @@
 package entity;
 
+import java.util.List;
 
-import app.Config;
 import org.openapitools.client.model.GcCreateChannelData;
 import org.openapitools.client.model.GcListChannelsResponse;
 import org.openapitools.client.model.OcDeleteChannelByUrl200Response;
@@ -10,23 +10,21 @@ import org.sendbird.client.ApiClient;
 import org.sendbird.client.ApiException;
 import org.sendbird.client.api.GroupChannelApi;
 
-
-import java.util.List;
-
+import app.Config;
 
 /**
  * Class for managing group channels.
  */
 public class SbGroupChannelManager implements GroupChannelManager {
-    String apiToken;
-    GroupChannelApi apiInstance;
+    private String apiToken;
+    private GroupChannelApi apiInstance;
 
     public SbGroupChannelManager(ApiClient defaultClient) {
         if (defaultClient == null) {
             throw new IllegalArgumentException("ApiClient cannot be null");
         }
-        apiInstance = new GroupChannelApi(defaultClient);
-        apiToken = Config.apiToken;
+        setApiInstance(new GroupChannelApi(defaultClient));
+        setApiToken(Config.getApiToken());
     }
 
     /**
@@ -41,13 +39,9 @@ public class SbGroupChannelManager implements GroupChannelManager {
         gcCreateChannelData.name(name);
         gcCreateChannelData.userIds(userIds);
 
-//        if (userIds.size() == 1) {
-//            gcCreateChannelData.isDistinct(true);
-//        }
-
         try {
             System.out.println("Creating channel with data: " + gcCreateChannelData);
-            SendBirdGroupChannel result = apiInstance.gcCreateChannel().apiToken(apiToken).gcCreateChannelData(gcCreateChannelData).execute();
+            SendBirdGroupChannel result = getApiInstance().gcCreateChannel().apiToken(getApiToken()).gcCreateChannelData(gcCreateChannelData).execute();
             return result;
         }
         catch (ApiException e) {
@@ -61,40 +55,67 @@ public class SbGroupChannelManager implements GroupChannelManager {
         return null;
     }
 
+    /**
+     * Deletes selected group channel.
+     * @param channelUrl URL of channel to be deleted
+     * @return The deleted group channel.
+     */
     @Override
     public OcDeleteChannelByUrl200Response deleteChannelByUrl(String channelUrl) {
         try {
-            final OcDeleteChannelByUrl200Response result = apiInstance.gcDeleteChannelByUrl(channelUrl).apiToken(apiToken).execute();
+            final OcDeleteChannelByUrl200Response result = getApiInstance()
+                    .gcDeleteChannelByUrl(channelUrl).apiToken(getApiToken()).execute();
             return result;
         }
-        catch (ApiException e) {
+        catch (ApiException ex) {
             System.err.println("Exception when calling GroupChannelApi#gcViewChannelByUrl");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
+            System.err.println("Status code: " + ex.getCode());
+            System.err.println("Reason: " + ex.getResponseBody());
+            System.err.println("Response headers: " + ex.getResponseHeaders());
+            ex.printStackTrace();
         }
 
         return null;
     }
 
+    /**
+     * Lists group channels user is in.
+     * @param userId ID of user to list channels for.
+     * @return The list of group channels.
+     */
     @Override
     public GcListChannelsResponse listChannels(String userId) {
         try {
-            final GcListChannelsResponse result = apiInstance.gcListChannels()
-                    .apiToken(apiToken)
+            final GcListChannelsResponse result = getApiInstance().gcListChannels()
+                    .apiToken(getApiToken())
                     .membersIncludeIn(userId)
                     .execute();
             return result;
         }
-        catch (ApiException e) {
+        catch (ApiException ex) {
             System.err.println("Exception when calling GroupChannelApi#gcViewChannelByUrl");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
+            System.err.println("Status code: " + ex.getCode());
+            System.err.println("Reason: " + ex.getResponseBody());
+            System.err.println("Response headers: " + ex.getResponseHeaders());
+            ex.printStackTrace();
         }
 
         return null;
+    }
+
+    public String getApiToken() {
+        return apiToken;
+    }
+
+    public void setApiToken(String apiToken) {
+        this.apiToken = apiToken;
+    }
+
+    public GroupChannelApi getApiInstance() {
+        return apiInstance;
+    }
+
+    public void setApiInstance(GroupChannelApi apiInstance) {
+        this.apiInstance = apiInstance;
     }
 }

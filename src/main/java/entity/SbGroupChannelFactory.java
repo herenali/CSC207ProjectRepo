@@ -1,12 +1,9 @@
 package entity;
 
+import java.util.List;
 
 import org.openapitools.client.model.SendBirdGroupChannel;
 import org.sendbird.client.ApiClient;
-
-
-import java.util.List;
-
 
 /**
  * Factory for creating group channels.

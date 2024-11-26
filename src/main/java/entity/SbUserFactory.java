@@ -6,7 +6,7 @@ import org.sendbird.client.ApiClient;
  * Factory for creating users.
  */
 public class SbUserFactory implements UserFactory {
-    private ApiClient apiClient;
+    private final ApiClient apiClient;
 
     public SbUserFactory(ApiClient apiClient) {
         this.apiClient = apiClient;
