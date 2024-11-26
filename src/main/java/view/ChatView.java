@@ -212,10 +212,10 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                         }
                         createGroupChannelController.execute(chatName, users, loggedInViewModel.getState().getUserId());
                         firePropertyChange("newChat", null, chatName);
-                        SwingUtilities.invokeLater(() -> {
-                            chats.addElement(chatName);
-                            chatList.setModel(chats);
-                        });
+//                        SwingUtilities.invokeLater(() -> {
+//                            chats.addElement(chatName);
+//                            chatList.setModel(chats);
+//                        });
                     }
                 }
             }

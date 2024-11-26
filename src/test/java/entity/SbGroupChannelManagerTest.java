@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.openapitools.client.model.OcDeleteChannelByUrl200Response;
 import org.openapitools.client.model.SendBirdGroupChannel;
+import org.openapitools.client.model.SendBirdMember;
 import org.sendbird.client.ApiClient;
 import org.sendbird.client.Configuration;
 import data_access.InMemoryUserDataAccessObject;
@@ -13,11 +14,13 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import entity.SbUserManager;
 import static org.junit.Assert.*;
 
 
 public class SbGroupChannelManagerTest {
     private static SbGroupChannelManager sbGroupChannelManager;
+    private static SbUserManager sbUserManager;
     private static String userPaulId;
     private static String userJonathanId;
     private static String groupChannelUrl;
@@ -36,7 +39,7 @@ public class SbGroupChannelManagerTest {
 
         userRepository = new InMemoryUserDataAccessObject();
         sbGroupChannelManager = new SbGroupChannelManager(defaultClient);
-
+        sbUserManager = new SbUserManager(defaultClient);
 
         userPaulId = "9fe8dffb-30a8-4125-8882-c24e0d5efc52";
         userJonathanId = "11415872-17cb-47ff-a986-ed7c1b63760c";
@@ -53,6 +56,18 @@ public class SbGroupChannelManagerTest {
         assertNotNull("Resulting channel should not be null", result);
         assertEquals("Channel name should match the expected value", channelName, result.getName());
         assertNotNull("Channel URL should not be null", result.getChannelUrl());
+
+        System.out.println(result.getMembers());
+        System.out.println(result.getMemberCount());
+
+        List<SendBirdGroupChannel> paulChannels = sbUserManager.listGroupChannelsByUserId(userPaulId).getChannels();
+        assertTrue("Paul's channel list should contain the new channel", paulChannels.stream()
+                .anyMatch(channel -> channel.getChannelUrl().equals(result.getChannelUrl())));
+
+        List<SendBirdGroupChannel> jonathanChannels = sbUserManager.listGroupChannelsByUserId(userJonathanId).getChannels();
+        assertTrue("Jonathan's channel list should contain the new channel", jonathanChannels.stream()
+                .anyMatch(channel -> channel.getChannelUrl().equals(result.getChannelUrl())));
+
     }
 
     @Test
