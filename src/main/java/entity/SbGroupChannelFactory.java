@@ -9,7 +9,7 @@ import org.sendbird.client.ApiClient;
  * Factory for creating group channels.
  */
 public class SbGroupChannelFactory {
-    private ApiClient apiClient;
+    private final ApiClient apiClient;
 
     public SbGroupChannelFactory(ApiClient apiClient) {
         this.apiClient = apiClient;

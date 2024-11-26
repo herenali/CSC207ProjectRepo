@@ -35,21 +35,22 @@ public class SbGroupChannelManager implements GroupChannelManager {
      */
     @Override
     public SendBirdGroupChannel createChannel(List userIds, String name) {
-        GcCreateChannelData gcCreateChannelData = new GcCreateChannelData();
+        final GcCreateChannelData gcCreateChannelData = new GcCreateChannelData();
         gcCreateChannelData.name(name);
         gcCreateChannelData.userIds(userIds);
 
         try {
             System.out.println("Creating channel with data: " + gcCreateChannelData);
-            SendBirdGroupChannel result = getApiInstance().gcCreateChannel().apiToken(getApiToken()).gcCreateChannelData(gcCreateChannelData).execute();
+            SendBirdGroupChannel result = getApiInstance().gcCreateChannel().apiToken(getApiToken())
+                    .gcCreateChannelData(gcCreateChannelData).execute();
             return result;
         }
-        catch (ApiException e) {
+        catch (ApiException ex) {
             System.err.println("Exception when calling GroupChannelApi#gcCreateChannel");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
+            System.err.println("Status code: " + ex.getCode());
+            System.err.println("Reason: " + ex.getResponseBody());
+            System.err.println("Response headers: " + ex.getResponseHeaders());
+            ex.printStackTrace();
         }
 
         return null;
