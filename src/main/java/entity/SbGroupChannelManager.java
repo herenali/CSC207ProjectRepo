@@ -3,6 +3,7 @@ package entity;
 
 import app.Config;
 import org.openapitools.client.model.GcCreateChannelData;
+import org.openapitools.client.model.GcListChannelsResponse;
 import org.openapitools.client.model.OcDeleteChannelByUrl200Response;
 import org.openapitools.client.model.SendBirdGroupChannel;
 import org.sendbird.client.ApiClient;
@@ -64,6 +65,26 @@ public class SbGroupChannelManager implements GroupChannelManager {
     public OcDeleteChannelByUrl200Response deleteChannelByUrl(String channelUrl) {
         try {
             final OcDeleteChannelByUrl200Response result = apiInstance.gcDeleteChannelByUrl(channelUrl).apiToken(apiToken).execute();
+            return result;
+        }
+        catch (ApiException e) {
+            System.err.println("Exception when calling GroupChannelApi#gcViewChannelByUrl");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    @Override
+    public GcListChannelsResponse listChannels(String userId) {
+        try {
+            final GcListChannelsResponse result = apiInstance.gcListChannels()
+                    .apiToken(apiToken)
+                    .membersIncludeIn(userId)
+                    .execute();
             return result;
         }
         catch (ApiException e) {
