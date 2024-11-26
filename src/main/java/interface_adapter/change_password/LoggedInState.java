@@ -19,7 +19,7 @@ public class LoggedInState {
     private String groupChannelUrl = "";
     private List<List<String>> usersAndMessages;
     private List<List<String>> userAndMessageIds;
-    private List<List<String>> groupChannelUrls = new ArrayList<>();
+    private List<List<String>> groupChannels = new ArrayList<>();
 
     public LoggedInState(LoggedInState copy) {
         username = copy.username;
@@ -28,7 +28,7 @@ public class LoggedInState {
         userId = copy.userId;
         groupChannelUrl = copy.groupChannelUrl;
         usersAndMessages = copy.usersAndMessages;
-        groupChannelUrls = new ArrayList<>(copy.groupChannelUrls);
+        groupChannels = copy.groupChannels;
     }
 
     // Because of the previous copy constructor, the default constructor must be explicit.
@@ -88,16 +88,16 @@ public class LoggedInState {
         return userAndMessageIds;
     }
 
-    public List<List<String>> getGroupChannelUrls() {
-        return groupChannelUrls;
+    public List<List<String>> getGroupChannels() {
+        return groupChannels;
     }
 
-    public void setGroupChannelUrls(List<List<String>> groupChannelUrls) {
-        this.groupChannelUrls = groupChannelUrls;
+    public void setGroupChannels(List<List<String>> groupChannel) {
+        this.groupChannels = groupChannel;
     }
 
-    public void addGroupChannelUrl(String newgroupChannelUrl) {
-        this.groupChannelUrls.add(List.of(newgroupChannelUrl));
+    public void addGroupChannels(String newgroupChannel) {
+        this.groupChannels.add(List.of(newgroupChannel));
     }
 
 }

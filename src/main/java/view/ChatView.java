@@ -215,11 +215,8 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                             }
                         }
                         createGroupChannelController.execute(chatName, users, loggedInViewModel.getState().getUserId());
-                        firePropertyChange("newChat", null, chatName);
-//                        SwingUtilities.invokeLater(() -> {
-//                            chats.addElement(chatName);
-//                            chatList.setModel(chats);
-//                        });
+                        updateChatList();
+//                        firePropertyChange("newChat", null, null);
                     }
                 }
             }
@@ -274,6 +271,41 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         });
     }
 
+    public void updateChatList() {
+        final String apiToken = "e4fbd0788231cf40830bf62f866aa001182f9971";
+        final String applicationId = "049E2510-3508-4C99-80F9-A3C24ECA7677";
+        final ApiClient defaultClient = Configuration.getDefaultApiClient().addDefaultHeader("Api-Token", apiToken);
+        defaultClient.setBasePath("https://api-" + applicationId + ".sendbird.com");
+
+        final SbUserManager sbUserManager = new SbUserManager(defaultClient);
+        final SbGroupChannelManager sbGroupChannelManager = new SbGroupChannelManager(defaultClient);
+
+        final String currentUserId = loggedInViewModel.getState().getUserId();
+        DefaultListModel chats = new DefaultListModel();
+
+        if (currentUserId.length() > 0) {
+            final List<SendBirdGroupChannel> groupChannels = sbGroupChannelManager
+                    .listChannels(loggedInViewModel.getState().getUserId()).getChannels();
+
+            for (SendBirdGroupChannel groupChannel : groupChannels) {
+                System.out.println("Channel: " + groupChannel.getName() + " URL: " + groupChannel.getChannelUrl());
+            }
+
+            for (int i = 0; i < groupChannels.size(); i++) {
+                SendBirdGroupChannel groupChannel = groupChannels.get(i);
+                StringBuilder chatName = new StringBuilder();
+                chatName.append(groupChannel.getName());
+                chatName.append(": ");
+                chatName.append(groupChannel.getChannelUrl());
+                chats.add(i, chatName.toString());
+            }
+            chatList.setModel(chats);
+        }
+        else {
+            chatList = new JList<>();
+        }
+    }
+
     private void updateChatArea() {
         final String selectedChat = chatList.getSelectedValue();
         // chatArea.setText("Display messages for: " + selectedChat);
@@ -284,6 +316,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
             // System.out.println(groupChannelUrl);
             loggedInViewModel.getState().setGroupChannelUrl(groupChannelUrl);
             chooseGroupChannelController.execute(groupChannelUrl);
+
             final List<List<String>> usersAndMessages = loggedInViewModel.getState().getUsersAndMessages();
             final List<List<String>> userAndMessageIds = loggedInViewModel.getState().getUserAndMessageIds();
 
@@ -359,14 +392,21 @@ public class ChatView extends JPanel implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        System.out.println("Property change triggered: " + evt.getPropertyName());
         if (evt.getPropertyName().equals("login") || (evt.getPropertyName().equals("newChat"))) {
             // fetch chats from sendbird
+
+            // Initialize API client
             final String apiToken = "e4fbd0788231cf40830bf62f866aa001182f9971";
             final String applicationId = "049E2510-3508-4C99-80F9-A3C24ECA7677";
             final ApiClient defaultClient = Configuration.getDefaultApiClient().addDefaultHeader("Api-Token", apiToken);
             defaultClient.setBasePath("https://api-" + applicationId + ".sendbird.com");
+
+            // Initialize SendBird managers
             final SbUserManager sbUserManager = new SbUserManager(defaultClient);
             final SbGroupChannelManager sbGroupChannelManager = new SbGroupChannelManager(defaultClient);
+
+            // Get the current user ID
             final String currentUserId = loggedInViewModel.getState().getUserId();
             DefaultListModel chats = new DefaultListModel();
 
@@ -375,6 +415,12 @@ public class ChatView extends JPanel implements PropertyChangeListener {
 //                        .listGroupChannelsByUserId(loggedInViewModel.getState().getUserId()).getChannels();
                 final List<SendBirdGroupChannel> groupChannels = sbGroupChannelManager
                         .listChannels(loggedInViewModel.getState().getUserId()).getChannels();
+
+                for (SendBirdGroupChannel groupChannel : groupChannels) {
+                    System.out.println("Channel: " + groupChannel.getName() + " URL: " + groupChannel.getChannelUrl());
+                }
+
+                // Add group channels to the chats list
                 for (int i = 0; i < groupChannels.size(); i++) {
                     SendBirdGroupChannel groupChannel = groupChannels.get(i);
                     StringBuilder chatName = new StringBuilder();
@@ -383,12 +429,12 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                     chatName.append(groupChannel.getChannelUrl());
                     chats.add(i, chatName.toString());
                 }
+                // Update the chat list UI
                 chatList.setModel(chats);
             }
             else {
                 chatList = new JList<>();
             }
-
         }
     }
 }

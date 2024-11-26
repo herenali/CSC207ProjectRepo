@@ -37,13 +37,13 @@ public class SbGroupChannelManager implements GroupChannelManager {
      */
     @Override
     public SendBirdGroupChannel createChannel(List userIds, String name) {
-        GcCreateChannelData gcCreateChannelData = new GcCreateChannelData();
+        final GcCreateChannelData gcCreateChannelData = new GcCreateChannelData();
         gcCreateChannelData.name(name);
         gcCreateChannelData.userIds(userIds);
 
-//        if (userIds.size() == 1) {
-//            gcCreateChannelData.isDistinct(true);
-//        }
+        // if (userIds.size() == 1) {
+        //    gcCreateChannelData.isDistinct(true);
+        // }
 
         try {
             System.out.println("Creating channel with data: " + gcCreateChannelData);

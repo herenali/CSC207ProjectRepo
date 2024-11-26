@@ -2,29 +2,23 @@ package entity;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 import org.openapitools.client.model.OcDeleteChannelByUrl200Response;
 import org.openapitools.client.model.SendBirdGroupChannel;
-import org.openapitools.client.model.SendBirdMember;
 import org.sendbird.client.ApiClient;
 import org.sendbird.client.Configuration;
 import data_access.InMemoryUserDataAccessObject;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
-import entity.SbUserManager;
 import static org.junit.Assert.*;
 
 
 public class SbGroupChannelManagerTest {
     private static SbGroupChannelManager sbGroupChannelManager;
-    private static SbUserManager sbUserManager;
     private static String userPaulId;
     private static String userJonathanId;
-    private static String groupChannelUrl;
-    private InMemoryUserDataAccessObject userRepository;
 
     @Before
     public void initAll() {
@@ -36,14 +30,13 @@ public class SbGroupChannelManagerTest {
         defaultClient.setBasePath("https://api-" + applicationId + ".sendbird.com");
 
 
-
-        userRepository = new InMemoryUserDataAccessObject();
+        InMemoryUserDataAccessObject userRepository = new InMemoryUserDataAccessObject();
         sbGroupChannelManager = new SbGroupChannelManager(defaultClient);
-        sbUserManager = new SbUserManager(defaultClient);
+        SbUserManager sbUserManager = new SbUserManager(defaultClient);
 
         userPaulId = "9fe8dffb-30a8-4125-8882-c24e0d5efc52";
         userJonathanId = "11415872-17cb-47ff-a986-ed7c1b63760c";
-        groupChannelUrl = "sendbird_group_channel_17729697_fbf1838c39e6d07e9cc4b3d68d1a5f35eae4312f";
+        String groupChannelUrl = "sendbird_group_channel_17729697_fbf1838c39e6d07e9cc4b3d68d1a5f35eae4312f";
     }
 
     @Test
@@ -56,24 +49,63 @@ public class SbGroupChannelManagerTest {
         assertNotNull("Resulting channel should not be null", result);
         assertEquals("Channel name should match the expected value", channelName, result.getName());
         assertNotNull("Channel URL should not be null", result.getChannelUrl());
+    }
 
-        System.out.println(result.getMembers());
-        System.out.println(result.getMemberCount());
+    @Test
+    public void testListChannel() {
+        List<String> userIds = Arrays.asList(userPaulId, userJonathanId);
+        String channelName = "Test";
 
-        List<SendBirdGroupChannel> paulChannels = sbUserManager.listGroupChannelsByUserId(userPaulId).getChannels();
-        assertTrue("Paul's channel list should contain the new channel", paulChannels.stream()
-                .anyMatch(channel -> channel.getChannelUrl().equals(result.getChannelUrl())));
+        SendBirdGroupChannel result = sbGroupChannelManager.createChannel(userIds, channelName);
 
-        List<SendBirdGroupChannel> jonathanChannels = sbUserManager.listGroupChannelsByUserId(userJonathanId).getChannels();
-        assertTrue("Jonathan's channel list should contain the new channel", jonathanChannels.stream()
-                .anyMatch(channel -> channel.getChannelUrl().equals(result.getChannelUrl())));
+        var paulsChannelsResponse = sbGroupChannelManager.listChannels(userPaulId);
+        assertNotNull("Paul's channel list response should not be null", paulsChannelsResponse);
+        List<SendBirdGroupChannel> paulsChannels = paulsChannelsResponse.getChannels();
 
+        var jonathansChannelsResponse = sbGroupChannelManager.listChannels(userJonathanId);
+        assertNotNull("Jonathan's channel list response should not be null", jonathansChannelsResponse);
+        List<SendBirdGroupChannel> jonathansChannels = jonathansChannelsResponse.getChannels();
+
+        assert paulsChannels != null;
+        assertTrue("Paul's channel list should contain the new created chat. ",
+                paulsChannels.stream()
+                        .anyMatch(channel -> Objects.equals(channel.getChannelUrl(), result.getChannelUrl()))
+        );
+
+        assert jonathansChannels != null;
+        assertTrue("Jonathan's channel list should contain the new created chat. ",
+                jonathansChannels.stream()
+                        .anyMatch(channel -> Objects.equals(channel.getChannelUrl(), result.getChannelUrl()))
+        );
     }
 
     @Test
     public void testdeleteChannel() {
-        OcDeleteChannelByUrl200Response expectedResponse = new OcDeleteChannelByUrl200Response();
-        OcDeleteChannelByUrl200Response result = sbGroupChannelManager.deleteChannelByUrl(groupChannelUrl);
-        assertNotNull(result);
+        List<String> userIds = Arrays.asList(userPaulId, userJonathanId);
+        String channelName = "Test Delete";
+
+        SendBirdGroupChannel result = sbGroupChannelManager.createChannel(userIds, channelName);
+        assertNotNull("The created channel should not be null", result);
+        String channelUrl = result.getChannelUrl();
+
+        // Delete the channel
+        OcDeleteChannelByUrl200Response deleteResponse = sbGroupChannelManager.deleteChannelByUrl(channelUrl);
+        assertNotNull("Delete channel response should not be null", deleteResponse);
+
+        var paulsChannelsResponse = sbGroupChannelManager.listChannels(userPaulId);
+        assertNotNull("Paul's channel list response should not be null", paulsChannelsResponse);
+        List<SendBirdGroupChannel> paulsChannels = paulsChannelsResponse.getChannels();
+
+        var jonathansChannelsResponse = sbGroupChannelManager.listChannels(userJonathanId);
+        assertNotNull("Jonathan's channel list response should not be null", jonathansChannelsResponse);
+        List<SendBirdGroupChannel> jonathansChannels = jonathansChannelsResponse.getChannels();
+
+        assert paulsChannels != null;
+        assertFalse("Paul's channel list should no longer contain the deleted channel",
+                paulsChannels.stream().anyMatch(channel -> Objects.equals(channel.getChannelUrl(), channelUrl)));
+
+        assert jonathansChannels != null;
+        assertFalse("Jonathan's channel list should no longer contain the deleted channel",
+                jonathansChannels.stream().anyMatch(channel -> Objects.equals(channel.getChannelUrl(), channelUrl)));
     }
 }

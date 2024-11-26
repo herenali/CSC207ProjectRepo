@@ -32,7 +32,7 @@ public class CreateGroupChannelPresenter implements CreateGroupChannelOutputBoun
 
         final var loggedInState = loggedInViewModel.getState();
         loggedInState.setGroupChannelUrl(outputData.getChannelUrl());
-        loggedInState.addGroupChannelUrl(outputData.getChannelUrl());
+        loggedInState.addGroupChannels(outputData.getChannelUrl());
         loggedInViewModel.setState(loggedInState);
         loggedInViewModel.firePropertyChanged();
     }

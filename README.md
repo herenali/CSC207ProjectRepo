@@ -3,7 +3,7 @@
 ### Authors and Contributors: Herena Li, Jaycee Law, Lavender Lo
 
 ## Project Summary 
-This project is a chat system that incorporates the SendBird API. It allow users to create 
+This project is a chat system that incorporates the SendBird API. It allows users to create 
 accounts, manage group chats, send and receive messages, and edit past messages. Additionally, users can 
 interact with others in real time through the app’s messaging system. Our goal is to provide a simple, user-friendly 
 interface for group messaging and individual communication, with features that enhance user experience. It solves the need for
