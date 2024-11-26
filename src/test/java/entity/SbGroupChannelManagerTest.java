@@ -19,6 +19,7 @@ public class SbGroupChannelManagerTest {
     private static SbGroupChannelManager sbGroupChannelManager;
     private static String userPaulId;
     private static String userJonathanId;
+    private static String userHelloId;
 
     @Before
     public void initAll() {
@@ -36,11 +37,12 @@ public class SbGroupChannelManagerTest {
 
         userPaulId = "9fe8dffb-30a8-4125-8882-c24e0d5efc52";
         userJonathanId = "11415872-17cb-47ff-a986-ed7c1b63760c";
+        userHelloId = "c657d426-c6a0-43b3-a61e-916ae42efa2d";
         String groupChannelUrl = "sendbird_group_channel_17729697_fbf1838c39e6d07e9cc4b3d68d1a5f35eae4312f";
     }
 
     @Test
-    public void testcreateChannel() {
+    public void testcreateSingleChannel() {
         List<String> userIds = Arrays.asList(userPaulId, userJonathanId);
         String channelName = "Test";
 
@@ -52,7 +54,19 @@ public class SbGroupChannelManagerTest {
     }
 
     @Test
-    public void testListChannel() {
+    public void testcreateGroupChannel() {
+        List<String> userIds = Arrays.asList(userPaulId, userJonathanId, userHelloId);
+        String channelName = "Test";
+
+        SendBirdGroupChannel result = sbGroupChannelManager.createChannel(userIds, channelName);
+
+        assertNotNull("Resulting channel should not be null", result);
+        assertEquals("Channel name should match the expected value", channelName, result.getName());
+        assertNotNull("Channel URL should not be null", result.getChannelUrl());
+    }
+
+    @Test
+    public void testListSingleChannel() {
         List<String> userIds = Arrays.asList(userPaulId, userJonathanId);
         String channelName = "Test";
 
@@ -75,6 +89,44 @@ public class SbGroupChannelManagerTest {
         assert jonathansChannels != null;
         assertTrue("Jonathan's channel list should contain the new created chat. ",
                 jonathansChannels.stream()
+                        .anyMatch(channel -> Objects.equals(channel.getChannelUrl(), result.getChannelUrl()))
+        );
+    }
+
+    @Test
+    public void testListGroupChannel() {
+        List<String> userIds = Arrays.asList(userPaulId, userJonathanId, userHelloId);
+        String channelName = "Test";
+
+        SendBirdGroupChannel result = sbGroupChannelManager.createChannel(userIds, channelName);
+
+        var paulsChannelsResponse = sbGroupChannelManager.listChannels(userPaulId);
+        assertNotNull("Paul's channel list response should not be null", paulsChannelsResponse);
+        List<SendBirdGroupChannel> paulsChannels = paulsChannelsResponse.getChannels();
+
+        var jonathansChannelsResponse = sbGroupChannelManager.listChannels(userJonathanId);
+        assertNotNull("Jonathan's channel list response should not be null", jonathansChannelsResponse);
+        List<SendBirdGroupChannel> jonathansChannels = jonathansChannelsResponse.getChannels();
+
+        var hellosChannelsResponse = sbGroupChannelManager.listChannels(userHelloId);
+        assertNotNull("Hello's channel list response should not be null", hellosChannelsResponse);
+        List<SendBirdGroupChannel> hellosChannels = hellosChannelsResponse.getChannels();
+
+        assert paulsChannels != null;
+        assertTrue("Paul's channel list should contain the new created chat. ",
+                paulsChannels.stream()
+                        .anyMatch(channel -> Objects.equals(channel.getChannelUrl(), result.getChannelUrl()))
+        );
+
+        assert jonathansChannels != null;
+        assertTrue("Jonathan's channel list should contain the new created chat. ",
+                jonathansChannels.stream()
+                        .anyMatch(channel -> Objects.equals(channel.getChannelUrl(), result.getChannelUrl()))
+        );
+
+        assert hellosChannels != null;
+        assertTrue("Hello's channel list should contain the new created chat. ",
+                hellosChannels.stream()
                         .anyMatch(channel -> Objects.equals(channel.getChannelUrl(), result.getChannelUrl()))
         );
     }
