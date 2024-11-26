@@ -1,52 +1,55 @@
-Messaging App with SendBird API (Authors: )
+# Chat System with SendBird API 
 
-## Summary of the project’s purpose
-Our messaging app program is designed to provide an efficient and reliable platform for communication between individuals and groups. 
-The program allows users to sign up, log in/ out of accounts, and create/ delete chats with other users. Users can send, receive, edit messages within chats. 
-Whether it is for coordinating with a team on a group project, connecting with friends, or XXX, our project aims to simplify communication and ensure everyone 
-can stay engaged an dinformed, making it a valuable tool for fostering connection and ensuring productivity. 
+## Authors and Contributors
 
-## Table of contents
-1. Team Use Case - ![img_2.png](img_2.png)
+Authors: 
 
-## Features of the software
+Contributors: 
 
-## Installation instructions
+## Project Summary 
+This project is a chat system that incorporates SendBird API. The goal is to allow users to create 
+accounts, manage group chats, send and receive messages, and search or edit past messages. Additionally, users can 
+interact with others in real time through the app’s messaging system. Our goal is to provide a simple, user-friendly 
+interface for group messaging and individual communication, with features that enhance user experience. 
 
+## Table of Contents
+1. Features of the software
+2. Installation instructions
+3. Usage guide (instructions on how to use the software)
+4. License (for how others can use the code)
+5. Feedback (how to give feedback on the project)
+6. Contributions (how to contribute to the project, or if contributions are
+   closed in the first place) 
 
+## Features
+Core Features: 
+- User Account Management: Create, log in, and log out of user accounts.
+- Group Chat Creation: Create or delete group chats with custom names and member lists.
+- Messaging: Send, receive, and edit messages within chats. Messages update for all participants when edited.
+- Edit Sent Messages: Users have the ability to edit messages after sending them.
 
+Integrated API: 
+- Sendbird Chat API: Handles messaging and chat-related functionality with sample codes available for Java.
+Example for sending a message in a group chat (insert screenshot/ code below): 
 
-This is a minimal example demonstrating usage of the
-password-protected user part of the API used in lab 5.
+## Installation Instructions
+- Clone our repository (https://github.com/herenali/CSC207ProjectRepo.git)
+- Navigate to project directory and install dependencies using Maven 
+- Run Main.java 
+Ensure the correct API token is set in your configuration file; you can find the token in the Sendbird dashboard. 
 
-You can find more information about the API endpoints in
-[the documentation](https://www.postman.com/cloudy-astronaut-813156/csc207-grade-apis-demo/documentation/fg3zkjm/5-password-protected-user).
+## Usage Guide (Insert screenshots for each step)
+- Upon starting program, you will be prompted to either sign up or log in using your username and password.
+- Once you are logged in, you can create a new chat (either single or group). 
+- To send a message, select the group chat and type your message in the input text box. 
+- If you want to edit a sent message, select the edit message button '...' and update the content. 
 
-If your team is considering an application for which it would be convenient to
-store data in something like a database, you may find that the API calls demonstrated
-here will be useful in your project, as this will allow you to store
-an arbitrary JSON object associated with a username and password.
+## License 
+The full license is in our repository (https://github.com/herenali/CSC207ProjectRepo/blob/main/LICENSE). 
 
-In this application, a single note has a name (the "username" in terms of the API) and the note
-can be read by anyone who knows the name — but only edited by someone who
-knows the password for it.
+## Feedback (Not sure?)
+Please give us feedback through this google form (link to form)
 
-You can see the documentation in the various files for more information.
-
-## Testing
-
-The repo also includes an example of a use case interactor test, as well as
-an example of an end-to-end test which automates button clicks and inspects
-the contents of the actual views. This is something we discussed in the lectures
-about testing in CA but had not provided a code example of before. Note, one
-could also inspect the contents of the ViewModel objects instead when testing
-CA to make a similar test which would be less dependent on the details of the
-specific UI implementation.
-
-## Project Starter Code
-
-Your team may choose to use this repo as starter code for your project. You could
-also use the lab 5 code — or start from an empty repo if your team prefers.
-
-If you choose to use one of the repositories we have provided, you can either make
-a fork of it or copy the subset of code you want into a completely new repository.
+## Contributions 
+- Go to our repository (https://github.com/herenali/CSC207ProjectRepo.git)
+- Fork the project to create your own copy and implement changes 
