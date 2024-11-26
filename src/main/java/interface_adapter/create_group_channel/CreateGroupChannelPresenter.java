@@ -1,11 +1,9 @@
 package interface_adapter.create_group_channel;
 
-
 import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.LoggedInViewModel;
 import use_case.create_group_channel.CreateGroupChannelOutputBoundary;
 import use_case.create_group_channel.CreateGroupChannelOutputData;
-
 
 /**
  * The Presenter for the Create Group Chat Use Case.

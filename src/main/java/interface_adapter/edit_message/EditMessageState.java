@@ -1,5 +1,8 @@
 package interface_adapter.edit_message;
 
+/**
+ * The state for the Edit Message View Model.
+ */
 public class EditMessageState {
     private String userId = "";
     private String editError;

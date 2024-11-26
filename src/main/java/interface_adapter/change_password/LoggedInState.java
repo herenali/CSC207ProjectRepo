@@ -1,7 +1,5 @@
 package interface_adapter.change_password;
 
-import org.openapitools.client.model.SendBirdGroupChannel;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,6 +94,10 @@ public class LoggedInState {
         this.groupChannelUrls = groupChannelUrls;
     }
 
+    /**
+     * Adds group channel URL to groupChannelUrls.
+     * @param newgroupChannelUrl URL of group channel to add.
+     */
     public void addGroupChannelUrl(String newgroupChannelUrl) {
         this.groupChannelUrls.add(List.of(newgroupChannelUrl));
     }
