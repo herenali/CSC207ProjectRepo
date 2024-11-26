@@ -78,14 +78,9 @@ import view.ChatView;
 public class AppBuilder {
     private final JPanel cardPanel = new JPanel();
     private final CardLayout cardLayout = new CardLayout();
-    // thought question: is the hard dependency below a problem?
-    // private final UserFactory userFactory = new CommonUserFactory();
     private final UserFactory userFactory;
     private final ViewManagerModel viewManagerModel = new ViewManagerModel();
     private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
-
-    // thought question: is the hard dependency below a problem?
-//    private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
     private final FileUserDataAccessObject userDataAccessObject;
 
     private SignupView signupView;
@@ -102,14 +97,14 @@ public class AppBuilder {
         FileUserDataAccessObject tempUserDataAccessObject;
         cardPanel.setLayout(cardLayout);
         final ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://api-" + Config.appId + ".sendbird.com");
+        defaultClient.setBasePath("https://api-" + Config.getAppId() + ".sendbird.com");
         userFactory = new SbUserFactory(defaultClient);
         try {
             tempUserDataAccessObject = new FileUserDataAccessObject("userDataFile", userFactory);
         }
-        catch (IOException e) {
+        catch (IOException ex) {
             tempUserDataAccessObject = null;
-            e.printStackTrace();
+            ex.printStackTrace();
         }
         userDataAccessObject = tempUserDataAccessObject;
     }
