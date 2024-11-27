@@ -27,12 +27,11 @@ public class CreateGroupChannelPresenter implements CreateGroupChannelOutputBoun
     @Override
     public void prepareSuccessView(CreateGroupChannelOutputData outputData) {
         // On success, update the contents of the chat area
-
         final var loggedInState = loggedInViewModel.getState();
         loggedInState.setGroupChannelUrl(outputData.getChannelUrl());
-        loggedInState.addGroupChannels(outputData.getChannelUrl());
+        loggedInState.addGroupChannelUrl(outputData.getChannelUrl());
         loggedInViewModel.setState(loggedInState);
-        loggedInViewModel.firePropertyChanged();
+        loggedInViewModel.firePropertyChanged("newChat");
     }
 
     /**
@@ -44,5 +43,6 @@ public class CreateGroupChannelPresenter implements CreateGroupChannelOutputBoun
     @Override
     public void prepareFailView(String errorMessage) {
         // Display an error message in the chat area
+        System.out.println(errorMessage);
     }
 }

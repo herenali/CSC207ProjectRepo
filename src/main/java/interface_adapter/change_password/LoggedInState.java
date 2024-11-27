@@ -1,5 +1,6 @@
 package interface_adapter.change_password;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class LoggedInState {
     private String groupChannelUrl = "";
     private List<List<String>> usersAndMessages;
     private List<List<String>> userAndMessageIds;
-    private List<List<String>> groupChannels = new ArrayList<>();
+    private List<List<String>> groupChannelUrls = new ArrayList<>();
 
     public LoggedInState(LoggedInState copy) {
         username = copy.username;
@@ -26,7 +27,7 @@ public class LoggedInState {
         userId = copy.userId;
         groupChannelUrl = copy.groupChannelUrl;
         usersAndMessages = copy.usersAndMessages;
-        groupChannels = copy.groupChannels;
+        groupChannelUrls = copy.groupChannelUrls;
     }
 
     // Because of the previous copy constructor, the default constructor must be explicit.
@@ -86,20 +87,20 @@ public class LoggedInState {
         return userAndMessageIds;
     }
 
-    public List<List<String>> getGroupChannels() {
-        return groupChannels;
+    public List<List<String>> getGroupChannelUrlss() {
+        return groupChannelUrls;
     }
 
-    public void setGroupChannels(List<List<String>> groupChannel) {
-        this.groupChannels = groupChannel;
+    public void setGroupChannelUrlss(List<List<String>> newGroupChannelUrls) {
+        this.groupChannelUrls = newGroupChannelUrls;
     }
 
     /**
      * Adds group channel URL to groupChannelUrls.
+     *
      * @param newgroupChannelUrl URL of group channel to add.
      */
     public void addGroupChannelUrl(String newgroupChannelUrl) {
         this.groupChannelUrls.add(List.of(newgroupChannelUrl));
     }
-
 }
