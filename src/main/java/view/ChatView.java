@@ -322,6 +322,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
             chatArea.repaint();
         }
         else {
+            chatArea.removeAll();
             chatArea.add(new JLabel("No chat selected."));
         }
     }
@@ -358,14 +359,11 @@ public class ChatView extends JPanel implements PropertyChangeListener {
             final String applicationId = "049E2510-3508-4C99-80F9-A3C24ECA7677";
             final ApiClient defaultClient = Configuration.getDefaultApiClient().addDefaultHeader("Api-Token", apiToken);
             defaultClient.setBasePath("https://api-" + applicationId + ".sendbird.com");
-            final SbUserManager sbUserManager = new SbUserManager(defaultClient);
             final SbGroupChannelManager sbGroupChannelManager = new SbGroupChannelManager(defaultClient);
             final String currentUserId = loggedInViewModel.getState().getUserId();
             DefaultListModel chats = new DefaultListModel();
 
             if (currentUserId.length() > 0) {
-//                final List<SendBirdGroupChannel> groupChannels = sbUserManager
-//                        .listGroupChannelsByUserId(loggedInViewModel.getState().getUserId()).getChannels();
                 final List<SendBirdGroupChannel> groupChannels = sbGroupChannelManager
                         .listChannels(loggedInViewModel.getState().getUserId()).getChannels();
                 for (int i = 0; i < groupChannels.size(); i++) {

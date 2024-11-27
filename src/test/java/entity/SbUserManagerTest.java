@@ -17,11 +17,11 @@ public class SbUserManagerTest {
         ApiClient defaultClient = Configuration.getDefaultApiClient().addDefaultHeader("Api-Token", apiToken);
         defaultClient.setBasePath("https://api-" + applicationId + ".sendbird.com");
 
-        SbUserManager sbUserManager = new SbUserManager(defaultClient);
+        SbGroupChannelManager sbGroupChannelManager = new SbGroupChannelManager(defaultClient);
 
         String paulUserId = "9fe8dffb-30a8-4125-8882-c24e0d5efc52";
-        List<SendBirdGroupChannel> groupChannels = sbUserManager.listGroupChannelsByUserId(paulUserId).getChannels();
-        assertEquals(groupChannels.get(0).getChannelUrl(),
-                "sendbird_group_channel_17729697_fbf1838c39e6d07e9cc4b3d68d1a5f35eae4312f");
+        List<SendBirdGroupChannel> groupChannels = sbGroupChannelManager.listChannels(paulUserId).getChannels();
+        assertEquals("sendbird_group_channel_17729697_c93830e104f4c6ddcd7d6131ca6b03338cf93209",
+                groupChannels.get(0).getChannelUrl());
     }
 }

@@ -18,12 +18,12 @@ public class ChooseGroupChannelInteractorTest {
             public void prepareSuccessView(ChooseGroupChannelOutputData outputData) {
                 List<List<String>> usersAndMessages = outputData.getUsersAndMessages();
                 List<String> firstUserAndMessage = usersAndMessages.get(0);
-                assertEquals(firstUserAndMessage.get(0), "abc");
-                assertEquals(firstUserAndMessage.get(1), "Hello!");
+                assertEquals("abc", firstUserAndMessage.get(0));
+                assertEquals("Hello!", firstUserAndMessage.get(1));
 
                 List<List<String>> userAndMessageIds = outputData.getUserAndMessageIds();
                 List<String> firstUserAndMessageId = userAndMessageIds.get(0);
-                assertEquals(firstUserAndMessageId.get(0), "39bd6921-ef43-44bf-b8eb-f5394ca5272f");
+                assertEquals("39bd6921-ef43-44bf-b8eb-f5394ca5272f", firstUserAndMessageId.get(0));
             }
 
             @Override
