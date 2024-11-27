@@ -4,9 +4,9 @@ import data_access.InMemoryUserDataAccessObject;
 import entity.SbUserFactory;
 import entity.User;
 import entity.UserFactory;
-import interface_adapter.create_group_channel.CreateGroupChannelPresenter;
-import org.junit.Before;
+import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
+import org.openapitools.client.model.SendBirdGroupChannel;
 import org.sendbird.client.ApiClient;
 import org.sendbird.client.Configuration;
 
@@ -16,7 +16,6 @@ import static org.junit.Assert.*;
 
 
 public class CreateGroupChannelInteractorTest {
-    private InMemoryUserDataAccessObject userRepository;
 
     @Test
     public void testcreateChannelSuccess() {
@@ -30,32 +29,36 @@ public class CreateGroupChannelInteractorTest {
         UserFactory factory = new SbUserFactory(defaultClient);
         User Paul = factory.create("Paul", "123");
         User Jonathan = factory.create("Jonathan", "123");
-        // String userPaulId = "9fe8dffb-30a8-4125-8882-c24e0d5efc52";
-        // String userJonathanId = "11415872-17cb-47ff-a986-ed7c1b63760c";
+//        String userPaulId = "9fe8dffb-30a8-4125-8882-c24e0d5efc52";
+//        String userJonathanId = "11415872-17cb-47ff-a986-ed7c1b63760c";
         userRepository.save(Paul);
         userRepository.save(Jonathan);
-        System.out.println("Creating user: " + Paul.getUserId());
-        System.out.println("Creating user: " + Jonathan.getUserId());
 
 
         CreateGroupChannelInputData inputData = new CreateGroupChannelInputData("Testing Channel", List.of("Jonathan"), "9fe8dffb-30a8-4125-8882-c24e0d5efc52");
 
+        CreateGroupChannelInputBoundary interactor = getCreateGroupChannelInputBoundary(userRepository);
+        interactor.execute(inputData);
+    }
+
+    @NotNull
+    private static CreateGroupChannelInputBoundary getCreateGroupChannelInputBoundary(CreateGroupChannelDataAccessInterface userRepository) {
         CreateGroupChannelOutputBoundary successPresenter = new CreateGroupChannelOutputBoundary() {
             @Override
             public void prepareSuccessView(CreateGroupChannelOutputData outputData) {
-                assertEquals(false, outputData.isUseCaseFailed());
+                assertFalse(outputData.isUseCaseFailed());
 
                 String createdChannelUrl = outputData.getChannelUrl();
                 assertNotNull(createdChannelUrl);
             }
+
             @Override
             public void prepareFailView(String errorMessage) {
                 fail("Use case failure is unexpected.");
             }
         };
 
-        CreateGroupChannelInputBoundary interactor = new CreateGroupChannelInteractor(successPresenter, userRepository);
-        interactor.execute(inputData);
+        return new CreateGroupChannelInteractor(successPresenter, userRepository);
     }
 
     @Test
@@ -98,7 +101,7 @@ public class CreateGroupChannelInteractorTest {
         };
 
         CreateGroupChannelInputBoundary interactor = new CreateGroupChannelInteractor(failPresenter, userRepository);
- 
+
         interactor.execute(inputData);
     }
 }

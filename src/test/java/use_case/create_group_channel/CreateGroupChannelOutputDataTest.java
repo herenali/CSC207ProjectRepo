@@ -3,6 +3,8 @@ package use_case.create_group_channel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CreateGroupChannelOutputDataTest {
@@ -12,8 +14,8 @@ public class CreateGroupChannelOutputDataTest {
 
     @BeforeEach
     void setUp() {
-        successOutputData = new CreateGroupChannelOutputData("Channel Url", false);
-        failureOutputData = new CreateGroupChannelOutputData(null, true);
+        successOutputData = new CreateGroupChannelOutputData("Channel Url", List.of("userIds"), false);
+        failureOutputData = new CreateGroupChannelOutputData(null, List.of("userIds"), true);
     }
 
     @Test

@@ -169,52 +169,6 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                 }
         );
 
-        newChatButton.addActionListener(evt -> {
-            final JPanel panel = new JPanel();
-            panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-            final String[] options = {"Single Chat", "Group Chat"};
-            final int chatType = JOptionPane.showOptionDialog(null, "Select Chat Type:", "New Chat",
-                    JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
-
-            final JTextField chatNameField = new JTextField(15);
-            panel.add(new JLabel("Chat Name: "));
-            panel.add(chatNameField);
-
-            if (chatType == 0 || chatType == 1) {
-                final JTextField usersField = new JTextField(chatType == 0 ? 15 : 20);
-                final String labelText = chatType == 0 ? "Enter Username: " : "Enter UserNames (comma-separated): ";
-                panel.add(new JLabel(labelText));
-                panel.add(usersField);
-
-                final int result = JOptionPane.showConfirmDialog(null, panel,
-                        chatType == 0 ? "New Single Chat" : "New Group Chat", JOptionPane.OK_CANCEL_OPTION);
-
-                if (result == JOptionPane.OK_OPTION) {
-                    final String chatName = chatNameField.getText().trim();
-                    final String usersInput = usersField.getText().trim();
-
-                    if (!chatName.isEmpty()) {
-                        List<String> users = null;
-                        if (chatType == 0) {
-                            users = List.of(usersInput);
-                        } else if (chatType == 1) {
-                            users = List.of(usersInput.split(","));
-                            if (users.isEmpty()) {
-                                JOptionPane.showMessageDialog(null, "You must enter at least one user.");
-                                return;
-                            }
-                        }
-                        createGroupChannelController.execute(chatName, users, loggedInViewModel.getState().getUserId());
-                        firePropertyChange("newChat", null, chatName);
-//                        SwingUtilities.invokeLater(() -> {
-//                            chats.addElement(chatName);
-//                            chatList.setModel(chats);
-//                        });
-                    }
-                }
-            }
-        });
-
         profileButton.addActionListener(evt -> {
             final JPanel panel = new JPanel();
             panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -262,6 +216,84 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                 loggedInViewModel.getState().setPassword(new String(passwordField.getPassword()));
             }
         });
+
+        newChatButton.addActionListener(evt -> {
+            final JPanel panel = new JPanel();
+            panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+            final String[] options = {"Single Chat", "Group Chat"};
+            final int chatType = JOptionPane.showOptionDialog(null, "Select Chat Type:", "New Chat",
+                    JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+
+            final JTextField chatNameField = new JTextField(15);
+            panel.add(new JLabel("Chat Name: "));
+            panel.add(chatNameField);
+
+            if (chatType == 0 || chatType == 1) {
+                final JTextField usersField = new JTextField(chatType == 0 ? 15 : 20);
+                final String labelText = chatType == 0 ? "Enter Username: " : "Enter UserNames (comma-separated): ";
+                panel.add(new JLabel(labelText));
+                panel.add(usersField);
+
+                final int result = JOptionPane.showConfirmDialog(null, panel,
+                        chatType == 0 ? "New Single Chat" : "New Group Chat", JOptionPane.OK_CANCEL_OPTION);
+
+                if (result == JOptionPane.OK_OPTION) {
+                    final String chatName = chatNameField.getText().trim();
+                    final String usersInput = usersField.getText().trim();
+
+                    if (!chatName.isEmpty()) {
+                        List<String> users = null;
+                        if (chatType == 0) {
+                            users = List.of(usersInput);
+                        } else if (chatType == 1) {
+                            users = List.of(usersInput.split(","));
+                            if (users.isEmpty()) {
+                                JOptionPane.showMessageDialog(null, "You must enter at least one user.");
+                                return;
+                            }
+                        }
+                        createGroupChannelController.execute(chatName, users, loggedInViewModel.getState().getUserId());
+                        updateChatList();
+//                        firePropertyChange("newChat", null, null);
+                    }
+                }
+            }
+        });
+    }
+
+    public void updateChatList() {
+        final String apiToken = "e4fbd0788231cf40830bf62f866aa001182f9971";
+        final String applicationId = "049E2510-3508-4C99-80F9-A3C24ECA7677";
+        final ApiClient defaultClient = Configuration.getDefaultApiClient().addDefaultHeader("Api-Token", apiToken);
+        defaultClient.setBasePath("https://api-" + applicationId + ".sendbird.com");
+
+        final SbUserManager sbUserManager = new SbUserManager(defaultClient);
+        final SbGroupChannelManager sbGroupChannelManager = new SbGroupChannelManager(defaultClient);
+
+        final String currentUserId = loggedInViewModel.getState().getUserId();
+        DefaultListModel chats = new DefaultListModel();
+
+        if (currentUserId.length() > 0) {
+            final List<SendBirdGroupChannel> groupChannels = sbGroupChannelManager
+                    .listChannels(loggedInViewModel.getState().getUserId()).getChannels();
+
+            for (SendBirdGroupChannel groupChannel : groupChannels) {
+                System.out.println("Channel: " + groupChannel.getName());
+            }
+
+            for (int i = 0; i < groupChannels.size(); i++) {
+                SendBirdGroupChannel groupChannel = groupChannels.get(i);
+                StringBuilder chatName = new StringBuilder();
+                chatName.append(groupChannel.getName());
+                chatName.append(": ");
+                chatName.append(groupChannel.getChannelUrl());
+                chats.add(i, chatName.toString());
+            }
+            chatList.setModel(chats);
+        }
+        else {
+            chatList = new JList<>();
+        }
     }
 
     /**
@@ -277,6 +309,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
             // System.out.println(groupChannelUrl);
             loggedInViewModel.getState().setGroupChannelUrl(groupChannelUrl);
             chooseGroupChannelController.execute(groupChannelUrl);
+
             final List<List<String>> usersAndMessages = loggedInViewModel.getState().getUsersAndMessages();
             final List<List<String>> userAndMessageIds = loggedInViewModel.getState().getUserAndMessageIds();
 
@@ -353,19 +386,32 @@ public class ChatView extends JPanel implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        System.out.println("Property change triggered: " + evt.getPropertyName());
         if (evt.getPropertyName().equals("login") || (evt.getPropertyName().equals("newChat"))) {
             // fetch chats from sendbird
+
+            // Initialize API client
             final String apiToken = "e4fbd0788231cf40830bf62f866aa001182f9971";
             final String applicationId = "049E2510-3508-4C99-80F9-A3C24ECA7677";
             final ApiClient defaultClient = Configuration.getDefaultApiClient().addDefaultHeader("Api-Token", apiToken);
             defaultClient.setBasePath("https://api-" + applicationId + ".sendbird.com");
+
+            // Initialize SendBird managers
             final SbGroupChannelManager sbGroupChannelManager = new SbGroupChannelManager(defaultClient);
+
+            // Get the current user ID
             final String currentUserId = loggedInViewModel.getState().getUserId();
             DefaultListModel chats = new DefaultListModel();
 
             if (currentUserId.length() > 0) {
                 final List<SendBirdGroupChannel> groupChannels = sbGroupChannelManager
                         .listChannels(loggedInViewModel.getState().getUserId()).getChannels();
+
+                for (SendBirdGroupChannel groupChannel : groupChannels) {
+                    System.out.println("Channel: " + groupChannel.getName());
+                }
+
+                // Add group channels to the chats list
                 for (int i = 0; i < groupChannels.size(); i++) {
                     SendBirdGroupChannel groupChannel = groupChannels.get(i);
                     StringBuilder chatName = new StringBuilder();
@@ -374,12 +420,12 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                     chatName.append(groupChannel.getChannelUrl());
                     chats.add(i, chatName.toString());
                 }
+                // Update the chat list UI
                 chatList.setModel(chats);
             }
             else {
                 chatList = new JList<>();
             }
-
         }
     }
 }
