@@ -1,12 +1,11 @@
 package use_case.create_group_channel;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import static org.junit.Assert.assertEquals;
 
 public class CreateGroupChannelInputDataTest {
     private CreateGroupChannelInputData createGroupChannelInputData;
@@ -19,17 +18,17 @@ public class CreateGroupChannelInputDataTest {
 
     @Test
     void getChatName() {
-        assertEquals("Test Channel", createGroupChannelInputData.getChatName());
+        Assertions.assertEquals("Test Channel", createGroupChannelInputData.getChatName());
     }
 
     @Test
     void getCurrentUserId() {
-        assertEquals("user123", createGroupChannelInputData.getCurrentUserId());
+        Assertions.assertEquals("user123", createGroupChannelInputData.getCurrentUserId());
     }
 
     @Test
     void getUserNames() {
-        assertEquals(new ArrayList<>(Arrays.asList("user456", "user789")), createGroupChannelInputData.getUsers());
+        Assertions.assertEquals(new ArrayList<>(Arrays.asList("user456", "user789")), createGroupChannelInputData.getUsers());
     }
 }
 

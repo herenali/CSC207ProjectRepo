@@ -54,7 +54,7 @@ public class CreateGroupChannelInteractor implements CreateGroupChannelInputBoun
 
             if (groupChannel != null && groupChannel.getChannelUrl() != null) {
                 createGroupChannelPresenter.prepareSuccessView(
-                        new CreateGroupChannelOutputData(groupChannel.getChannelUrl(), false)
+                        new CreateGroupChannelOutputData(groupChannel.getChannelUrl(), userIds, false)
                 );
             }
             else {
