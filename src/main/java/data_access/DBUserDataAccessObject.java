@@ -16,6 +16,7 @@ import use_case.change_password.ChangePasswordUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
+import use_case.create_group_channel.CreateGroupChannelDataAccessInterface;
 
 /**
  * The DAO for user data.
@@ -23,6 +24,7 @@ import use_case.signup.SignupUserDataAccessInterface;
 public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         LoginUserDataAccessInterface,
         ChangePasswordUserDataAccessInterface,
+        CreateGroupChannelDataAccessInterface,
         LogoutUserDataAccessInterface {
     private static final int SUCCESS_CODE = 200;
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
@@ -32,6 +34,7 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
     private static final String PASSWORD = "password";
     private static final String MESSAGE = "message";
     private final UserFactory userFactory;
+
 
     public DBUserDataAccessObject(UserFactory userFactory) {
         this.userFactory = userFactory;
@@ -53,7 +56,6 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
                 .build();
         try {
             final Response response = client.newCall(request).execute();
-
             final JSONObject responseBody = new JSONObject(response.body().string());
 
             return responseBody.getInt(STATUS_CODE_LABEL) == SUCCESS_CODE;
@@ -113,6 +115,5 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
 
     @Override
     public void changePassword(String username, String newPassword) {
-
     }
 }

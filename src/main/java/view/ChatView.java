@@ -246,54 +246,17 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                         if (chatType == 0) {
                             users = List.of(usersInput);
                         } else if (chatType == 1) {
-                            users = List.of(usersInput.split(","));
+                            users = List.of(usersInput.replace(" ", "").split(","));
                             if (users.isEmpty()) {
                                 JOptionPane.showMessageDialog(null, "You must enter at least one user.");
                                 return;
                             }
                         }
                         createGroupChannelController.execute(chatName, users, loggedInViewModel.getState().getUserId());
-                        updateChatList();
-//                        firePropertyChange("newChat", null, null);
                     }
                 }
             }
         });
-    }
-
-    public void updateChatList() {
-        final String apiToken = "e4fbd0788231cf40830bf62f866aa001182f9971";
-        final String applicationId = "049E2510-3508-4C99-80F9-A3C24ECA7677";
-        final ApiClient defaultClient = Configuration.getDefaultApiClient().addDefaultHeader("Api-Token", apiToken);
-        defaultClient.setBasePath("https://api-" + applicationId + ".sendbird.com");
-
-        final SbUserManager sbUserManager = new SbUserManager(defaultClient);
-        final SbGroupChannelManager sbGroupChannelManager = new SbGroupChannelManager(defaultClient);
-
-        final String currentUserId = loggedInViewModel.getState().getUserId();
-        DefaultListModel chats = new DefaultListModel();
-
-        if (currentUserId.length() > 0) {
-            final List<SendBirdGroupChannel> groupChannels = sbGroupChannelManager
-                    .listChannels(loggedInViewModel.getState().getUserId()).getChannels();
-
-            for (SendBirdGroupChannel groupChannel : groupChannels) {
-                System.out.println("Channel: " + groupChannel.getName());
-            }
-
-            for (int i = 0; i < groupChannels.size(); i++) {
-                SendBirdGroupChannel groupChannel = groupChannels.get(i);
-                StringBuilder chatName = new StringBuilder();
-                chatName.append(groupChannel.getName());
-                chatName.append(": ");
-                chatName.append(groupChannel.getChannelUrl());
-                chats.add(i, chatName.toString());
-            }
-            chatList.setModel(chats);
-        }
-        else {
-            chatList = new JList<>();
-        }
     }
 
     /**
@@ -386,7 +349,6 @@ public class ChatView extends JPanel implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        System.out.println("Property change triggered: " + evt.getPropertyName());
         if (evt.getPropertyName().equals("login") || (evt.getPropertyName().equals("newChat"))) {
             // fetch chats from sendbird
 
