@@ -87,26 +87,4 @@ public class SbUserManager implements UserManager {
             ex.printStackTrace();
         }
     }
-
-    @Override
-    public ListMyGroupChannelsResponse listGroupChannelsByUserId(String userId) {
-        return null;
-    }
-
-//    @Override
-//    public ListMyGroupChannelsResponse listGroupChannelsByUserId(String userId) {
-//        // TODO: remove this method
-//        try {
-//            ListMyGroupChannelsResponse result = apiInstance.listMyGroupChannels(userId).execute();
-//            return result;
-//        }
-//        catch (ApiException e) {
-//            System.err.println("Exception when calling listUsers");
-//            System.err.println("Status code: " + e.getCode());
-//            System.err.println("Reason: " + e.getResponseBody());
-//            System.err.println("Response headers: " + e.getResponseHeaders());
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
 }

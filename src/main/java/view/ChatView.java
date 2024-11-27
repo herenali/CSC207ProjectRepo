@@ -355,6 +355,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
             chatArea.repaint();
         }
         else {
+            chatArea.removeAll();
             chatArea.add(new JLabel("No chat selected."));
         }
     }
@@ -396,7 +397,6 @@ public class ChatView extends JPanel implements PropertyChangeListener {
             defaultClient.setBasePath("https://api-" + applicationId + ".sendbird.com");
 
             // Initialize SendBird managers
-            final SbUserManager sbUserManager = new SbUserManager(defaultClient);
             final SbGroupChannelManager sbGroupChannelManager = new SbGroupChannelManager(defaultClient);
 
             // Get the current user ID
@@ -404,8 +404,6 @@ public class ChatView extends JPanel implements PropertyChangeListener {
             DefaultListModel chats = new DefaultListModel();
 
             if (currentUserId.length() > 0) {
-//                final List<SendBirdGroupChannel> groupChannels = sbUserManager
-//                        .listGroupChannelsByUserId(loggedInViewModel.getState().getUserId()).getChannels();
                 final List<SendBirdGroupChannel> groupChannels = sbGroupChannelManager
                         .listChannels(loggedInViewModel.getState().getUserId()).getChannels();
 
