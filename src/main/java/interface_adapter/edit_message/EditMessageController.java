@@ -21,7 +21,8 @@ public class EditMessageController {
      * @param message the message contents to change to
      */
     public void execute(String userId, int messageId, String groupChannelUrl, String message) {
-        final EditMessageInputData editMessageInputData = new EditMessageInputData(userId, messageId, groupChannelUrl, message);
+        final EditMessageInputData editMessageInputData =
+                new EditMessageInputData(userId, messageId, groupChannelUrl, message);
 
         editMessageCaseInteractor.execute(editMessageInputData);
     }

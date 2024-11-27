@@ -2,9 +2,12 @@ package entity;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.openapitools.client.model.GcListChannelsResponse;
 import org.openapitools.client.model.OcDeleteChannelByUrl200Response;
 import org.openapitools.client.model.SendBirdGroupChannel;
 import org.sendbird.client.ApiClient;
+import org.sendbird.client.ApiException;
 import org.sendbird.client.Configuration;
 import data_access.InMemoryUserDataAccessObject;
 
@@ -13,7 +16,6 @@ import java.util.List;
 import java.util.Objects;
 
 import static org.junit.Assert.*;
-
 
 public class SbGroupChannelManagerTest {
     private static SbGroupChannelManager sbGroupChannelManager;
@@ -29,14 +31,26 @@ public class SbGroupChannelManagerTest {
 
         ApiClient defaultClient = Configuration.getDefaultApiClient().addDefaultHeader("Api-Token", apiToken);
         defaultClient.setBasePath("https://api-" + applicationId + ".sendbird.com");
-
-
         InMemoryUserDataAccessObject userRepository = new InMemoryUserDataAccessObject();
+      
         sbGroupChannelManager = new SbGroupChannelManager(defaultClient);
         SbUserManager sbUserManager = new SbUserManager(defaultClient);
 
         userPaulId = "9fe8dffb-30a8-4125-8882-c24e0d5efc52";
         userJonathanId = "11415872-17cb-47ff-a986-ed7c1b63760c";
+        SendBirdGroupChannel result = sbGroupChannelManager.createChannel(Arrays.asList(userPaulId, userJonathanId), "Test");
+        groupChannelUrl = result.getChannelUrl();
+    }
+
+    @Test
+    public void testCreateManagerFail() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new SbGroupChannelManager(null);
+        });
+    }
+
+    @Test
+    public void testCreateChannel() {
         userHelloId = "c657d426-c6a0-43b3-a61e-916ae42efa2d";
         String groupChannelUrl = "sendbird_group_channel_17729697_fbf1838c39e6d07e9cc4b3d68d1a5f35eae4312f";
     }
@@ -92,6 +106,10 @@ public class SbGroupChannelManagerTest {
                         .anyMatch(channel -> Objects.equals(channel.getChannelUrl(), result.getChannelUrl()))
         );
     }
+
+    @Test
+    public void testCreateChannelFail() {
+        assertNull(sbGroupChannelManager.createChannel(null, null));
 
     @Test
     public void testListGroupChannel() {
@@ -159,5 +177,16 @@ public class SbGroupChannelManagerTest {
         assert jonathansChannels != null;
         assertFalse("Jonathan's channel list should no longer contain the deleted channel",
                 jonathansChannels.stream().anyMatch(channel -> Objects.equals(channel.getChannelUrl(), channelUrl)));
+    }
+
+    @Test
+    public void testDeleteChannelFail() {
+        assertNull(sbGroupChannelManager.deleteChannelByUrl(null));
+    }
+
+    @Test
+    public void testListChannels() {
+        GcListChannelsResponse result = sbGroupChannelManager.listChannels(userPaulId);
+        assertNotNull(result);
     }
 }

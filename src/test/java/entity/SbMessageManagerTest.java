@@ -8,20 +8,19 @@ import org.sendbird.client.Configuration;
 import org.openapitools.client.model.*;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 class SbMessageManagerTest {
     private static SbMessageManager sbMessageManager;
     private static SbGroupChannelManager sbGroupChannelManager;
     private static SbUserManager sbUserManager;
 
-//    private static User userPaul;
-//    private static User userJonathan;
     private static String userPaulId;
     private static String userJonathanId;
 //
-//    private static SendBirdGroupChannel groupChannel;
     private static String groupChannelUrl;
 
     @BeforeEach
@@ -48,7 +47,8 @@ class SbMessageManagerTest {
         // The users and group channel has already been created, we can use their id/url values directly
         userPaulId = "9fe8dffb-30a8-4125-8882-c24e0d5efc52";
         userJonathanId = "11415872-17cb-47ff-a986-ed7c1b63760c";
-        groupChannelUrl = "sendbird_group_channel_17729697_fbf1838c39e6d07e9cc4b3d68d1a5f35eae4312f";
+        SendBirdGroupChannel result = sbGroupChannelManager.createChannel(Arrays.asList(userPaulId, userJonathanId), "Test");
+        groupChannelUrl = result.getChannelUrl();
     }
 
     @Test
@@ -65,7 +65,6 @@ class SbMessageManagerTest {
                         .getMessage());
     }
 
-
     @Test
     public void testEditMessage() {
         BigDecimal messageId = sbMessageManager.sendMessage("group_channels",
@@ -80,4 +79,41 @@ class SbMessageManagerTest {
         assertEquals(newContent, updatedMessage.getMessage());
     }
 
+    @Test
+    public void testEditMessageFail() {
+        assertNull(sbMessageManager.editMessage("group_channels", groupChannelUrl, 0,
+                null, "", "MESG"));
+    }
+
+    @Test
+    public void testListMessagesFail() {
+        assertNull(sbMessageManager.listMessages(null));
+    }
+
+    @Test
+    public void testDeleteMessage() {
+        BigDecimal messageId = sbMessageManager.sendMessage("group_channels",
+                groupChannelUrl,
+                userPaulId,
+                "message sent",
+                "MESG").getMessageId();
+
+        sbMessageManager.deleteMessage("group_channels", groupChannelUrl, String.valueOf(messageId));
+    }
+
+    @Test
+    public void testDeleteMessageFail() {
+        sbMessageManager.deleteMessage("group_channels", groupChannelUrl, null);
+    }
+
+    @Test
+    public void testGetMessageFail() {
+        assertNull(sbMessageManager.getMessage("group_channels", groupChannelUrl, null));
+    }
+
+    @Test
+    public void testGetAllMessages() {
+        List<ListMessagesResponseMessagesInner> result = sbMessageManager.getAllMessages(groupChannelUrl);
+        assertNotNull(result);
+    }
 }

@@ -1,10 +1,10 @@
 package use_case.choose_group_channel;
 
-import org.openapitools.client.model.ListMessagesResponse;
-import org.openapitools.client.model.ListMessagesResponseMessagesInner;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.openapitools.client.model.ListMessagesResponse;
+import org.openapitools.client.model.ListMessagesResponseMessagesInner;
 
 /**
  * Output Data for the Choose Group Channel Use Case.

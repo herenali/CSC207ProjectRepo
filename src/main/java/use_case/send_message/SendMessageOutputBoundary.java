@@ -5,11 +5,15 @@ package use_case.send_message;
  */
 public interface SendMessageOutputBoundary {
     /**
-     * Prepares the success view for the Login Use Case.
+     * Prepares the success view for the Send Message Use Case.
      * @param outputData the output data
      */
     void prepareSuccessView(SendMessageOutputData outputData);
 
+    /**
+     * Prepares the fail view for the Send Message Use Case.
+     * @param error the error
+     */
     void prepareFailView(String error);
 
 }

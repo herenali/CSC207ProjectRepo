@@ -119,4 +119,36 @@ class SignupInteractorTest {
                 new SbUserFactory(defaultClient));
         interactor.execute(inputData);
     }
+
+    @Test
+    void switchToLoginViewTest() {
+        SignupUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
+
+        SignupOutputBoundary successPresenter = new SignupOutputBoundary() {
+            @Override
+            public void prepareSuccessView(SignupOutputData user) {
+                assertEquals("Paul", user.getUsername());
+                assertTrue(userRepository.existsByName("Paul"));
+            }
+
+            @Override
+            public void prepareFailView(String error) {
+                fail("Use case failure is unexpected.");
+            }
+
+            @Override
+            public void switchToLoginView() {
+                // This is expected
+            }
+        };
+
+        String apiToken = "e4fbd0788231cf40830bf62f866aa001182f9971";
+        String applicationId = "049E2510-3508-4C99-80F9-A3C24ECA7677";
+        ApiClient defaultClient = Configuration.getDefaultApiClient().addDefaultHeader("Api-Token", apiToken);
+        defaultClient.setBasePath("https://api-" + applicationId + ".sendbird.com");
+
+        SignupInputBoundary interactor = new SignupInteractor(userRepository, successPresenter,
+                new SbUserFactory(defaultClient));
+        interactor.switchToLoginView();
+    }
 }

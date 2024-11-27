@@ -1,5 +1,8 @@
 package interface_adapter.send_message;
 
+/**
+ * The state for the Send Message View Model.
+ */
 public class SendMessageState {
     private String userId = "";
     private String sendError;

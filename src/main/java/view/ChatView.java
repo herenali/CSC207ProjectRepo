@@ -1,31 +1,25 @@
 package view;
 
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.*;
 
-import entity.SbGroupChannelManager;
-import entity.SbUser;
-import interface_adapter.ViewManagerModel;
-import interface_adapter.create_group_channel.CreateGroupChannelPresenter;
-import interface_adapter.edit_message.EditMessageController;
 import org.openapitools.client.model.SendBirdGroupChannel;
 import org.sendbird.client.ApiClient;
 import org.sendbird.client.Configuration;
 
+import entity.SbGroupChannelManager;
 import entity.SbUserManager;
 import interface_adapter.change_password.LoggedInState;
 import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.choose_group_channel.ChooseGroupChannelController;
 import interface_adapter.create_group_channel.CreateGroupChannelController;
+import interface_adapter.edit_message.EditMessageController;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.send_message.SendMessageController;
 import use_case.create_group_channel.CreateGroupChannelInputBoundary;
@@ -50,7 +44,6 @@ public class ChatView extends JPanel implements PropertyChangeListener {
     private final JButton profileButton;
 
     private JList<String> chatList;
-    // private final JTextArea chatArea;
     private final JPanel chatArea;
 
     private final Map<String, List<String>> chatMessages = new HashMap<>();
@@ -89,8 +82,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         // left panel for the chats
         final JPanel leftPanel = new JPanel();
         leftPanel.setLayout(new BorderLayout());
-
-        // final String[] sampleChats = {"Chat 1", "Chat 2", "Chat 3"}; // replace with actual chats
+        leftPanel.setPreferredSize(new Dimension(200, this.getHeight()));
 
         // fetch chats from sendbird
         final String apiToken = "e4fbd0788231cf40830bf62f866aa001182f9971";
@@ -121,7 +113,6 @@ public class ChatView extends JPanel implements PropertyChangeListener {
             chatList = new JList<>();
         }
 
-        // chatList = new JList<>(sampleChats);
         chatList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         chatList.setSelectedIndex(0);
         chatList.addListSelectionListener(e -> updateChatArea());
@@ -131,9 +122,9 @@ public class ChatView extends JPanel implements PropertyChangeListener {
 
         // current chat open
         chatArea = new JPanel();
+        chatArea.setPreferredSize(new Dimension(800, this.getHeight()));
 
         final JScrollPane chatAreaScrollPane = new JScrollPane(chatArea);
-        // chatArea.setText("No chat selected.");
         chatArea.removeAll();
         chatArea.add(new JLabel("No chat selected."));
         chatArea.revalidate();
@@ -147,7 +138,6 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         sendButton.addActionListener(evt -> {
             final String messageText = messageInputField.getText().trim();
             if (!messageText.isEmpty()) {
-//                sendMessages.sendMessage();
                 final String updatedCurrentUserId = loggedInViewModel.getState().getUserId();
                 final String groupChannelUrl = loggedInViewModel.getState().getGroupChannelUrl();
                 if (groupChannelUrl != null && !groupChannelUrl.isEmpty()) {
@@ -306,6 +296,9 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         }
     }
 
+    /**
+     * Updates chat area with newly sent/edited messages
+     */
     private void updateChatArea() {
         final String selectedChat = chatList.getSelectedValue();
         // chatArea.setText("Display messages for: " + selectedChat);
@@ -334,8 +327,8 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                 final JPanel messagePanel = new JPanel();
                 messagePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
                 messagePanel.setAlignmentX(JPanel.LEFT_ALIGNMENT);
-                messagePanel.setSize(new Dimension());
-                messagePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                messagePanel.setMaximumSize(new Dimension(400, 30));
+                // messagePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
                 final JLabel messageLabel = new JLabel(user + ": " + message);
                 messageLabel.setAlignmentX(JLabel.LEFT_ALIGNMENT);

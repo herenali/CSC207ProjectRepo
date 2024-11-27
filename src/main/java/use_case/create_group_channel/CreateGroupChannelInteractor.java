@@ -20,6 +20,7 @@ public class CreateGroupChannelInteractor implements CreateGroupChannelInputBoun
         this.userDataAccessObject = userDataAccessInterface;
     }
 
+    @Override
     public void execute(CreateGroupChannelInputData createGroupChannelInputData) {
         final String apiToken = "e4fbd0788231cf40830bf62f866aa001182f9971";
         final String applicationId = "049E2510-3508-4C99-80F9-A3C24ECA7677";
@@ -60,9 +61,9 @@ public class CreateGroupChannelInteractor implements CreateGroupChannelInputBoun
                 createGroupChannelPresenter.prepareFailView("Failed to create group channel.");
             }
         }
-        catch (Exception e) {
-            createGroupChannelPresenter.prepareFailView("An error occurred: " + e.getMessage());
-            throw new RuntimeException(e);
+        catch (Exception ex) {
+            createGroupChannelPresenter.prepareFailView("An error occurred: " + ex.getMessage());
+            throw new RuntimeException(ex);
         }
     }
 }

@@ -5,10 +5,10 @@ import java.util.Map;
 
 import entity.User;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
+import use_case.create_group_channel.CreateGroupChannelDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
-import use_case.create_group_channel.CreateGroupChannelDataAccessInterface;
 
 /**
  * In-memory implementation of the DAO for storing user data. This implementation does
@@ -41,20 +41,8 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
 
     @Override
     public String getUserId(String username) {
-        // return "";
         return users.get(username).getUserId();
     }
-
-//    @Override
-//    public User get(String username) {
-//        return users.get(username);
-//    }
-
-//    @Override
-//    public void changePassword(User user) {
-//        // Replace the old entry with the new password
-//        users.put(user.getName(), user);
-//    }
 
     @Override
     public void setCurrentUsername(String name) {

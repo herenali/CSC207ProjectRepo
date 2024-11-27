@@ -22,5 +22,4 @@ public class LoginOutputData {
     public String getUserId() {
         return userId;
     }
-
 }

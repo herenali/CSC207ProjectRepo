@@ -1,13 +1,14 @@
 package entity;
 
-import app.Config;
+import java.math.BigDecimal;
+import java.util.*;
+
 import org.openapitools.client.model.*;
 import org.sendbird.client.ApiClient;
 import org.sendbird.client.ApiException;
 import org.sendbird.client.api.MessageApi;
 
-import java.math.BigDecimal;
-import java.util.*;
+import app.Config;
 
 /**
  * Class for managing messages.
@@ -19,7 +20,7 @@ public class SbMessageManager {
 
     public SbMessageManager(ApiClient defaultClient) {
         apiInstance = new MessageApi(defaultClient);
-        apiToken = Config.apiToken;
+        apiToken = Config.getApiToken();
     }
 
     /**
@@ -88,7 +89,8 @@ public class SbMessageManager {
      */
     public void deleteMessage(String channelType, String channelUrl, String messageId) {
         try {
-            final MessageApi.APIdeleteMessageByIdRequest request = apiInstance.deleteMessageById(channelType, channelUrl, messageId).apiToken(apiToken);
+            final MessageApi.APIdeleteMessageByIdRequest request =
+                    apiInstance.deleteMessageById(channelType, channelUrl, messageId).apiToken(apiToken);
             request.execute();
             System.out.println("Message deleted successfully.");
         }

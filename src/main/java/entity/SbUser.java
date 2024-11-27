@@ -1,29 +1,30 @@
 package entity;
 
-import app.Config;
+import java.util.UUID;
+
 import org.openapitools.client.model.CreateUserData;
 import org.openapitools.client.model.SendBirdUser;
 import org.sendbird.client.ApiClient;
 import org.sendbird.client.ApiException;
 import org.sendbird.client.api.UserApi;
 
-import java.util.UUID;
+import app.Config;
 
 /**
  * The representation of a user in our program.
  */
 public class SbUser implements User {
-    private String apiToken;
-    private UserApi apiInstance;
+    private final String apiToken;
+    private final UserApi apiInstance;
 
-    private SendBirdUser userData;
-    private String username;
-    private String password;
-    private String userId;
+    private final SendBirdUser userData;
+    private final String username;
+    private final String password;
+    private final String userId;
 
     public SbUser(ApiClient defaultClient, String username, String password) {
         this.apiInstance = new UserApi(defaultClient);
-        this.apiToken = Config.apiToken;
+        this.apiToken = Config.getApiToken();
 
         this.userData = createUser(username);
         this.username = username;
@@ -31,6 +32,11 @@ public class SbUser implements User {
         this.userId = this.userData.getUserId();
     }
 
+    /**
+     * Creates user using API.
+     * @param nickname username chosen by user.
+     * @return the user created.
+     */
     private SendBirdUser createUser(String nickname) {
         final CreateUserData createUserData = new CreateUserData();
         createUserData.userId(UUID.randomUUID().toString());
