@@ -1,6 +1,6 @@
 # Chat System with SendBird API 
 
-### Authors and Contributors: Herena Li, Jaycee Law, Lavender Lo
+### Authors and Contributors: [Herena Li](https://github.com/herenali), [Jaycee Law](https://github.com/jayceelaw), [Lavender Lo](https://github.com/LavenderLO)
 
 ## Project Summary 
 This project is a chat system that incorporates the SendBird API. It allows users to create 
