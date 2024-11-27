@@ -1,5 +1,6 @@
 package use_case.edit_message;
 
+import org.openapitools.client.model.SendBirdMessageResponse;
 import org.sendbird.client.ApiClient;
 import org.sendbird.client.Configuration;
 
@@ -27,11 +28,13 @@ public class EditMessageInteractor implements EditMessageInputBoundary {
         final int messageId = editMessageInputData.getMessageId();
         final String groupChannelUrl = editMessageInputData.getGroupChannelUrl();
         final String newMessage = editMessageInputData.getNewMessage();
-        sbMessageManager.editMessage("group_channels",
+        final SendBirdMessageResponse message = sbMessageManager.editMessage("group_channels",
                 groupChannelUrl,
                 messageId,
                 userId,
                 newMessage,
                 "MESG");
+        final EditMessageOutputData outputData = new EditMessageOutputData(message, false);
+        editMessagePresenter.prepareSuccessView(outputData);
     }
 }

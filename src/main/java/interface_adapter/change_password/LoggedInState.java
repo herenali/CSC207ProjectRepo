@@ -99,7 +99,7 @@ public class LoggedInState {
      * @param newgroupChannelUrl URL of group channel to add.
      */
     public void addGroupChannelUrl(String newgroupChannelUrl) {
-        this.groupChannelUrls.add(List.of(newgroupChannelUrl));
+        this.groupChannels.add(List.of(newgroupChannelUrl));
     }
 
 }

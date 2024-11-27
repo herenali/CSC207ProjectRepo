@@ -2,23 +2,27 @@ package use_case.edit_message;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.openapitools.client.model.SendBirdMessageResponse;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class EditMessageOutputDataTest {
     private EditMessageOutputData successOutputData;
     private EditMessageOutputData failureOutputData;
+    private SendBirdMessageResponse testMessage;
 
     @BeforeEach
     void setUp() {
-        successOutputData = new EditMessageOutputData("Message edited successfully.", false);
-        failureOutputData = new EditMessageOutputData("Failed to edit message.", true);
+        testMessage = new SendBirdMessageResponse();
+        testMessage.setMessage("test message");
+        successOutputData = new EditMessageOutputData(testMessage, false);
+        failureOutputData = new EditMessageOutputData(testMessage, true);
     }
 
     @Test
     void getMessage() {
-        assertEquals("Message edited successfully.", successOutputData.getMessage()); // success case
-        assertEquals("Failed to edit message.", failureOutputData.getMessage()); // failure case
+        assertEquals(testMessage.getMessage(), successOutputData.getMessage().getMessage()); // success case
+        assertEquals(testMessage.getMessage(), failureOutputData.getMessage().getMessage()); // failure case
     }
 
     @Test
