@@ -1,6 +1,6 @@
 # Chat System with SendBird API 
 
-### Authors and Contributors: [Herena Li](https://github.com/herenali), [Jaycee Law](https://github.com/jayceelaw), [Lavender Lo](https://github.com/LavenderLO)
+### Authors and Contributors: Herena Li [(herenali)](https://github.com/herenali), Jaycee Law [(jayceelaw)](https://github.com/jayceelaw), Lavender Lo [(LavenderLO)](https://github.com/LavenderLO)
 
 ## Project Summary 
 This project is a chat system that incorporates the SendBird API. It allows users to create 
@@ -21,9 +21,10 @@ looking for a straightforward way to manage conversations and stay connected.
 ## Features
 Core Features: 
 - **User Account Management**: Create, log in, and log out of user accounts.
-- **Group Chat Creation**: Create or delete group chats with custom names and member lists.
 - **Messaging**: Send, receive, and edit messages within chats. Messages update for all participants when edited.
-- **Edit Sent Messages**: Users have the ability to edit messages after sending them.
+- **Group Chat Creation**: Create or delete group chats with custom names and member lists.
+- **Group Chat Selection**: Select which pre-existing group chat to open and view from the side panel.
+- **Edit Sent Messages**: Edit message content after sending them.
 
 Integrated API: 
 - **Sendbird Chat API**: Handles messaging and chat-related functionality.
@@ -31,10 +32,19 @@ Integrated API:
 Example for sending a message in a group chat (insert screenshot/ code below): 
 
 ## Installation Instructions
-- Clone our repository (https://github.com/herenali/CSC207ProjectRepo.git)
-- Navigate to project directory and install dependencies using Maven 
-- Run Main.java 
-- Ensure the correct API token is set in your configuration file; you can find the token in the Sendbird dashboard. 
+1. **Clone the Repository**  
+   Use Git to clone the repository to your local machine:
+   ```bash
+   git clone https://github.com/herenali/CSC207ProjectRepo.git
+2. Navigate to project directory and install dependencies using Maven
+   - if this doesn't work, right-click pom.xml file -> Maven -> Reload project
+3. There is a default API token set in the project, but you can change them to a custom one by following these steps:
+   1. Create an account or sign in to the [Sendbird Dashboard](https://dashboard.sendbird.com/)
+   2. Create an application following the instructions
+   3. Click into the application and navigate to Settings -> General to find the API Token and Application ID 
+   4. In the project files, navigate to src -> main -> java -> app -> Config.java
+   5. Replace the apiToken and appId strings with your own
+4. Run Main.java 
 
 ## Usage Guide
 - Upon starting program, you will be prompted to either sign up or log in using your username and password.
