@@ -44,13 +44,32 @@ Example for sending a message in a group chat (insert screenshot/ code below):
    3. Click into the application and navigate to Settings -> General to find the API Token and Application ID 
    4. In the project files, navigate to src -> main -> java -> app -> Config.java
    5. Replace the apiToken and appId strings with your own
-4. Run Main.java 
+   ```bash
+    public static final String apiToken = "YOUR_API_TOKEN";
+    public static final String appId = "YOUR_APP_ID";
+4. Run Main.java to initiate the chat system
 
 ## Usage Guide
-- Upon starting program, you will be prompted to either sign up or log in using your username and password.
-- Once you are logged in, you can create a new chat (either single or group). 
-- To send a message, select the group chat and type your message in the input text box. 
-- If you want to edit a sent message, select the edit message button and update the content. 
+1. Sign Up or Log In (using your username and password).
+
+<img src="img.png" width="300" height="200"> 
+
+2. Create a Chat (either single or group).
+
+<img src="img_1.png" width="300" height="170">
+<img src="img_2.png" width="300" height="170"> 
+
+3. Send Messages
+- Select a chat from the side panel, type your message in the input box, 
+and hit the send button.
+
+<img src="img_3.png" width="300" height="180">
+
+4. Edit Messages 
+- Select a message you sent, click the edit message button '...', update its content and save the changes.
+
+<img src="img_4.png" width="300" height="160">
+<img src="img_5.png" width="300" height="160"> 
 
 ## License 
 Creative Commons Legal Code
@@ -69,24 +88,30 @@ CC0 1.0 Universal
 The full license is in our repository (https://github.com/herenali/CSC207ProjectRepo/blob/main/LICENSE). 
 
 ## Feedback
-Please give us feedback through this [Google Form](https://docs.google.com/forms/d/e/1FAIpQLSdOlmT7c9pwKURW5UtzZlsilaJc4CuWSx9LaYJjVjzzRQOrZA/viewform?usp=sf_link)
+ Please share your feedback through this [Google Form](https://docs.google.com/forms/d/e/1FAIpQLSdOlmT7c9pwKURW5UtzZlsilaJc4CuWSx9LaYJjVjzzRQOrZA/viewform?usp=sf_link)
 
 Rules for Valid Feedback:
-   - Constructive: provide suggestions for improvement or change that we can implement
-   - Specific: describe the issue or suggestion clearly with enough detail to understand the context
+   - Constructive: Provide suggestions for improvement or change that we can implement
+   - Specific: Describe the issue or suggestion clearly with enough detail to understand the context
       - if possible, provide screenshots, code snippets, or examples to support your feedback.
-   - Relevant: ensure the feedback pertains to the specific project or feature in question
+   - Relevant: Ensure the feedback pertains to the specific project or feature in question
 
-Guidelines when Submitting Feedback:
-   - after submitting feedback, you can expect an email acknowledging that we've recieved your Google Form submission 
-   - you can expect a response or update after a few weeks, depending on the complexity of the feedback
+Guidelines on What to Expect:
+   - Acknowledgment: You will receive an email confirmation that we've received your Google Form submission 
+   - Response time: We aim to review and address feedback within a few weeks, depending on complexity 
 
 ## Contributions 
 To add/modify code:
-- Go to our repository (https://github.com/herenali/CSC207ProjectRepo.git)
-- Fork the project to create your own copy and implement changes on a seperate branch
-- Ensure code is correct, adheres to SOLID principles and Clean Architecture, and has sufficient test cases
-- Create a pull request to the main branch so others can review your code
+1. Fork the Repository 
+- Go to our repository (https://github.com/herenali/CSC207ProjectRepo.git). 
+- Fork the project to create your own copy. 
+2. Implement Changes
+- Work on a separate branch to add your modifications. 
+- Ensure your code: 
+  - is correct and adheres to SOLID principles and Clean Architecture. 
+  - includes sufficient test cases. 
+3. Submit a Pull Request 
+- Create a pull request to the main branch for review
 
 To review other's code:
 - Make sure their code is organized, well-documented, and correct
