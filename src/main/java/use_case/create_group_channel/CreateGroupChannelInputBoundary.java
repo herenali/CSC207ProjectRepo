@@ -6,7 +6,7 @@ package use_case.create_group_channel;
 public interface CreateGroupChannelInputBoundary {
 
     /**
-     * Executes the create group channel use case.
+     * Executes the creating group channel use case.
      * @param createGroupChannelInputData the input data
      */
     void execute(CreateGroupChannelInputData createGroupChannelInputData);

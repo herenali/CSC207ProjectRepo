@@ -9,13 +9,15 @@ import org.sendbird.client.Configuration;
 import entity.SbGroupChannelManager;
 
 /**
- * The Create Group Channel Interactor.
+ * The Creating Group Channel Interactor.
  */
 public class CreateGroupChannelInteractor implements CreateGroupChannelInputBoundary {
     private final CreateGroupChannelOutputBoundary createGroupChannelPresenter;
     private final CreateGroupChannelDataAccessInterface userDataAccessObject;
 
-    public CreateGroupChannelInteractor(CreateGroupChannelOutputBoundary createGroupChannelPresenter, CreateGroupChannelDataAccessInterface userDataAccessInterface) {
+    public CreateGroupChannelInteractor(
+            CreateGroupChannelOutputBoundary createGroupChannelPresenter,
+            CreateGroupChannelDataAccessInterface userDataAccessInterface) {
         this.createGroupChannelPresenter = createGroupChannelPresenter;
         this.userDataAccessObject = userDataAccessInterface;
     }
@@ -50,7 +52,8 @@ public class CreateGroupChannelInteractor implements CreateGroupChannelInputBoun
                 userIds.add(createGroupChannelInputData.getCurrentUserId());
             }
 
-            final var groupChannel = sbGroupChannelManager.createChannel(userIds, createGroupChannelInputData.getChatName());
+            final var groupChannel = sbGroupChannelManager.createChannel(
+                    userIds, createGroupChannelInputData.getChatName());
 
             if (groupChannel != null && groupChannel.getChannelUrl() != null) {
                 createGroupChannelPresenter.prepareSuccessView(

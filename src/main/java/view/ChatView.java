@@ -252,10 +252,15 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                         List<String> users = null;
                         if (chatType == 0) {
                             users = List.of(usersInput);
-                        } else if (chatType == 1) {
+                            if (users.size() != 1 || users.get(0).isEmpty()) {
+                                JOptionPane.showMessageDialog(null, "Error: Single Chat must have exactly one username.");
+                                return;
+                            }
+                        }
+                        else if (chatType == 1) {
                             users = List.of(usersInput.replace(" ", "").split(","));
-                            if (users.isEmpty()) {
-                                JOptionPane.showMessageDialog(null, "You must enter at least one user.");
+                            if (users.size() <= 1 || users.stream().anyMatch(String::isEmpty)) {
+                                JOptionPane.showMessageDialog(null, "Error: Group Chat must have more than one username.");
                                 return;
                             }
                         }

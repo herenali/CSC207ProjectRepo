@@ -6,7 +6,6 @@ import entity.User;
 import entity.UserFactory;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
-import org.openapitools.client.model.SendBirdGroupChannel;
 import org.sendbird.client.ApiClient;
 import org.sendbird.client.Configuration;
 
@@ -29,8 +28,6 @@ public class CreateGroupChannelInteractorTest {
         UserFactory factory = new SbUserFactory(defaultClient);
         User Paul = factory.create("Paul", "123");
         User Jonathan = factory.create("Jonathan", "123");
-//        String userPaulId = "9fe8dffb-30a8-4125-8882-c24e0d5efc52";
-//        String userJonathanId = "11415872-17cb-47ff-a986-ed7c1b63760c";
         userRepository.save(Paul);
         userRepository.save(Jonathan);
 

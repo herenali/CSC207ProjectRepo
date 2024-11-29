@@ -8,11 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.sendbird.client.ApiClient;
 import org.sendbird.client.Configuration;
 
-import javax.swing.*;
-import java.awt.*;
-import java.util.Arrays;
-
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
