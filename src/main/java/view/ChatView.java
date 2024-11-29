@@ -58,6 +58,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
     private final Map<String, List<String>> chatMessages = new HashMap<>();
     private JTextField messageInputField;
     private JButton sendButton;
+    private JButton deleteChannelButton;
 
     public ChatView(LoggedInViewModel loggedInViewModel) {
         this.loggedInViewModel = loggedInViewModel;
@@ -74,9 +75,11 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         newChatButton = new JButton("New Chat");
         profileButton = new JButton("Profile");
         logOutButton = new JButton("Log Out");
+        deleteChannelButton = new JButton("Delete");
         topPanel.add(newChatButton);
         topPanel.add(profileButton);
         topPanel.add(logOutButton);
+        topPanel.add(deleteChannelButton);
 
         // add panel for sending messages
         final JPanel chatInputPanel = new JPanel();
@@ -266,6 +269,37 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                         }
                         createGroupChannelController.execute(chatName, users, loggedInViewModel.getState().getUserId());
                     }
+                }
+            }
+        });
+
+        deleteChannelButton.addActionListener(evt -> {
+            final int confirmation = JOptionPane.showConfirmDialog(
+                    null,
+                    "Are you sure you want to delete the selected channel?",
+                    "Delete Channel",
+                    JOptionPane.YES_NO_OPTION
+            );
+
+            if (confirmation == JOptionPane.YES_OPTION) {
+                String selectedChat = chatList.getSelectedValue();
+                if (selectedChat != null) {
+                    String groupChannelUrl = selectedChat.substring(selectedChat.lastIndexOf(": ") + 2);
+                    try {
+                        sbGroupChannelManager.deleteChannelByUrl(groupChannelUrl);
+                        JOptionPane.showMessageDialog(null, "Channel deleted successfully.");
+
+                        ((DefaultListModel<String>) chatList.getModel()).removeElement(selectedChat);
+
+                        chatArea.removeAll();
+                        chatArea.add(new JLabel("No chat selected."));
+                        chatArea.revalidate();
+                        chatArea.repaint();
+                    } catch (Exception e) {
+                        JOptionPane.showMessageDialog(null, "Error deleting channel: " + e.getMessage());
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "No channel selected for deletion.");
                 }
             }
         });
