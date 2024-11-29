@@ -1,18 +1,20 @@
 package use_case.edit_message;
 
+import org.openapitools.client.model.SendBirdMessageResponse;
+
 /**
  * Output Data for the Edit Message Use Case.
  */
 public class EditMessageOutputData {
-    private final String message;
+    private final SendBirdMessageResponse message;
     private final boolean useCaseFailed;
 
-    public EditMessageOutputData(String message, boolean useCaseFailed) {
+    public EditMessageOutputData(SendBirdMessageResponse message, boolean useCaseFailed) {
         this.message = message;
         this.useCaseFailed = useCaseFailed;
     }
 
-    public String getMessage() {
+    public SendBirdMessageResponse getMessage() {
         return message;
     }
   
