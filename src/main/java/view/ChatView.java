@@ -1,20 +1,33 @@
 package view;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.*;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 
 import org.openapitools.client.model.SendBirdGroupChannel;
 import org.sendbird.client.ApiClient;
 import org.sendbird.client.Configuration;
 
 import entity.SbGroupChannelManager;
-import entity.SbUserManager;
 import interface_adapter.change_password.LoggedInState;
 import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.choose_group_channel.ChooseGroupChannelController;
@@ -22,10 +35,6 @@ import interface_adapter.create_group_channel.CreateGroupChannelController;
 import interface_adapter.edit_message.EditMessageController;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.send_message.SendMessageController;
-import use_case.create_group_channel.CreateGroupChannelInputBoundary;
-import use_case.create_group_channel.CreateGroupChannelInputData;
-import use_case.create_group_channel.CreateGroupChannelInteractor;
-import use_case.create_group_channel.CreateGroupChannelOutputBoundary;
 
 /**
  * The View for when the user is logged into the program.
@@ -89,14 +98,12 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         final String applicationId = "049E2510-3508-4C99-80F9-A3C24ECA7677";
         final ApiClient defaultClient = Configuration.getDefaultApiClient().addDefaultHeader("Api-Token", apiToken);
         defaultClient.setBasePath("https://api-" + applicationId + ".sendbird.com");
-        final SbUserManager sbUserManager = new SbUserManager(defaultClient);
         final SbGroupChannelManager sbGroupChannelManager = new SbGroupChannelManager(defaultClient);
         final String currentUserId = loggedInViewModel.getState().getUserId();
         final DefaultListModel chats = new DefaultListModel();
 
         if (currentUserId.length() > 0) {
-//            final List<SendBirdGroupChannel> groupChannels = sbUserManager
-//                    .listGroupChannelsByUserId(loggedInViewModel.getState().getUserId()).getChannels();
+            // final List<SendBirdGroupChannel> groupChannels = sbUserManager.listGroupChannelsByUserId(loggedInViewModel.getState().getUserId()).getChannels();
             final List<SendBirdGroupChannel> groupChannels = sbGroupChannelManager
                     .listChannels(loggedInViewModel.getState().getUserId()).getChannels();
             for (int i = 0; i < groupChannels.size(); i++) {
@@ -269,7 +276,6 @@ public class ChatView extends JPanel implements PropertyChangeListener {
 
         if (selectedChat != null) {
             final String groupChannelUrl = selectedChat.substring(selectedChat.lastIndexOf(": ") + 2);
-            // System.out.println(groupChannelUrl);
             loggedInViewModel.getState().setGroupChannelUrl(groupChannelUrl);
             chooseGroupChannelController.execute(groupChannelUrl);
 
