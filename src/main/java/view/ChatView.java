@@ -28,6 +28,7 @@ import org.sendbird.client.ApiClient;
 import org.sendbird.client.Configuration;
 
 import entity.SbGroupChannelManager;
+import entity.SbMessageManager;
 import interface_adapter.change_password.LoggedInState;
 import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.choose_group_channel.ChooseGroupChannelController;
@@ -47,6 +48,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
     private CreateGroupChannelController createGroupChannelController;
     private SendMessageController sendMessageController;
     private EditMessageController editMessageController;
+    private SbMessageManager sbMessageManager;
 
     private final JButton logOutButton;
     private final JButton newChatButton;
@@ -101,6 +103,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         final String applicationId = "049E2510-3508-4C99-80F9-A3C24ECA7677";
         final ApiClient defaultClient = Configuration.getDefaultApiClient().addDefaultHeader("Api-Token", apiToken);
         defaultClient.setBasePath("https://api-" + applicationId + ".sendbird.com");
+        this.sbMessageManager = new SbMessageManager(defaultClient);
         final SbGroupChannelManager sbGroupChannelManager = new SbGroupChannelManager(defaultClient);
         final String currentUserId = loggedInViewModel.getState().getUserId();
         final DefaultListModel chats = new DefaultListModel();
@@ -287,7 +290,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                     String groupChannelUrl = selectedChat.substring(selectedChat.lastIndexOf(": ") + 2);
                     try {
                         sbGroupChannelManager.deleteChannelByUrl(groupChannelUrl);
-                        JOptionPane.showMessageDialog(null, "Channel deleted successfully.");
+                        JOptionPane.showMessageDialog(null, "Channel deleted.");
 
                         ((DefaultListModel<String>) chatList.getModel()).removeElement(selectedChat);
 
@@ -296,7 +299,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                         chatArea.revalidate();
                         chatArea.repaint();
                     } catch (Exception e) {
-                        JOptionPane.showMessageDialog(null, "Error deleting channel: " + e.getMessage());
+                        JOptionPane.showMessageDialog(null, "Channel not deleted " + e.getMessage());
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "No channel selected for deletion.");
@@ -350,12 +353,44 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                     editButton.addActionListener(evt -> {
                         final String newMessage = JOptionPane.showInputDialog("Edit Message:", message);
 
-                        if (newMessage != null && !newMessage.equals(message)) {
+                        if (newMessage != null && !newMessage.trim().isEmpty() && !newMessage.equals(message)) {
                             editMessageController.execute(currentUserId, Integer.valueOf(messageId), groupChannelUrl, newMessage);
                             updateChatArea();
                         }
                     });
                     messagePanel.add(editButton);
+
+                    // Delete message
+                    final JButton deleteButton = new JButton("delete");
+                    deleteButton.setPreferredSize(new Dimension(75, 20));
+                    deleteButton.addActionListener(evt -> {
+                        int confirmation = JOptionPane.showConfirmDialog(
+                                null,
+                                "Are you certain you want to delete this message?",
+                                "Delete Message",
+                                JOptionPane.YES_NO_OPTION
+                        );
+                        if (confirmation == JOptionPane.YES_OPTION) {
+                            try {
+                                sbMessageManager.deleteMessage("group_channels", groupChannelUrl, messageId);
+                                updateChatArea();
+                                JOptionPane.showMessageDialog(
+                                        null,
+                                        "Message deleted",
+                                        "Success",
+                                        JOptionPane.INFORMATION_MESSAGE
+                                );
+                            } catch (Exception ex) {
+                                JOptionPane.showMessageDialog(
+                                        null,
+                                        "Message not deleted" + ex.getMessage(),
+                                        "Error",
+                                        JOptionPane.ERROR_MESSAGE
+                                );
+                            }
+                        }
+                    });
+                    messagePanel.add(deleteButton);
                 }
                 chatArea.add(messagePanel);
             }
