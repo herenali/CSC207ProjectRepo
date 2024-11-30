@@ -47,7 +47,13 @@ Example for sending a message in a group chat (insert screenshot/ code below):
    ```bash
     public static final String apiToken = "YOUR_API_TOKEN";
     public static final String appId = "YOUR_APP_ID";
-4. Run Main.java to initiate the chat system
+4. Run Main.java in src/main/java/app to initiate the chat system
+   - Right click on the file in the project directory and click "Run 'Main.main()'"
+<img src="img_6.jpeg" width="300" height="170">
+
+Notes:
+- This project runs on Java 22 and uses the Oracle OpenJDK 22.0.1 software development kit (SDK).
+- This project can be installed and run on any OS and hardware system.
 
 ## Usage Guide
 1. Sign Up or Log In (using your username and password).
