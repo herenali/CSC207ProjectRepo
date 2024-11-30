@@ -1,7 +1,8 @@
 package entity;
 
-import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import org.openapitools.client.model.*;
 import org.sendbird.client.ApiClient;
@@ -16,7 +17,6 @@ import app.Config;
 public class SbMessageManager {
     private String apiToken;
     private MessageApi apiInstance;
-    private Map<String, List<BigDecimal>> groupMessageMapping;
 
     public SbMessageManager(ApiClient defaultClient) {
         apiInstance = new MessageApi(defaultClient);
@@ -41,8 +41,10 @@ public class SbMessageManager {
         sendMessageData.messageType(messageType);
 
         try {
-            final SendBirdMessageResponse result = apiInstance.sendMessage(channelType, channelUrl).apiToken(apiToken).sendMessageData(sendMessageData).execute();
-            return result;
+            return apiInstance.sendMessage(channelType, channelUrl)
+                    .apiToken(apiToken)
+                    .sendMessageData(sendMessageData)
+                    .execute();
         }
         catch (ApiException e) {
             System.err.println("Exception when calling MessageApi#sendMessage");
@@ -118,12 +120,12 @@ public class SbMessageManager {
                 .message(newContent);
 
         try {
-            final SendBirdMessageResponse updatedMessage = apiInstance.updateMessageById(channelType, channelUrl, String.valueOf(messageId))
+            return apiInstance.updateMessageById(channelType, channelUrl, String.valueOf(messageId))
                     .apiToken(apiToken)
                     .updateMessageByIdData(updateMessageByIdData)
                     .execute();
-            return updatedMessage;
-        } catch (ApiException e) {
+        }
+        catch (ApiException e) {
             System.err.println("Exception when calling MessageApi#updateMessageById");
             System.err.println("Status code: " + e.getCode());
             System.err.println("Reason: " + e.getResponseBody());
@@ -142,13 +144,12 @@ public class SbMessageManager {
      */
     public SendBirdMessageResponse getMessage(String channelType, String channelUrl, String messageId) {
         try {
-            final SendBirdMessageResponse result = apiInstance.viewMessageById(channelType, channelUrl, messageId)
+            return apiInstance.viewMessageById(channelType, channelUrl, messageId)
                     .apiToken(apiToken)
                     .withSortedMetaArray(false)
                     .withMetaArray(false)
                     .includeParentMessageInfo(false)
                     .execute();
-            return result;
         }
         catch (ApiException e) {
             System.err.println("Exception when calling MessageApi#viewMessageById");
@@ -166,13 +167,9 @@ public class SbMessageManager {
      * @return a list of responses containing the details of the message
      */
     public List<ListMessagesResponseMessagesInner> getAllMessages(String channelUrl) {
-        final List<ListMessagesResponseMessagesInner> allMessages = new ArrayList<>();
 
         final List<ListMessagesResponseMessagesInner> messages = listMessages(channelUrl).getMessages();
 
-        for (ListMessagesResponseMessagesInner message : messages) {
-            allMessages.add(message);
-        }
-        return allMessages;
+        return new ArrayList<>(messages);
     }
 }

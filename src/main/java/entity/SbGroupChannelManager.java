@@ -41,9 +41,11 @@ public class SbGroupChannelManager implements GroupChannelManager {
 
         try {
             System.out.println("Creating channel with data: " + gcCreateChannelData);
-            SendBirdGroupChannel result = getApiInstance().gcCreateChannel().apiToken(getApiToken())
-                    .gcCreateChannelData(gcCreateChannelData).execute();
-            return result;
+            return getApiInstance()
+                    .gcCreateChannel()
+                    .apiToken(getApiToken())
+                    .gcCreateChannelData(gcCreateChannelData)
+                    .execute();
         }
         catch (ApiException ex) {
             System.err.println("Exception when calling GroupChannelApi#gcCreateChannel");
@@ -64,9 +66,10 @@ public class SbGroupChannelManager implements GroupChannelManager {
     @Override
     public OcDeleteChannelByUrl200Response deleteChannelByUrl(String channelUrl) {
         try {
-            final OcDeleteChannelByUrl200Response result = getApiInstance()
-                    .gcDeleteChannelByUrl(channelUrl).apiToken(getApiToken()).execute();
-            return result;
+            return getApiInstance()
+                    .gcDeleteChannelByUrl(channelUrl)
+                    .apiToken(getApiToken())
+                    .execute();
         }
         catch (ApiException ex) {
             System.err.println("Exception when calling GroupChannelApi#gcViewChannelByUrl");
@@ -87,11 +90,11 @@ public class SbGroupChannelManager implements GroupChannelManager {
     @Override
     public GcListChannelsResponse listChannels(String userId) {
         try {
-            final GcListChannelsResponse result = getApiInstance().gcListChannels()
+            return getApiInstance()
+                    .gcListChannels()
                     .apiToken(getApiToken())
                     .membersIncludeIn(userId)
                     .execute();
-            return result;
         }
         catch (ApiException ex) {
             System.err.println("Exception when calling GroupChannelApi#gcViewChannelByUrl");

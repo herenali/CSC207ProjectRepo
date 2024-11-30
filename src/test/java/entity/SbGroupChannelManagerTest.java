@@ -33,7 +33,6 @@ public class SbGroupChannelManagerTest {
         InMemoryUserDataAccessObject userRepository = new InMemoryUserDataAccessObject();
 
         sbGroupChannelManager = new SbGroupChannelManager(defaultClient);
-        SbUserManager sbUserManager = new SbUserManager(defaultClient);
 
         userPaulId = "9fe8dffb-30a8-4125-8882-c24e0d5efc52";
         userJonathanId = "11415872-17cb-47ff-a986-ed7c1b63760c";
