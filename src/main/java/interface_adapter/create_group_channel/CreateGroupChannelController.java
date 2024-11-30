@@ -11,6 +11,7 @@ import use_case.create_group_channel.CreateGroupChannelInputData;
  */
 public class CreateGroupChannelController {
     private final CreateGroupChannelInputBoundary createGroupChannelUseCaseInteractor;
+
     public CreateGroupChannelController(CreateGroupChannelInputBoundary createGroupChannelUseCaseInteractor) {
         this.createGroupChannelUseCaseInteractor = createGroupChannelUseCaseInteractor;
     }
