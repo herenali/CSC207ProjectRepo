@@ -65,11 +65,10 @@ public class SbMessageManager {
         final Long timestamp = now.getTime();
 
         try {
-            final ListMessagesResponse result = apiInstance.listMessages(channelType, channelUrl)
+            return apiInstance.listMessages(channelType, channelUrl)
                     .apiToken(apiToken)
                     .messageTs(timestamp.toString())
                     .execute();
-            return result;
         }
         catch (ApiException e) {
             System.err.println("Exception when calling MessageApi#listMessages");
@@ -123,7 +122,6 @@ public class SbMessageManager {
                     .apiToken(apiToken)
                     .updateMessageByIdData(updateMessageByIdData)
                     .execute();
-            System.out.println("Messaged updated successfully to " + updatedMessage);
             return updatedMessage;
         } catch (ApiException e) {
             System.err.println("Exception when calling MessageApi#updateMessageById");

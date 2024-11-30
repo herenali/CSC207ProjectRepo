@@ -449,10 +449,6 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                 final List<SendBirdGroupChannel> groupChannels = sbGroupChannelManager
                         .listChannels(loggedInViewModel.getState().getUserId()).getChannels();
 
-                for (SendBirdGroupChannel groupChannel : groupChannels) {
-                    System.out.println("Channel: " + groupChannel.getName());
-                }
-
                 // Add group channels to the chats list
                 for (int i = 0; i < groupChannels.size(); i++) {
                     SendBirdGroupChannel groupChannel = groupChannels.get(i);
