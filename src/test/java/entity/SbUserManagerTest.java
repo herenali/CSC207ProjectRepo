@@ -19,9 +19,9 @@ public class SbUserManagerTest {
 
         SbGroupChannelManager sbGroupChannelManager = new SbGroupChannelManager(defaultClient);
 
-        String paulUserId = "9fe8dffb-30a8-4125-8882-c24e0d5efc52";
+        String paulUserId = "39bd6921-ef43-44bf-b8eb-f5394ca5272f";
         List<SendBirdGroupChannel> groupChannels = sbGroupChannelManager.listChannels(paulUserId).getChannels();
-        assertEquals("sendbird_group_channel_17729697_c93830e104f4c6ddcd7d6131ca6b03338cf93209",
+        assertEquals("sendbird_group_channel_19639730_b073d0cb90db5a1dfe40d7eca18b33d4b187fb63",
                 groupChannels.get(0).getChannelUrl());
     }
 }
