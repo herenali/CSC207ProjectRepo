@@ -31,42 +31,36 @@ public class CreateGroupChannelInteractor implements CreateGroupChannelInputBoun
 
         final SbGroupChannelManager sbGroupChannelManager = new SbGroupChannelManager(defaultClient);
 
-        try {
-            final List<String> userIds = new ArrayList<>();
+        final List<String> userIds = new ArrayList<>();
 
-            if (createGroupChannelInputData.getUsers() != null && !createGroupChannelInputData.getUsers().isEmpty()) {
-                for (String username : createGroupChannelInputData.getUsers()) {
-                    if (!userDataAccessObject.existsByName(username)) {
-                        createGroupChannelPresenter.prepareFailView("Username \"" + username + "\" does not exist.");
-                        return;
-                    }
-                    userIds.add(userDataAccessObject.getUserId(username));
+        if (createGroupChannelInputData.getCurrentUserId() == null
+                || createGroupChannelInputData.getCurrentUserId().isEmpty()) {
+            createGroupChannelPresenter.prepareFailView("Current user ID cannot be null or empty.");
+            return;
+        }
+        else {
+            userIds.add(createGroupChannelInputData.getCurrentUserId());
+        }
+
+        if (createGroupChannelInputData.getUsers() != null && !createGroupChannelInputData.getUsers().isEmpty()) {
+            for (String username : createGroupChannelInputData.getUsers()) {
+                if (!userDataAccessObject.existsByName(username)) {
+                    createGroupChannelPresenter.prepareFailView("Username \"" + username + "\" does not exist.");
+                    return;
                 }
-            }
-            else {
-                createGroupChannelPresenter.prepareFailView("No valid user(s).");
-                return;
-            }
-
-            if (!userIds.contains(createGroupChannelInputData.getCurrentUserId())) {
-                userIds.add(createGroupChannelInputData.getCurrentUserId());
-            }
-
-            final var groupChannel = sbGroupChannelManager.createChannel(
-                    userIds, createGroupChannelInputData.getChatName());
-
-            if (groupChannel != null && groupChannel.getChannelUrl() != null) {
-                createGroupChannelPresenter.prepareSuccessView(
-                        new CreateGroupChannelOutputData(groupChannel.getChannelUrl(), userIds, false)
-                );
-            }
-            else {
-                createGroupChannelPresenter.prepareFailView("Failed to create group channel.");
+                userIds.add(userDataAccessObject.getUserId(username));
             }
         }
-        catch (Exception ex) {
-            createGroupChannelPresenter.prepareFailView("An error occurred: " + ex.getMessage());
-            throw new RuntimeException(ex);
+        else {
+            createGroupChannelPresenter.prepareFailView("No valid user(s).");
+            return;
         }
+
+        final var groupChannel = sbGroupChannelManager.createChannel(
+                userIds, createGroupChannelInputData.getChatName());
+
+        createGroupChannelPresenter.prepareSuccessView(
+                new CreateGroupChannelOutputData(groupChannel.getChannelUrl(), userIds, false)
+        );
     }
 }
