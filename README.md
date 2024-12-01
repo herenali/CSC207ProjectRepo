@@ -21,15 +21,13 @@ looking for a straightforward way to manage conversations and stay connected.
 ## Features
 Core Features: 
 - **User Account Management**: Create, log in, and log out of user accounts.
-- **Messaging**: Send, receive, and edit messages within chats. Messages update for all participants when edited.
+- **Messaging**: Send, receive, and delete messages within chats. Messages update for all participants when edited.
 - **Group Chat Creation**: Create or delete group chats with custom names and member lists.
 - **Group Chat Selection**: Select which pre-existing group chat to open and view from the side panel.
 - **Edit Sent Messages**: Edit message content after sending them.
 
 Integrated API: 
 - **Sendbird Chat API**: Handles messaging and chat-related functionality.
-  
-Example for sending a message in a group chat (insert screenshot/ code below): 
 
 ## Installation Instructions
 1. **Clone the Repository**  
