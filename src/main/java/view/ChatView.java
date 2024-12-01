@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 
 import org.openapitools.client.model.SendBirdGroupChannel;
 import org.sendbird.client.ApiClient;
@@ -42,12 +41,10 @@ public class ChatView extends JPanel implements PropertyChangeListener {
     private final JButton logOutButton;
     private final JButton newChatButton;
     private final JButton profileButton;
-    private final Color chatColour;
 
     private JList<String> chatList;
     private final JPanel chatArea;
 
-    private final Map<String, List<String>> chatMessages = new HashMap<>();
     private JTextField messageInputField;
     private JButton sendButton;
     private JButton deleteChannelButton;
@@ -57,9 +54,17 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         this.loggedInViewModel.addPropertyChangeListener(this);
 
         final JLabel title = new JLabel("Chats");
+
         title.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         this.setLayout(new BorderLayout());
+
+        // customize popup message appearance
+        UIManager.put("OptionPane.messageFont", UIFactory.getTextFont());
+        UIManager.put("OptionPane.background", UIFactory.backgroundColour);
+        UIManager.put("Panel.background", UIFactory.backgroundColour);
+        UIManager.put("OptionPane.okButtonText", "Save");
+        UIManager.put("Button.border", null);
 
         // top panel for buttons (New Chat, Profile, Log Out, Delete Channel)
         final JPanel topPanel = new JPanel();
@@ -71,10 +76,11 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         final Color pressedColour = new Color(191, 201, 219);
         final Color hoverColour = new Color(218, 224, 235);
         final Color textColour = new Color(17, 37, 69);
-        newChatButton = createButton("New Chat", defaultColour, pressedColour, hoverColour, textColour);
-        profileButton = createButton("Profile", defaultColour, pressedColour, hoverColour, textColour);
-        logOutButton = createButton("Log Out", defaultColour, pressedColour, hoverColour, textColour);
-        deleteChannelButton = createButton("Delete", defaultColour, pressedColour, hoverColour, textColour);
+
+        newChatButton = UIFactory.createButton("New Chat", defaultColour, pressedColour, hoverColour, textColour);
+        profileButton = UIFactory.createButton("Profile", defaultColour, pressedColour, hoverColour, textColour);
+        logOutButton = UIFactory.createButton("Log Out", defaultColour, pressedColour, hoverColour, textColour);
+        deleteChannelButton = UIFactory.createButton("Delete", defaultColour, pressedColour, hoverColour, textColour);
 
         topPanel.add(newChatButton);
         topPanel.add(profileButton);
@@ -134,10 +140,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         messageInputField.setPreferredSize(new Dimension(800, 30));
         messageInputField.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
 
-        sendButton = createButton("Send", new Color(110, 137, 186),
-                new Color(66, 90, 133),
-                new Color(85, 112, 161),
-                Color.WHITE);
+        sendButton = UIFactory.createButton("Send");
 
         chatInputPanel.add(messageInputField);
         chatInputPanel.add(sendButton);
@@ -146,8 +149,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         chatArea = new JPanel();
         chatArea.setBorder(null);
         chatArea.setPreferredSize(new Dimension(800, 470));
-        chatColour = new Color(240, 244, 250);
-        chatArea.setBackground(chatColour);
+        chatArea.setBackground(UIFactory.backgroundColour);
 
         final JScrollPane chatAreaScrollPane = new JScrollPane(chatArea);
         chatAreaScrollPane.setBorder(null);
@@ -358,17 +360,17 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                 messagePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
                 messagePanel.setAlignmentX(JPanel.LEFT_ALIGNMENT);
                 messagePanel.setMaximumSize(new Dimension(800, 30));
-                messagePanel.setBackground(chatColour);
+                messagePanel.setBackground(UIFactory.backgroundColour);
                 // messagePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
                 final JLabel messageLabel = new JLabel("<html><b>" + user + ":</b> " + message + "</html>");
-                messageLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 14));
+                messageLabel.setFont(UIFactory.getTextFont());
                 messageLabel.setAlignmentX(JLabel.LEFT_ALIGNMENT);
                 messagePanel.add(messageLabel);
 
                 final String currentUserId = loggedInViewModel.getState().getUserId();
                 if (userId.equals(currentUserId)) {
-                    final JButton editButton = createMessageButton("edit");
+                    final JButton editButton = UIFactory.createMessageButton("edit");
 
                     editButton.addActionListener(evt -> {
                         final String newMessage = JOptionPane.showInputDialog("Edit Message:", message);
@@ -378,10 +380,11 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                             updateChatArea();
                         }
                     });
+
                     messagePanel.add(editButton);
 
                     // Delete message
-                    final JButton deleteButton = createMessageButton("delete");
+                    final JButton deleteButton = UIFactory.createMessageButton("delete");
                     deleteButton.addActionListener(evt -> {
                         final int confirmation = JOptionPane.showConfirmDialog(
                                 null,
@@ -420,162 +423,6 @@ public class ChatView extends JPanel implements PropertyChangeListener {
             chatArea.removeAll();
             chatArea.add(new JLabel("No chat selected."));
         }
-    }
-
-    /**
-     * Creates and returns JButton with consistent appearance.
-     * @param name name of button
-     * @param defaultColour default colour of button
-     * @param pressedColour colour of button when clicked
-     * @param hoverColour colour of button when hovered
-     * @param textColour text colour of button
-     * @return button created
-     */
-    private JButton createButton(String name, Color defaultColour, Color pressedColour, Color hoverColour, Color textColour) {
-        final boolean[] isHovered = {false};
-        final boolean[] isPressed = {false};
-
-        final JButton button = new JButton(name) {
-            @Override
-            protected void paintComponent(Graphics g) {
-                final Graphics2D g2 = (Graphics2D) g;
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-                Color buttonColor = defaultColour; // default colour
-                if (isPressed[0]) {
-                    buttonColor = pressedColour; // pressed colour
-                } else if (isHovered[0]) {
-                    buttonColor = hoverColour; // hover colour
-                }
-
-                g2.setColor(buttonColor);
-                g2.fillRoundRect(5, 2, getWidth()-10, getHeight()-4, 15, 15);
-
-                super.paintComponent(g);
-            }
-
-            @Override
-            protected void paintBorder(Graphics g) {
-                // no border
-            }
-        };
-
-        button.setFocusPainted(false);
-        button.setContentAreaFilled(false);
-        button.setBorderPainted(false);
-        button.setFont(new Font("Gill Sans", Font.PLAIN, 16));
-        button.setForeground(textColour);
-        button.setBounds(0, 0, 100, 25);
-
-        button.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                isHovered[0] = true;
-                button.repaint();
-            }
-
-            @Override
-            public void mouseExited(java.awt.event.MouseEvent e) {
-                isHovered[0] = false;
-                button.repaint();
-            }
-
-            @Override
-            public void mousePressed(java.awt.event.MouseEvent e) {
-                isPressed[0] = true;
-                button.repaint();
-            }
-
-            @Override
-            public void mouseReleased(java.awt.event.MouseEvent e) {
-                isPressed[0] = false;
-                button.repaint();
-            }
-        });
-
-        return button;
-    }
-
-    /**
-     * Creates and returns JButton with consistent appearance within message.
-     * @param name name of button
-     **/
-    private JButton createMessageButton(String name) {
-        final boolean[] isHovered = {false};
-        final boolean[] isPressed = {false};
-        final Color defaultColour = new Color(123, 139, 168); // default text color
-        final Color[] textColour = {defaultColour};
-
-        final JButton button = new JButton(name) {
-            @Override
-            protected void paintComponent(Graphics g) {
-                final Graphics2D g2 = (Graphics2D) g;
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-                if (isPressed[0]) {
-                    textColour[0] = defaultColour.darker(); // pressed colour
-                } else {
-                    textColour[0] = defaultColour;
-                }
-                g2.setColor(textColour[0]);
-                setForeground(textColour[0]);
-                super.paintComponent(g);
-
-                // underline text when hovered over
-                if (isHovered[0]) {
-                    g2.setColor(textColour[0]);
-                    final FontMetrics fm = g2.getFontMetrics();
-                    final int textWidth = fm.stringWidth(name);
-                    g2.drawLine((getWidth() - textWidth) / 2, getHeight() - 2, (getWidth() + textWidth) / 2, getHeight() - 2);
-                }
-            }
-
-            @Override
-            protected void paintBorder(Graphics g) {
-                // no border
-            }
-        };
-
-        button.setFocusPainted(false);
-        button.setContentAreaFilled(false);
-        button.setBorderPainted(true);
-        button.setBorder(null);
-        button.setFont(new Font("Helvetica Neue", Font.PLAIN, 14));
-        button.setForeground(textColour[0]);
-
-        final FontMetrics fm = button.getFontMetrics(button.getFont());
-        final int textWidth = fm.stringWidth(name);
-        final int textHeight = fm.getHeight();
-        button.setPreferredSize(new Dimension(textWidth+15, textHeight));
-        button.setBounds(0, 0, textWidth+15, textHeight);
-
-        button.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                isHovered[0] = true;
-                button.repaint();
-            }
-
-            @Override
-            public void mouseExited(java.awt.event.MouseEvent e) {
-                isHovered[0] = false;
-                button.repaint();
-            }
-
-            @Override
-            public void mousePressed(java.awt.event.MouseEvent e) {
-                isPressed[0] = true;
-                button.repaint();
-            }
-
-            @Override
-            public void mouseReleased(java.awt.event.MouseEvent e) {
-                isPressed[0] = false;
-                button.repaint();
-            }
-        });
-
-        return button;
     }
 
     public String getViewName() {
