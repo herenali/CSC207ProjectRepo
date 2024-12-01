@@ -16,11 +16,10 @@ import static org.junit.Assert.*;
 class SbMessageManagerTest {
     private static SbMessageManager sbMessageManager;
     private static SbGroupChannelManager sbGroupChannelManager;
-    private static SbUserManager sbUserManager;
 
     private static String userPaulId;
     private static String userJonathanId;
-//
+
     private static String groupChannelUrl;
 
     @BeforeEach
@@ -32,17 +31,6 @@ class SbMessageManagerTest {
 
         sbMessageManager = new SbMessageManager(defaultClient);
         sbGroupChannelManager = new SbGroupChannelManager(defaultClient);
-        sbUserManager = new SbUserManager(defaultClient);
-
-//        SbUserFactory sbUserFactory = new SbUserFactory(defaultClient);
-//        userPaul = sbUserFactory.create("Paul", "123");
-//        userJonathan = sbUserFactory.create("Jonathan", "csc207");
-//        List<String> userIds = new ArrayList<>();
-//        userIds.add(userPaul.getUserId());
-//        userIds.add(userJonathan.getUserId());
-
-//        SbGroupChannelFactory sbGroupChannelFactory = new SbGroupChannelFactory(defaultClient);
-//        groupChannel = sbGroupChannelFactory.create(userIds, "CSC207 Group Chat");
 
         // The users and group channel has already been created, we can use their id/url values directly
         userPaulId = "9fe8dffb-30a8-4125-8882-c24e0d5efc52";
@@ -58,7 +46,6 @@ class SbMessageManagerTest {
                 userPaulId,
                 "Hello! This is the first message.",
                 "MESG").getMessageId();
-//        System.out.println(sbMessageManager.listMessages(groupChannelUrl));
         System.out.println(sbMessageManager.listMessages(groupChannelUrl).getMessages());
         assertEquals("Hello! This is the first message.",
                 sbMessageManager.getMessage("group_channels", groupChannelUrl, messageId.toString())
