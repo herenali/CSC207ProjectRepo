@@ -1,27 +1,11 @@
 package view;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
+import javax.swing.*;
 
 import org.openapitools.client.model.SendBirdGroupChannel;
 import org.sendbird.client.ApiClient;
@@ -57,7 +41,6 @@ public class ChatView extends JPanel implements PropertyChangeListener {
     private JList<String> chatList;
     private final JPanel chatArea;
 
-    private final Map<String, List<String>> chatMessages = new HashMap<>();
     private JTextField messageInputField;
     private JButton sendButton;
     private JButton deleteChannelButton;
@@ -67,35 +50,43 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         this.loggedInViewModel.addPropertyChangeListener(this);
 
         final JLabel title = new JLabel("Chats");
+
         title.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         this.setLayout(new BorderLayout());
 
-        // top panel for buttons (New Chat, Profile, Log Out)
+        // customize popup message appearance
+        UIManager.put("OptionPane.messageFont", UIFactory.getTextFont());
+        UIManager.put("OptionPane.background", UIFactory.backgroundColour);
+        UIManager.put("Panel.background", UIFactory.backgroundColour);
+        UIManager.put("OptionPane.okButtonText", "Save");
+        UIManager.put("Button.border", null);
+
+        // top panel for buttons (New Chat, Profile, Log Out, Delete Channel)
         final JPanel topPanel = new JPanel();
         topPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        newChatButton = new JButton("New Chat");
-        profileButton = new JButton("Profile");
-        logOutButton = new JButton("Log Out");
-        deleteChannelButton = new JButton("Delete");
+        topPanel.setBackground(new Color(97, 130, 184));
+        topPanel.setForeground(new Color(50, 50, 50));
+
+        final Color defaultColour = new Color(245, 247, 250);
+        final Color pressedColour = new Color(191, 201, 219);
+        final Color hoverColour = new Color(218, 224, 235);
+        final Color textColour = new Color(17, 37, 69);
+
+        newChatButton = UIFactory.createButton("New Chat", defaultColour, pressedColour, hoverColour, textColour);
+        profileButton = UIFactory.createButton("Profile", defaultColour, pressedColour, hoverColour, textColour);
+        logOutButton = UIFactory.createButton("Log Out", defaultColour, pressedColour, hoverColour, textColour);
+        deleteChannelButton = UIFactory.createButton("Delete", defaultColour, pressedColour, hoverColour, textColour);
+
         topPanel.add(newChatButton);
         topPanel.add(profileButton);
         topPanel.add(logOutButton);
         topPanel.add(deleteChannelButton);
 
-        // add panel for sending messages
-        final JPanel chatInputPanel = new JPanel();
-        chatInputPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        messageInputField = new JTextField(15);
-        sendButton = new JButton("Send");
-
-        chatInputPanel.add(messageInputField);
-        chatInputPanel.add(sendButton);
-        this.add(chatInputPanel, BorderLayout.SOUTH);
-
         // left panel for the chats
         final JPanel leftPanel = new JPanel();
         leftPanel.setLayout(new BorderLayout());
+        leftPanel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
         leftPanel.setPreferredSize(new Dimension(200, this.getHeight()));
 
         // fetch chats from sendbird
@@ -109,14 +100,13 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         final DefaultListModel chats = new DefaultListModel();
 
         if (currentUserId.length() > 0) {
-            // final List<SendBirdGroupChannel> groupChannels = sbUserManager.listGroupChannelsByUserId(loggedInViewModel.getState().getUserId()).getChannels();
             final List<SendBirdGroupChannel> groupChannels = sbGroupChannelManager
                     .listChannels(loggedInViewModel.getState().getUserId()).getChannels();
             for (int i = 0; i < groupChannels.size(); i++) {
                 final SendBirdGroupChannel groupChannel = groupChannels.get(i);
                 final StringBuilder chatName = new StringBuilder();
                 chatName.append(groupChannel.getName());
-                chatName.append(": ");
+                chatName.append("                                                     : ");
                 chatName.append(groupChannel.getChannelUrl());
                 chats.add(i, chatName.toString());
             }
@@ -130,23 +120,50 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         chatList.setSelectedIndex(0);
         chatList.addListSelectionListener(e -> updateChatArea());
 
+        chatList.setFont(new Font("Helvetica Neue", Font.PLAIN, 15));
+
         final JScrollPane chatListScrollPane = new JScrollPane(chatList);
+        chatListScrollPane.getViewport().setBackground(new java.awt.Color(240, 240, 240));
+        chatListScrollPane.setBorder(null);
         leftPanel.add(chatListScrollPane, BorderLayout.CENTER);
+
+        // add panel for sending messages
+        final JPanel chatInputPanel = new JPanel();
+        chatInputPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        chatInputPanel.setBackground(Color.WHITE);
+
+        messageInputField = new JTextField(50);
+        messageInputField.setPreferredSize(new Dimension(800, 30));
+        messageInputField.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+
+        sendButton = UIFactory.createButton("Send");
+
+        chatInputPanel.add(messageInputField);
+        chatInputPanel.add(sendButton);
 
         // current chat open
         chatArea = new JPanel();
-        chatArea.setPreferredSize(new Dimension(800, this.getHeight()));
+        chatArea.setBorder(null);
+        chatArea.setPreferredSize(new Dimension(800, 470));
+        chatArea.setBackground(UIFactory.backgroundColour);
 
         final JScrollPane chatAreaScrollPane = new JScrollPane(chatArea);
+        chatAreaScrollPane.setBorder(null);
         chatArea.removeAll();
         chatArea.add(new JLabel("No chat selected."));
         chatArea.revalidate();
         chatArea.repaint();
 
+        final JPanel rightPanel = new JPanel();
+        rightPanel.setBorder(null);
+        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
+        rightPanel.add(chatAreaScrollPane);
+        rightPanel.add(chatInputPanel);
+
         // add to panel
         this.add(topPanel, BorderLayout.NORTH);
         this.add(leftPanel, BorderLayout.WEST);
-        this.add(chatAreaScrollPane, BorderLayout.CENTER);
+        this.add(rightPanel, BorderLayout.CENTER);
 
         sendButton.addActionListener(evt -> {
             final String messageText = messageInputField.getText().trim();
@@ -313,8 +330,8 @@ public class ChatView extends JPanel implements PropertyChangeListener {
      */
     private void updateChatArea() {
         final String selectedChat = chatList.getSelectedValue();
-        // chatArea.setText("Display messages for: " + selectedChat);
-        chatArea.add(new JLabel("Display messages for: " + selectedChat));
+        chatList.setSelectionBackground(new Color(204, 214, 230));
+        chatList.setSelectionForeground(Color.BLACK);
 
         if (selectedChat != null) {
             final String groupChannelUrl = selectedChat.substring(selectedChat.lastIndexOf(": ") + 2);
@@ -338,17 +355,18 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                 final JPanel messagePanel = new JPanel();
                 messagePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
                 messagePanel.setAlignmentX(JPanel.LEFT_ALIGNMENT);
-                messagePanel.setMaximumSize(new Dimension(400, 30));
+                messagePanel.setMaximumSize(new Dimension(800, 30));
+                messagePanel.setBackground(UIFactory.backgroundColour);
                 // messagePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-                final JLabel messageLabel = new JLabel(user + ": " + message);
+                final JLabel messageLabel = new JLabel("<html><b>" + user + ":</b> " + message + "</html>");
+                messageLabel.setFont(UIFactory.getTextFont());
                 messageLabel.setAlignmentX(JLabel.LEFT_ALIGNMENT);
                 messagePanel.add(messageLabel);
 
                 final String currentUserId = loggedInViewModel.getState().getUserId();
                 if (userId.equals(currentUserId)) {
-                    final JButton editButton = new JButton("edit");
-                    editButton.setPreferredSize(new Dimension(40, 20));
+                    final JButton editButton = UIFactory.createMessageButton("edit");
 
                     editButton.addActionListener(evt -> {
                         final String newMessage = JOptionPane.showInputDialog("Edit Message:", message);
@@ -358,13 +376,13 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                             updateChatArea();
                         }
                     });
+
                     messagePanel.add(editButton);
 
                     // Delete message
-                    final JButton deleteButton = new JButton("delete");
-                    deleteButton.setPreferredSize(new Dimension(75, 20));
+                    final JButton deleteButton = UIFactory.createMessageButton("delete");
                     deleteButton.addActionListener(evt -> {
-                        int confirmation = JOptionPane.showConfirmDialog(
+                        final int confirmation = JOptionPane.showConfirmDialog(
                                 null,
                                 "Are you certain you want to delete this message?",
                                 "Delete Message",
@@ -454,7 +472,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                     SendBirdGroupChannel groupChannel = groupChannels.get(i);
                     StringBuilder chatName = new StringBuilder();
                     chatName.append(groupChannel.getName());
-                    chatName.append(": ");
+                    chatName.append("                                                     : ");
                     chatName.append(groupChannel.getChannelUrl());
                     chats.add(i, chatName.toString());
                 }

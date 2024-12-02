@@ -1,18 +1,12 @@
 package view;
 
-import java.awt.Component;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -33,15 +27,21 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
     private SignupController signupController;
 
     private final JButton signUp;
-    private final JButton cancel;
     private final JButton toLogin;
 
     public SignupView(SignupViewModel signupViewModel) {
         this.signupViewModel = signupViewModel;
         signupViewModel.addPropertyChangeListener(this);
+        this.setLayout(new GridBagLayout());
+        this.setBackground(UIFactory.backgroundColour);
+
+        final JPanel formPanel = new JPanel();
+        formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
+        formPanel.setBackground(UIFactory.backgroundColour);
 
         final JLabel title = new JLabel(SignupViewModel.TITLE_LABEL);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        title.setFont(UIFactory.getTitleFont());
 
         final LabelTextPanel usernameInfo = new LabelTextPanel(
                 new JLabel(SignupViewModel.USERNAME_LABEL), usernameInputField);
@@ -49,14 +49,19 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
                 new JLabel(SignupViewModel.PASSWORD_LABEL), passwordInputField);
         final LabelTextPanel repeatPasswordInfo = new LabelTextPanel(
                 new JLabel(SignupViewModel.REPEAT_PASSWORD_LABEL), repeatPasswordInputField);
+        usernameInfo.setBackground(UIFactory.backgroundColour);
+        passwordInfo.setBackground(UIFactory.backgroundColour);
+        repeatPasswordInfo.setBackground(UIFactory.backgroundColour);
+        usernameInfo.setFont(UIFactory.getTextFont());
+        passwordInfo.setFont(UIFactory.getTextFont());
+        repeatPasswordInfo.setFont(UIFactory.getTextFont());
 
         final JPanel buttons = new JPanel();
-        toLogin = new JButton(SignupViewModel.TO_LOGIN_BUTTON_LABEL);
+        toLogin = UIFactory.createButton(SignupViewModel.TO_LOGIN_BUTTON_LABEL);
         buttons.add(toLogin);
-        signUp = new JButton(SignupViewModel.SIGNUP_BUTTON_LABEL);
+        signUp = UIFactory.createButton(SignupViewModel.SIGNUP_BUTTON_LABEL);
         buttons.add(signUp);
-        cancel = new JButton(SignupViewModel.CANCEL_BUTTON_LABEL);
-//        buttons.add(cancel);
+        buttons.setBackground(UIFactory.backgroundColour);
 
         signUp.addActionListener(
                 // This creates an anonymous subclass of ActionListener and instantiates it.
@@ -83,19 +88,21 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
                 }
         );
 
-        cancel.addActionListener(this);
-
         addUsernameListener();
         addPasswordListener();
         addRepeatPasswordListener();
 
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        formPanel.add(title);
+        formPanel.add(Box.createRigidArea(new Dimension(0, 35)));
+        formPanel.add(usernameInfo);
+        formPanel.add(Box.createRigidArea(new Dimension(0, 25)));
+        formPanel.add(passwordInfo);
+        formPanel.add(Box.createRigidArea(new Dimension(0, 25)));
+        formPanel.add(repeatPasswordInfo);
+        formPanel.add(Box.createRigidArea(new Dimension(0, 25)));
+        formPanel.add(buttons);
 
-        this.add(title);
-        this.add(usernameInfo);
-        this.add(passwordInfo);
-        this.add(repeatPasswordInfo);
-        this.add(buttons);
+        this.add(formPanel, new GridBagConstraints());
     }
 
     private void addUsernameListener() {
