@@ -13,10 +13,10 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
+import use_case.create_group_channel.CreateGroupChannelDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
-import use_case.create_group_channel.CreateGroupChannelDataAccessInterface;
 
 /**
  * The DAO for user data.
@@ -34,7 +34,6 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
     private static final String PASSWORD = "password";
     private static final String MESSAGE = "message";
     private final UserFactory userFactory;
-
 
     public DBUserDataAccessObject(UserFactory userFactory) {
         this.userFactory = userFactory;

@@ -3,7 +3,6 @@ package interface_adapter.create_group_channel;
 import java.util.List;
 
 import use_case.create_group_channel.CreateGroupChannelInputBoundary;
-
 import use_case.create_group_channel.CreateGroupChannelInputData;
 
 /**

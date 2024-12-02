@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.openapitools.client.model.*;
+import org.openapitools.client.model.ListMessagesResponse;
+import org.openapitools.client.model.ListMessagesResponseMessagesInner;
+import org.openapitools.client.model.SendBirdMessageResponse;
+import org.openapitools.client.model.SendMessageData;
+import org.openapitools.client.model.UpdateMessageByIdData;
 import org.sendbird.client.ApiClient;
 import org.sendbird.client.ApiException;
 import org.sendbird.client.api.MessageApi;
@@ -32,7 +36,8 @@ public class SbMessageManager {
      * @param messageType the type of the message
      * @return a response containing the details of the message
      */
-    public SendBirdMessageResponse sendMessage(String channelType, String channelUrl, String userId, String message, String messageType) {
+    public SendBirdMessageResponse sendMessage(
+            String channelType, String channelUrl, String userId, String message, String messageType) {
         final SendMessageData sendMessageData = new SendMessageData();
         sendMessageData.channelType(channelType);
         sendMessageData.channelUrl(channelUrl);

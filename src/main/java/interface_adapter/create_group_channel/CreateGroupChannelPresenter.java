@@ -10,11 +10,9 @@ import use_case.create_group_channel.CreateGroupChannelOutputData;
  */
 public class CreateGroupChannelPresenter implements CreateGroupChannelOutputBoundary {
 
-    private final ViewManagerModel viewManagerModel;
     private final LoggedInViewModel loggedInViewModel;
 
     public CreateGroupChannelPresenter(ViewManagerModel viewManagerModel, LoggedInViewModel loggedInViewModel) {
-        this.viewManagerModel = viewManagerModel;
         this.loggedInViewModel = loggedInViewModel;
     }
 

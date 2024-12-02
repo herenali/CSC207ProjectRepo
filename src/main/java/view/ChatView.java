@@ -1,11 +1,29 @@
 package view;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.UIManager;
 
 import org.openapitools.client.model.SendBirdGroupChannel;
 import org.sendbird.client.ApiClient;
@@ -318,10 +336,12 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                         chatArea.add(new JLabel("No chat selected."));
                         chatArea.revalidate();
                         chatArea.repaint();
-                    } catch (Exception e) {
+                    }
+                    catch (Exception e) {
                         JOptionPane.showMessageDialog(null, "Channel not deleted " + e.getMessage());
                     }
-                } else {
+                }
+                else {
                     JOptionPane.showMessageDialog(null, "No channel selected for deletion.");
                 }
             }
@@ -329,7 +349,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
     }
 
     /**
-     * Updates chat area with newly sent/edited messages
+     * Updates chat area with newly sent/edited messages.
      */
     private void updateChatArea() {
         final String selectedChat = chatList.getSelectedValue();
@@ -401,7 +421,8 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                                         "Success",
                                         JOptionPane.INFORMATION_MESSAGE
                                 );
-                            } catch (Exception ex) {
+                            }
+                            catch (Exception ex) {
                                 JOptionPane.showMessageDialog(
                                         null,
                                         "Message not deleted" + ex.getMessage(),

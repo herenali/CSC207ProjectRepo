@@ -1,6 +1,5 @@
 package interface_adapter.change_password;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,20 +86,12 @@ public class LoggedInState {
         return userAndMessageIds;
     }
 
-    public List<List<String>> getGroupChannelUrlss() {
-        return groupChannelUrls;
-    }
-
-    public void setGroupChannelUrlss(List<List<String>> newGroupChannelUrls) {
-        this.groupChannelUrls = newGroupChannelUrls;
-    }
-
     /**
      * Adds group channel URL to groupChannelUrls.
      *
-     * @param newgroupChannelUrl URL of group channel to add.
+     * @param newGroupChannelUrl URL of group channel to add.
      */
-    public void addGroupChannelUrl(String newgroupChannelUrl) {
-        this.groupChannelUrls.add(List.of(newgroupChannelUrl));
+    public void addGroupChannelUrl(String newGroupChannelUrl) {
+        this.groupChannelUrls.add(List.of(newGroupChannelUrl));
     }
 }

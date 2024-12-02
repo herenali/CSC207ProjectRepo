@@ -21,7 +21,7 @@ public class SbGroupChannelFactory {
      * @param name the name of the new group channel
      * @return the new group channel
      */
-    public SendBirdGroupChannel create(List userIds, String name) {
+    public SendBirdGroupChannel create(List<String> userIds, String name) {
         final GroupChannelManager groupChannelManager = new SbGroupChannelManager(apiClient);
         return groupChannelManager.createChannel(userIds, name);
     }

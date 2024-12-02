@@ -34,7 +34,7 @@ public class SbGroupChannelManager implements GroupChannelManager {
      * @return The created group channel.
      */
     @Override
-    public SendBirdGroupChannel createChannel(List userIds, String name) {
+    public SendBirdGroupChannel createChannel(List<String> userIds, String name) {
         final GcCreateChannelData gcCreateChannelData = new GcCreateChannelData();
         gcCreateChannelData.name(name);
         gcCreateChannelData.userIds(userIds);

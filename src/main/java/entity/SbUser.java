@@ -42,7 +42,8 @@ public class SbUser implements User {
         createUserData.userId(UUID.randomUUID().toString());
         createUserData.nickname(nickname);
         try {
-            final SendBirdUser result = apiInstance.createUser().apiToken(apiToken).createUserData(createUserData).execute();
+            final SendBirdUser result =
+                    apiInstance.createUser().apiToken(apiToken).createUserData(createUserData).execute();
             return result;
         }
         catch (ApiException e) {

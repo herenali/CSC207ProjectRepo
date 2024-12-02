@@ -16,7 +16,7 @@ public interface GroupChannelManager {
      * @param name the name of the group channel
      * @return the group channel
      */
-    SendBirdGroupChannel createChannel(List userIds, String name);
+    SendBirdGroupChannel createChannel(List<String> userIds, String name);
 
     /**
      * Deletes a group channel.

@@ -10,7 +10,6 @@ public interface CreateGroupChannelOutputBoundary {
      */
     void prepareSuccessView(CreateGroupChannelOutputData outputData);
 
-
     /**
      * Prepares the failure view for the Choose Group Channel Use Case.
      * @param errorMessage the explanation of the failure
