@@ -8,11 +8,11 @@
        - this would allow program to adapt better to suit the users' needs and avoid any potential challenges with using the program, such as eyesight issues/sensitivity or limited mobility; for example, users with visual impairments can increase the text size while users who find bright screens distracting can switch to dark mode
        - future plans for the program also includes providing speech-to-text option to make the system more accessible to the diverse population 
    - **Simple and Intuitive Use**
-       - layout of chats is organized with current chat open taking up most of the screen, with a side bar to select other chats and buttons on top for various other features; this simple layout keeps the focus on the conversations while making navigation user-friendly
+       - layout of chats is organized with current chat open taking up most of the screen, with a sidebar to select other chats and buttons on top for various other features; this simple layout keeps the focus on the conversations while making navigation user-friendly
        - similar layout to other messaging services makes it more intuitive for those who have used them in the past and minimizes the learning curve
-       - limited buttons with clear labels (eg. 'send' 'new chat', 'profile') simplify user interface and makes it easy to complete tasks
+       - limited buttons with clear labels (e.g. 'send' 'new chat', 'profile') simplify user interface and makes it easy to complete tasks
    - **Perceptible Information**
-       - has different colours for buttons/text input boxes, seperating them from plain text (messages); this helps users distinguish between interactive elements and non-interactive ones more easily 
+       - has different colours for buttons/text input boxes, separating them from plain text (messages); this helps users distinguish between interactive elements and non-interactive ones more easily 
        - buttons to confirm or submit change are a different colour (blue) than the other buttons (white), making them easier to identify for users
        - contrast between light background colours and dark text colours makes it easily legible and ensures readability for users with poor vision 
    - **Tolerance for Error**
@@ -23,7 +23,7 @@
        - all features of chat system can be accessed using a keyboard and mouse, so only the users' hands are required to move
        - could add feature implementing speech-to-text functionalities to replace typing, which would require less physical effort since the user only needs to talk instead of type
    - **Size & Space for Approach & Use**
-       - main features of chat system are all accesible from main chat page, contained within the window
+       - main features of chat system are all accessible from main chat page, contained within the window
        - user can use program from any position or angle, as long as they can control the keyboard/mouse and see the computer screen
        - the layout and interface have been optimized for users with motor disabilities by ensuring all the interactive elements (like buttons) are large enough to read and use
 
@@ -33,4 +33,4 @@
 
 **3. Write a paragraph about whether or not your program is less likely to be used by certain demographics. Your discussion here should be informed by the content of our embedded ethics modules this term.**
 
-   Although our program is generally accessible, certain demographics are less likely to use it. As mentioned in question 2, younger children and older people are less likely to use our program since it requires a computer, which many of them may not have or may not feel comfortable using. Another demographic that is not likely to use the chat system are people who have physical or mental disabilities that limit their ability to use/control a keyboard and mouse, since that is required for our program. This may include people who are paralyzed or people who cannot form sentences, as they would have difficulty being able to find use out of our system. Lastly, people in rural or developing areas may encounter challenges accessing the program if they lack reliable internet access. To make our program more inclusive, we plan to implement accessiblity features like speech-to-text and more customizable user interface options. 
+   Although our program is generally accessible, certain demographics are less likely to use it. As mentioned in question 2, younger children and older people are less likely to use our program since it requires a computer, which many of them may not have or may not feel comfortable using. Another demographic that is not likely to use the chat system are people who have physical or mental disabilities that limit their ability to use/control a keyboard and mouse, since that is required for our program. This may include people who are paralyzed or people who cannot form sentences, as they would have difficulty being able to find use out of our system. Lastly, people in rural or developing areas may encounter challenges accessing the program if they lack reliable internet access. To make our program more inclusive, we plan to implement accessibility features like speech-to-text and more customizable user interface options. 
