@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.sendbird.client.ApiClient;
 import org.sendbird.client.Configuration;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -33,6 +34,7 @@ class LoginInteractorTest {
             @Override
             public void prepareSuccessView(LoginOutputData user) {
                 assertEquals("Paul", user.getUsername());
+                assertNotNull(user.getUserId());
             }
 
             @Override
