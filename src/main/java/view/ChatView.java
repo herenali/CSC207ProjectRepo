@@ -199,6 +199,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                 }
         );
 
+        profileButton.setToolTipText("Press to view or change you username and password. ");
         profileButton.addActionListener(evt -> {
             final JPanel panel = new JPanel();
             panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -247,6 +248,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
             }
         });
 
+        newChatButton.setToolTipText("Press to create either a new single or group chat. ");
         newChatButton.addActionListener(evt -> {
             final JPanel panel = new JPanel();
             panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -293,6 +295,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
             }
         });
 
+        deleteChannelButton.setToolTipText("Press to delete an existing chat. ");
         deleteChannelButton.addActionListener(evt -> {
             final int confirmation = JOptionPane.showConfirmDialog(
                     null,

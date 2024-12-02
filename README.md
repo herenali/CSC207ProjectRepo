@@ -56,24 +56,24 @@ Notes:
 ## Usage Guide
 1. Sign Up or Log In (using your username and password).
 
-<img src="img.png" width="300" height="200"> 
+<img src="img_6.png" width="300" height="200">
+<img src="img_7.png" width="300" height="200">
 
 2. Create a Chat (either single or group).
 
-<img src="img_1.png" width="300" height="170">
-<img src="img_2.png" width="300" height="170"> 
+<img src="img_8.png" width="300" height="200">
+<img src="img_9.png" width="300" height="200">
 
 3. Send Messages
 - Select a chat from the side panel, type your message in the input box, 
 and hit the send button.
 
-<img src="img_3.png" width="300" height="180">
+<img src="img_10.png" width="300" height="170">
 
 4. Edit Messages 
 - Select a message you sent, click the edit message button '...', update its content and save the changes.
 
-<img src="img_4.png" width="300" height="160">
-<img src="img_5.png" width="300" height="160"> 
+<img src="img_11.png" width="300" height="160">
 
 ## License 
 Creative Commons Legal Code
