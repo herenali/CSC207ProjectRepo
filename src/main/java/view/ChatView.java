@@ -141,6 +141,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         chatList.setFont(new Font("Helvetica Neue", Font.PLAIN, 15));
 
         final JScrollPane chatListScrollPane = new JScrollPane(chatList);
+        chatListScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         chatListScrollPane.getViewport().setBackground(new java.awt.Color(240, 240, 240));
         chatListScrollPane.setBorder(null);
         leftPanel.add(chatListScrollPane, BorderLayout.CENTER);
