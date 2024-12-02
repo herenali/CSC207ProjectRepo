@@ -23,6 +23,7 @@ class SignupInteractorTest {
             public void prepareSuccessView(SignupOutputData user) {
                 // 2 things to check: the output data is correct, and the user has been created in the DAO.
                 assertEquals("Paul", user.getUsername());
+                assertFalse(user.isUseCaseFailed());
                 assertTrue(userRepository.existsByName("Paul"));
             }
 
@@ -45,6 +46,10 @@ class SignupInteractorTest {
         SignupInputBoundary interactor = new SignupInteractor(userRepository, successPresenter,
                 new SbUserFactory(defaultClient));
         interactor.execute(inputData);
+
+        assertEquals("Paul", inputData.getUsername(), "The username is Paul");
+        assertEquals("password", inputData.getPassword(), "The password is password");
+        assertEquals("password", inputData.getRepeatPassword(), "The password is password");
     }
 
     @Test
